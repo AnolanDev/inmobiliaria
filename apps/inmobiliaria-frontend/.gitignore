@@ -1,0 +1,16 @@
+# Node.js
+/node_modules
+**/node_modules
+
+# Turborepo
+/.turbo
+
+# Next.js
+apps/frontend/.next
+apps/frontend/out
+
+# Nest/Express (o tu build)
+apps/backend/dist
+
+# Archivos de entorno
+.env*

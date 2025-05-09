@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          Int               @id @default(autoincrement())
+  name        String            @unique
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id    Int               @id @default(autoincrement())
+  name  String            @unique
+  roles RolePermission[]
+}
+
+model RolePermission {
+  roleId       Int
+  permissionId Int
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  @@id([roleId, permissionId])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  fullName  String?
+  role      Role     @relation(fields: [roleId], references: [id])
+  roleId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Advisor {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  phone     String?
+  photo     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sales Sale[] @relation("AdvisorSales")
+}
+
+model Project {
+  id          Int              @id @default(autoincrement())
+  name        String           @db.VarChar(512)
+  description String?          @db.Text
+  latitude    Float?
+  longitude   Float?
+  address     String?          @db.Text
+  country     String?
+  department  String?
+  city        String?
+  logoUrl     String?
+  imageUrl    String?
+  status      ProjectStatus    @default(DISPONIBLE)
+  gallery     ProjectGallery[]
+  properties  Property[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model ProjectGallery {
+  id        Int      @id @default(autoincrement())
+  url       String
+  type      String
+  projectId Int
+  project   Project  @relation(fields: [projectId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Property {
+  id          Int              @id @default(autoincrement())
+  title       String           @db.VarChar(512)
+  description String?          @db.Text
+  price       Float
+  status      PropertyStatus   @default(DISPONIBLE)
+  imageUrl    String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  project     Project          @relation(fields: [projectId], references: [id])
+  projectId   Int
+  sales       Sale[]           @relation("PropertySales")
+}
+
+model Sale {
+  id        Int      @id @default(autoincrement())
+  saleDate  DateTime
+  salePrice Float
+
+  property   Property @relation("PropertySales", fields: [propertyId], references: [id])
+  propertyId Int
+
+  advisor   Advisor @relation("AdvisorSales", fields: [advisorId], references: [id])
+  advisorId Int
+}
+
+enum ProjectStatus {
+  DISPONIBLE
+  VENDIDO
+}
+
+enum PropertyStatus {
+  DISPONIBLE
+  VENDIDO
+}
