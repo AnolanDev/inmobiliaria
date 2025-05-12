@@ -1,59 +1,89 @@
+// src/app/lib/apiClient.ts
 'use client';
 
 import { toast } from 'react-hot-toast';
+import axios from 'axios';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
-async function request(method: string, path: string, data?: any) {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+const apiClient = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
+});
 
-  const isFormData = typeof FormData !== 'undefined' && data instanceof FormData;
-
-  const headers: Record<string, string> = {
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-
-  if (!isFormData) {
-    headers['Content-Type'] = 'application/json';
+// Interceptor para agregar el access_token a todas las peticiones
+apiClient.interceptors.request.use(
+  (config) => {
+    const token =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('access_token') ?? sessionStorage.getItem('access_token')
+        : null;
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
+);
 
-  const res = await fetch(`${BASE_URL}${path}`, {
-    method,
-    headers,
-    body: data ? (isFormData ? data : JSON.stringify(data)) : undefined,
-  });
-
-  if (res.status === 401) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    if (typeof window !== 'undefined') {
-      toast.error('Sesión expirada, vuelve a iniciar sesión.');
+// Interceptor para manejar errores
+apiClient.interceptors.response.use(
+  response => response,
+  async error => {
+    if (error.response?.status === 401) {
+      // Limpiar tokens y redirigir al login
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      sessionStorage.removeItem('access_token');
+      sessionStorage.removeItem('refresh_token');
       window.location.href = '/login';
     }
-    throw new Error('No autorizado');
+    return Promise.reject(error);
   }
+);
 
-  if (!res.ok) {
-    let message = 'Error en la API';
-
-    try {
-      const errorData = await res.json();
-      message = errorData?.message || message;
-      console.error('📛 Error del backend:', errorData);
-    } catch (e) {
-      console.error('📛 Error sin JSON válido', e);
-    }
-
-    toast.error(message);
-    throw new Error(message); // error.message será accesible en el catch
+export const request = async <T>(config: AxiosRequestConfig): Promise<T> => {
+  try {
+    const response = await apiClient(config);
+    return response as T;
+  } catch (error) {
+    console.error('Error en la petición:', error);
+    throw error;
   }
-
-  return res.json();
-}
-
-export const apiClient = {
-  get: (path: string) => request('GET', path),
-  post: (path: string, data?: any) => request('POST', path, data),
-  put: (path: string, data?: any) => request('PUT', path, data),
-  delete: (path: string) => request('DELETE', path),
 };
+
+export const get = <T>(url: string, config: AxiosRequestConfig = {}): Promise<T> => {
+  return request<T>({ ...config, method: 'get', url });
+};
+
+export const post = <T>(url: string, data = {}, config: AxiosRequestConfig = {}): Promise<T> => {
+  return request<T>({ ...config, method: 'post', url, data });
+};
+
+export const put = <T>(url: string, data = {}, config: AxiosRequestConfig = {}): Promise<T> => {
+  // Asegurarse de que el token se envía en el header
+  const token = localStorage.getItem('token');
+  const headers = {
+    ...config.headers,
+    Authorization: token ? `Bearer ${token}` : '',
+  };
+  
+  return request<T>({
+    ...config,
+    method: 'put',
+    url,
+    data,
+    headers,
+  });
+};
+
+export const del = <T>(url: string, config: AxiosRequestConfig = {}): Promise<T> => {
+  return request<T>({ ...config, method: 'delete', url });
+};
+
+export { apiClient };

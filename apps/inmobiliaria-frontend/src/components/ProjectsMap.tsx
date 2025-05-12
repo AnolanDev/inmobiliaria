@@ -3,6 +3,7 @@
 import Map, { Marker, Popup } from 'react-map-gl';
 import { useState, useRef, useEffect } from 'react';
 import Supercluster from 'supercluster';
+import Image from 'next/image';
 
 type Project = {
   id: number;
@@ -57,6 +58,13 @@ export default function ProjectsMap({ projects }: { projects: Project[] }) {
   const clusters = superclusterRef.current
     ? superclusterRef.current.getClusters([-180, -85, 180, 85], Math.round(viewport.zoom))
     : [];
+
+  const getImageUrl = (url: string) => {
+    if (url.startsWith('http')) return url
+    // Asegurarnos de que la URL comience con /
+    const cleanUrl = url.startsWith('/') ? url : `/${url}`
+    return `http://localhost:3001${cleanUrl}`
+  };
 
   return (
     <div className="w-full h-[500px] rounded-lg overflow-hidden">
@@ -132,11 +140,16 @@ export default function ProjectsMap({ projects }: { projects: Project[] }) {
             offset={25}
           >
             <div className="p-3 w-64 bg-white rounded-lg shadow space-y-2">
-              <img
-                src={selectedProject.imageUrl}
-                alt={selectedProject.name}
-                className="w-full h-28 object-cover rounded"
-              />
+              <div className="relative w-full h-28">
+                <Image
+                  src={getImageUrl(selectedProject.imageUrl || '/placeholder.jpg')}
+                  alt={selectedProject.name}
+                  fill
+                  sizes="256px"
+                  className="object-cover rounded"
+                  unoptimized
+                />
+              </div>
               <h3 className="text-lg font-semibold text-gray-800">{selectedProject.name}</h3>
               <button
                 className="w-full bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-md transition"

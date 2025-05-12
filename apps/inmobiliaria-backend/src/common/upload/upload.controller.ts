@@ -2,7 +2,7 @@ import { Controller, Post, UploadedFile, UploadedFiles, UseInterceptors, Param, 
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
 
-@Controller('upload')
+@Controller('api/upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
@@ -12,8 +12,12 @@ export class UploadController {
     @UploadedFile() file: Express.Multer.File,
     @Param('projectId', ParseIntPipe) projectId: number,
   ) {
-    const path = await this.uploadService.uploadLogo(file.buffer, file.originalname, projectId);
-    return { url: path };
+    const url = await this.uploadService.uploadLogo(
+      file.buffer,
+      file.originalname,
+      projectId,
+    );
+    return { url };
   }
 
   @Post('gallery/:projectId')
@@ -22,10 +26,10 @@ export class UploadController {
     @UploadedFiles() files: Express.Multer.File[],
     @Param('projectId', ParseIntPipe) projectId: number,
   ) {
-    const paths = await this.uploadService.uploadGallery(
-      files.map(file => ({ buffer: file.buffer, originalname: file.originalname })),
+    const urls = await this.uploadService.uploadGallery(
+      files.map(f => ({ buffer: f.buffer, originalname: f.originalname })),
       projectId,
     );
-    return { urls: paths };
+    return { urls };
   }
 }

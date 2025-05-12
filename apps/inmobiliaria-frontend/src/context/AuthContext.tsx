@@ -1,72 +1,111 @@
+// src/context/AuthContext.tsx
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { apiClient } from '@/app/lib/apiClient';
 
-interface AuthContextType {
-  user: string | null;
-  token: string | null;
-  loading: boolean; // ✅ Agregamos loading
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+interface User {
+  id: number;
+  email: string;
+  fullName: string;
+  role: {
+    id: number;
+    name: string;
+  };
 }
 
-const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+type AuthContextType = {
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string, remember: boolean) => Promise<void>;
+  logout: () => void;
+};
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-  const [user, setUser] = useState<string | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); // ✅ Nuevo loading inicial
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-    if (storedToken) setToken(storedToken);
-    if (storedUser) setUser(storedUser);
-    setLoading(false); // ✅ Cuando termina de leer localStorage
+    setMounted(true);
   }, []);
 
-  const login = async (email: string, password: string) => {
-    try {
-      const res = await fetch('http://localhost:3001/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+  // Al montar, intenta rehidratar usuario si hay token
+  useEffect(() => {
+    if (!mounted) return;
 
-      if (!res.ok) {
-        throw new Error('Credenciales inválidas');
+    const token =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('access_token') ?? sessionStorage.getItem('access_token')
+        : null;
+    
+    if (token) {
+      apiClient.get<User>('/auth/me')
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch(() => {
+          localStorage.removeItem('access_token');
+          sessionStorage.removeItem('access_token');
+          setUser(null);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [mounted]);
+
+  const login = async (
+    email: string,
+    password: string,
+    remember: boolean
+  ) => {
+    setLoading(true);
+    try {
+      const res = await apiClient.post<{ access_token: string, user: User }>('/auth/login', { email, password });
+      const { access_token, user } = res.data;
+
+      // Guardar token según preferencia
+      if (remember) {
+        localStorage.setItem('access_token', access_token);
+      } else {
+        sessionStorage.setItem('access_token', access_token);
       }
 
-      const data = await res.json();
-      localStorage.setItem('token', data.access_token);
-      localStorage.setItem('user', email);
-      setToken(data.access_token);
-      setUser(email);
-
-      toast.success('✅ Inicio de sesión exitoso');
-    } catch (error) {
-      toast.error('❌ Error de inicio de sesión');
-      throw error;
+      setUser(user);
+    } catch (error: any) {
+      setUser(null);
+      throw new Error(error.response?.data?.message || 'Error al iniciar sesión');
+    } finally {
+      setLoading(false);
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setToken(null);
+    setLoading(true);
+    localStorage.removeItem('access_token');
+    sessionStorage.removeItem('access_token');
     setUser(null);
-    toast.success('👋 Sesión cerrada correctamente');
-    router.push('/login');
+    setLoading(false);
   };
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth debe usarse dentro de AuthProvider');
+  }
+  return context;
+}

@@ -24,8 +24,15 @@ export class ProjectsService {
     });
   }
 
-  async findAll() {
+  async findAll(status?: string) {
+    if (status && !Object.values(ProjectStatus).includes(status as ProjectStatus)) {
+      throw new Error(`Status inválido. Valores permitidos: ${Object.values(ProjectStatus).join(', ')}`);
+    }
+
     return this.prisma.project.findMany({
+      where: status ? {
+        status: status as ProjectStatus
+      } : undefined,
       include: {
         gallery: true,
       },

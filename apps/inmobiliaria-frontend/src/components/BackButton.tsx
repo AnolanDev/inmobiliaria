@@ -1,20 +1,18 @@
 'use client';
 
-import { useSafeBack } from '@/hooks/useSafeBack';
-import { HiArrowNarrowLeft } from 'react-icons/hi';
+import Link from 'next/link';
+import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 
-export default function BackButton() {
-  const { goBackOrDefault } = useSafeBack();
+interface BackButtonProps {
+  href: string;
+  label?: string;
+}
 
+export default function BackButton({ href, label = 'Volver' }: BackButtonProps) {
   return (
-    <button
-      onClick={goBackOrDefault}
-      className="fixed top-4 left-4 z-50 flex items-center gap-2 px-4 py-2 
-                 bg-black/70 text-white border border-white/30 shadow-xl 
-                 rounded-full hover:bg-black/80 transition-all backdrop-blur"
-    >
-      <HiArrowNarrowLeft className="text-lg" />
-      <span className="hidden md:inline">Volver</span>
-    </button>
+    <Link href={href} className="inline-flex items-center text-[#3c5ca0] hover:text-[#5ea546] mb-4">
+      <ArrowLeftIcon className="w-5 h-5" />
+      <span className="ml-2 font-medium">{label}</span>
+    </Link>
   );
 }
