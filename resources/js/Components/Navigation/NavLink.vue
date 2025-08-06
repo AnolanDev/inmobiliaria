@@ -2,23 +2,25 @@
     <Link
         :href="href"
         :class="[
-            'group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200',
+            'group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-r-xl transition-all duration-200 relative',
             active
-                ? 'bg-blue-50 text-blue-700 border border-blue-100'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-600 pl-2'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-600 border-l-4 border-transparent hover:border-blue-200'
         ]"
         @click="$emit('click')"
     >
         <div 
             :class="[
-                'flex items-center justify-center w-5 h-5 transition-colors',
-                active ? 'text-blue-600' : 'text-gray-500 group-hover:text-gray-700'
+                'flex items-center justify-center w-5 h-5 transition-all duration-200',
+                active 
+                    ? 'text-blue-600 animate-pulse' 
+                    : 'text-gray-500 group-hover:text-blue-600 group-hover:scale-105'
             ]"
         >
             <!-- Dashboard Icon -->
             <svg v-if="icon === 'dashboard'" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
-                      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                      d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
             </svg>
 
             <!-- Properties Icon -->
@@ -65,7 +67,11 @@
         <span :class="['truncate', active ? 'font-semibold' : '']">{{ name }}</span>
         
         <!-- Active Indicator -->
-        <div v-if="active" class="ml-auto w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+        <div v-if="active" class="ml-auto">
+            <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+        </div>
     </Link>
 </template>
 
