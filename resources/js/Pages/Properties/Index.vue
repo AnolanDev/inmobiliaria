@@ -1,350 +1,430 @@
 <template>
-    <Head title="Propiedades" />
+  <Head title="Propiedades" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-800 text-balance leading-relaxed">
-                        Propiedades
-                    </h1>
-                    <p class="text-gray-500 text-base leading-relaxed mt-1">
-                        Gestiona tu cartera inmobiliaria
-                    </p>
-                </div>
-                <Link
-                    :href="route('properties.create')"
-                    class="btn-primary"
-                >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                    </svg>
-                    Nueva Propiedad
-                </Link>
-            </div>
-        </template>
-
-        <!-- Main Content -->
-        <div class="py-8 lg:py-12">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                
-                <!-- Properties Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <article
-                        v-for="property in properties.data"
-                        :key="property.id"
-                        class="property-card group cursor-pointer"
-                        @click="$inertia.visit(route('properties.show', property.id))"
-                    >
-                        <!-- Property Image Placeholder -->
-                        <div class="property-image">
-                            <div class="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-                                <span :class="[
-                                    'badge-type',
-                                    property.type === 'sale' 
-                                        ? 'bg-green-500 text-white' 
-                                        : 'bg-blue-500 text-white'
-                                ]">
-                                    {{ property.type === 'sale' ? 'Venta' : 'Alquiler' }}
-                                </span>
-                                <span :class="[
-                                    'badge-category',
-                                    getCategoryBadgeClass(property.category)
-                                ]">
-                                    {{ getCategoryName(property.category) }}
-                                </span>
-                            </div>
-                            
-                            <!-- Click to view indicator -->
-                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
-                                <div class="bg-white/90 backdrop-blur-sm rounded-full p-3 opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
-                                    <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                    </svg>
-                                </div>
-                            </div>
-                            
-                            <div class="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-                                <!-- Property Type Icon -->
-                                <div class="text-center">
-                                    <svg v-if="property.category === 'house'" class="w-14 h-14 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
-                                    </svg>
-                                    <svg v-else-if="property.category === 'apartment'" class="w-14 h-14 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 21h19.5m-18-18v18m2.25-18v18m13.5-18v18m2.25-18v18M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.75m-.75 3h.75m-.75 3h.75m-3.75-16.5h.75m-.75 3h.75m-.75 3h.75m-3.75-6h.75m-.75 3h.75"/>
-                                    </svg>
-                                    <svg v-else-if="property.category === 'office'" class="w-14 h-14 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 21h16.5M4.5 3h15l-.75 18H5.25L4.5 3ZM9 9h6m-6 3h6m-6 3h6M9 17.25h.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-.75.75h-.75a.75.75 0 0 1-.75-.75v-1.5a.75.75 0 0 1 .75-.75Z"/>
-                                    </svg>
-                                    <svg v-else class="w-14 h-14 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V9.75a.75.75 0 0 1 .75-.75h4.125c1.035 0 1.875.84 1.875 1.875V21H8.25ZM2.25 10.5h5.25a.75.75 0 0 1 .75.75v10.5"/>
-                                    </svg>
-                                    <p class="text-xs text-slate-500 font-medium">{{ getCategoryName(property.category) }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Property Content -->
-                        <div class="p-6 space-y-4">
-                            <!-- Price -->
-                            <div>
-                                <span class="price">
-                                    ${{ Number(property.price).toLocaleString() }}
-                                    <span class="price-period" v-if="property.type === 'rent'">/mes</span>
-                                </span>
-                            </div>
-
-                            <!-- Title & Description -->
-                            <div class="space-y-3">
-                                <h3 class="property-title">
-                                    {{ property.title }}
-                                </h3>
-                                <p class="property-description">
-                                    {{ property.description }}
-                                </p>
-                            </div>
-
-                            <!-- Location -->
-                            <div>
-                                <div class="flex items-start gap-2 text-slate-600">
-                                    <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    </svg>
-                                    <span class="text-sm leading-relaxed tracking-tight">{{ property.address }}, {{ property.city }}</span>
-                                </div>
-                            </div>
-
-                            <!-- Property Details -->
-                            <div>
-                                <div class="flex flex-wrap gap-4 text-sm text-slate-600">
-                                    <div class="flex items-center gap-2" v-if="property.bedrooms > 0">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
-                                        </svg>
-                                        <span class="font-medium">{{ property.bedrooms }} hab</span>
-                                    </div>
-                                    <div class="flex items-center gap-2" v-if="property.bathrooms > 0">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
-                                        </svg>
-                                        <span class="font-medium">{{ property.bathrooms }} baños</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8V6a2 2 0 012-2h12a2 2 0 012 2v2m-6 12V10a2 2 0 00-2-2H8a2 2 0 00-2 2v10m8 0V10h4v10"/>
-                                        </svg>
-                                        <span class="font-medium">{{ property.area }}m²</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Agent Info -->
-                            <div>
-                                <div class="flex items-center gap-3 p-3 bg-slate-50/70 rounded-xl border border-slate-100">
-                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span class="text-blue-600 font-semibold text-sm">
-                                            {{ property.agent?.name?.charAt(0) }}
-                                        </span>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-semibold text-slate-800 truncate leading-relaxed">
-                                            {{ property.agent?.name }}
-                                        </p>
-                                        <p class="text-xs text-slate-500 tracking-tight">
-                                            Agente responsable
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Action Button -->
-                            <div class="flex justify-end pt-2" @click.stop>
-                                <Link
-                                    :href="route('properties.edit', property.id)"
-                                    class="btn-outline-sm"
-                                    @click.stop
-                                    title="Editar propiedad"
-                                >
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                    </svg>
-                                </Link>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Empty State -->
-                <div v-if="!properties.data.length" class="text-center py-16">
-                    <div class="max-w-sm mx-auto">
-                        <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">No hay propiedades</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-6">
-                            Comienza agregando tu primera propiedad
-                        </p>
-                        <Link
-                            :href="route('properties.create')"
-                            class="btn-primary"
-                        >
-                            Nueva Propiedad
-                        </Link>
-                    </div>
-                </div>
-
-                <!-- Pagination -->
-                <div class="mt-12" v-if="properties.links.length > 3">
-                    <nav class="flex justify-center">
-                        <div class="flex gap-2">
-                            <Link
-                                v-for="link in properties.links"
-                                :key="link.label"
-                                :href="link.url"
-                                v-html="link.label"
-                                class="pagination-link"
-                                :class="{
-                                    'pagination-active': link.active,
-                                    'pagination-disabled': !link.url
-                                }"
-                            />
-                        </div>
-                    </nav>
-                </div>
-            </div>
+  <AuthenticatedLayout>
+    <template #header>
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Propiedades
+          </h2>
+          <p class="text-gray-500 text-sm mt-1">
+            Gestiona tu cartera inmobiliaria
+          </p>
         </div>
-    </AuthenticatedLayout>
+        <Link
+          :href="route('properties.create')"
+          class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+          Nueva Propiedad
+        </Link>
+      </div>
+    </template>
+
+    <div class="py-12">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Filters -->
+        <div class="bg-white shadow-sm rounded-lg overflow-hidden mb-6">
+          <div class="px-4 py-3 border-b border-gray-200">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+              <!-- Search -->
+              <div class="flex-1 min-w-0">
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                  </div>
+                  <input
+                    v-model="filters.search"
+                    @input="debouncedFilter"
+                    type="text"
+                    placeholder="Buscar propiedades..."
+                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+
+              <!-- Project Filter -->
+              <div class="w-full sm:w-48">
+                <select
+                  v-model="filters.project_id"
+                  @change="applyFilters"
+                  class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                >
+                  <option value="">Todos los proyectos</option>
+                  <option v-for="project in projects" :key="project.id" :value="project.id">
+                    {{ project.name }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- View Toggle -->
+              <div class="flex rounded-md shadow-sm">
+                <button
+                  @click="viewMode = 'grid'"
+                  :class="[
+                    'relative inline-flex items-center px-4 py-2 rounded-l-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500',
+                    viewMode === 'grid'
+                      ? 'bg-blue-600 border-blue-600 text-white'
+                      : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                  ]"
+                >
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                  </svg>
+                </button>
+                <button
+                  @click="viewMode = 'list'"
+                  :class="[
+                    'relative -ml-px inline-flex items-center px-4 py-2 rounded-r-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500',
+                    viewMode === 'list'
+                      ? 'bg-blue-600 border-blue-600 text-white'
+                      : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                  ]"
+                >
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Summary -->
+        <div class="mb-6">
+          <p class="text-sm text-gray-600">
+            <span class="font-medium">{{ properties.total }}</span> 
+            {{ properties.total === 1 ? 'propiedad encontrada' : 'propiedades encontradas' }}
+          </p>
+        </div>
+
+        <!-- Properties Grid View -->
+        <div v-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            v-for="property in properties.data"
+            :key="property.id"
+            class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200 cursor-pointer"
+            @click="goToProperty(property.id)"
+          >
+            <!-- Property Image -->
+            <div class="aspect-video relative">
+              <img
+                :src="property.cover_image_url"
+                :alt="property.title"
+                class="w-full h-full object-cover"
+              />
+              
+              <!-- Badges -->
+              <div class="absolute top-3 left-3 space-y-1">
+                <span class="inline-block bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+                  {{ property.type === 'sale' ? 'Venta' : 'Alquiler' }}
+                </span>
+                <span :class="['block px-2 py-1 rounded-full text-xs font-medium', getStatusColor(property.status)]">
+                  {{ getStatusName(property.status) }}
+                </span>
+              </div>
+
+              <!-- Price -->
+              <div class="absolute bottom-3 right-3">
+                <div class="bg-black bg-opacity-75 text-white px-3 py-1 rounded-lg">
+                  <span class="font-bold">
+                    ${{ Number(property.price).toLocaleString() }}
+                  </span>
+                  <span v-if="property.type === 'rent'" class="text-xs">/mes</span>
+                </div>
+              </div>
+
+              <!-- Gallery indicator -->
+              <div v-if="property.gallery_urls && property.gallery_urls.length > 0" class="absolute top-3 right-3">
+                <div class="bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                  <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  {{ property.gallery_urls.length }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Property Info -->
+            <div class="p-6">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
+                  {{ property.title }}
+                </h3>
+              </div>
+
+              <p class="text-sm text-gray-500 mb-3">
+                {{ getCategoryName(property.category) }} en {{ property.city }}
+              </p>
+
+              <p class="text-sm text-gray-600 mb-4 line-clamp-2">
+                {{ property.description }}
+              </p>
+
+              <!-- Features -->
+              <div class="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                <div v-if="property.bedrooms > 0" class="flex items-center">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                  </svg>
+                  {{ property.bedrooms }} hab.
+                </div>
+                <div v-if="property.bathrooms > 0" class="flex items-center">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
+                  </svg>
+                  {{ property.bathrooms }} baños
+                </div>
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                  </svg>
+                  {{ property.area }} m²
+                </div>
+              </div>
+
+              <!-- Project Info -->
+              <div v-if="property.project" class="mb-3">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                  <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
+                  </svg>
+                  {{ property.project.name }}
+                </span>
+              </div>
+
+              <!-- Agent -->
+              <div class="flex items-center justify-between">
+                <div v-if="property.agent" class="flex items-center text-sm text-gray-600">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                  </svg>
+                  {{ property.agent.name }}
+                </div>
+                <button
+                  @click.stop="goToProperty(property.id)"
+                  class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                >
+                  Ver detalles →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Properties List View -->
+        <div v-else class="bg-white shadow-sm rounded-lg overflow-hidden">
+          <div class="min-w-full divide-y divide-gray-200">
+            <div
+              v-for="property in properties.data"
+              :key="property.id"
+              class="flex items-center p-6 hover:bg-gray-50 cursor-pointer transition-colors duration-200"
+              @click="goToProperty(property.id)"
+            >
+              <!-- Property Image -->
+              <div class="flex-shrink-0 w-24 h-16 mr-6">
+                <img
+                  :src="property.cover_image_url"
+                  :alt="property.title"
+                  class="w-full h-full object-cover rounded-md"
+                />
+              </div>
+
+              <!-- Property Info -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-start justify-between">
+                  <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 truncate">
+                      {{ property.title }}
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                      {{ getCategoryName(property.category) }} • {{ property.city }}, {{ property.state }}
+                    </p>
+                    <p class="text-sm text-gray-600 mt-2 line-clamp-1">
+                      {{ property.description }}
+                    </p>
+                    
+                    <!-- Features -->
+                    <div class="flex items-center space-x-4 text-sm text-gray-500 mt-3">
+                      <div v-if="property.bedrooms > 0">{{ property.bedrooms }} hab.</div>
+                      <div v-if="property.bathrooms > 0">{{ property.bathrooms }} baños</div>
+                      <div>{{ property.area }} m²</div>
+                      <div v-if="property.project" class="text-blue-600">{{ property.project.name }}</div>
+                    </div>
+                  </div>
+
+                  <!-- Price and Status -->
+                  <div class="text-right ml-6">
+                    <div class="text-xl font-bold text-gray-900 mb-2">
+                      ${{ Number(property.price).toLocaleString() }}
+                      <span v-if="property.type === 'rent'" class="text-sm font-normal text-gray-600">/mes</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 mb-2">
+                      <span class="inline-block bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+                        {{ property.type === 'sale' ? 'Venta' : 'Alquiler' }}
+                      </span>
+                      <span :class="['px-2 py-1 rounded-full text-xs font-medium', getStatusColor(property.status)]">
+                        {{ getStatusName(property.status) }}
+                      </span>
+                    </div>
+
+                    <div v-if="property.agent" class="text-sm text-gray-600">
+                      {{ property.agent.name }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div v-if="properties.data.length === 0" class="text-center py-12">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">No hay propiedades</h3>
+          <p class="mt-1 text-sm text-gray-500">Comienza agregando una nueva propiedad.</p>
+          <div class="mt-6">
+            <Link
+              :href="route('properties.create')"
+              class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+              Nueva Propiedad
+            </Link>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div v-if="properties.data.length > 0" class="mt-8">
+          <nav class="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
+            <div class="flex w-0 flex-1">
+              <Link
+                v-if="properties.prev_page_url"
+                :href="properties.prev_page_url"
+                class="inline-flex items-center pt-4 pr-1 text-sm font-medium text-gray-500 hover:text-gray-700"
+              >
+                <svg class="mr-3 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Anterior
+              </Link>
+            </div>
+            <div class="hidden md:flex">
+              <span class="text-sm text-gray-700 pt-4">
+                Mostrando {{ properties.from }} a {{ properties.to }} de {{ properties.total }} resultados
+              </span>
+            </div>
+            <div class="flex w-0 flex-1 justify-end">
+              <Link
+                v-if="properties.next_page_url"
+                :href="properties.next_page_url"
+                class="inline-flex items-center pt-4 pl-1 text-sm font-medium text-gray-500 hover:text-gray-700"
+              >
+                Siguiente
+                <svg class="ml-3 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </Link>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </AuthenticatedLayout>
 </template>
 
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { ref, reactive, watch } from 'vue'
+import { Head, Link, router } from '@inertiajs/vue3'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { debounce } from 'lodash'
 
-defineProps({
-    properties: Object,
-});
+const props = defineProps({
+  properties: {
+    type: Object,
+    required: true
+  },
+  projects: {
+    type: Array,
+    default: () => []
+  },
+  filters: {
+    type: Object,
+    default: () => ({})
+  }
+})
 
+// Local state
+const viewMode = ref('grid')
+
+const filters = reactive({
+  search: props.filters.search || '',
+  project_id: props.filters.project_id || ''
+})
+
+// Methods
 const getCategoryName = (category) => {
-    const categories = {
-        house: 'Casa',
-        apartment: 'Apartamento',
-        office: 'Oficina',
-        land: 'Terreno',
-        commercial: 'Comercial'
-    };
-    return categories[category] || category;
-};
+  const categories = {
+    'house': 'Casa',
+    'apartment': 'Apartamento',
+    'office': 'Oficina',
+    'land': 'Terreno',
+    'commercial': 'Local Comercial'
+  }
+  return categories[category] || category
+}
 
-const getCategoryBadgeClass = (category) => {
-    const classes = {
-        house: 'bg-orange-500 text-white',
-        apartment: 'bg-purple-500 text-white',
-        office: 'bg-cyan-500 text-white',
-        land: 'bg-yellow-500 text-white',
-        commercial: 'bg-red-500 text-white'
-    };
-    return classes[category] || 'bg-slate-600 text-white';
-};
+const getStatusName = (status) => {
+  const statuses = {
+    'available': 'Disponible',
+    'sold': 'Vendida',
+    'rented': 'Alquilada',
+    'pending': 'Pendiente'
+  }
+  return statuses[status] || status
+}
+
+const getStatusColor = (status) => {
+  const colors = {
+    'available': 'bg-green-100 text-green-800',
+    'sold': 'bg-red-100 text-red-800',
+    'rented': 'bg-blue-100 text-blue-800',
+    'pending': 'bg-yellow-100 text-yellow-800'
+  }
+  return colors[status] || 'bg-gray-100 text-gray-800'
+}
+
+const goToProperty = (propertyId) => {
+  router.visit(route('properties.show', propertyId))
+}
+
+const applyFilters = () => {
+  router.get(route('properties.index'), filters, {
+    preserveState: true,
+    replace: true
+  })
+}
+
+// Debounced search
+const debouncedFilter = debounce(applyFilters, 300)
+
+// Watch for view mode preference persistence
+watch(viewMode, (newMode) => {
+  localStorage.setItem('properties-view-mode', newMode)
+})
+
+// Initialize view mode from localStorage
+if (localStorage.getItem('properties-view-mode')) {
+  viewMode.value = localStorage.getItem('properties-view-mode')
+}
 </script>
-
-<style scoped>
-/* Button Styles */
-.btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium text-sm rounded-xl 
-           hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
-           transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 hover:shadow-lg;
-}
-
-.btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-green-500 text-white font-medium text-sm rounded-xl 
-           hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 
-           transition-all duration-200 ease-in-out;
-}
-
-.btn-outline {
-    @apply inline-flex items-center justify-center gap-2 px-3 py-2.5 bg-white border border-slate-200 text-slate-700 font-medium text-sm rounded-xl 
-           hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
-           transition-all duration-200 ease-in-out;
-}
-
-/* Property Card */
-.property-card {
-    @apply bg-white rounded-2xl shadow-sm hover:shadow-md border border-slate-100 
-           transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden
-           hover:border-slate-200 hover:bg-slate-50/30 active:transform active:scale-[0.99];
-}
-
-/* Button Outline Small */
-.btn-outline-sm {
-    @apply inline-flex items-center justify-center gap-2 p-2 bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-600 rounded-lg 
-           hover:bg-white hover:border-slate-300 hover:text-slate-800 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
-           transition-all duration-200 ease-in-out opacity-0 group-hover:opacity-100 hover:scale-105;
-}
-
-.property-image {
-    @apply relative h-48 lg:h-56 overflow-hidden;
-}
-
-/* Badges */
-.badge-type {
-    @apply px-3 py-1.5 text-xs font-bold rounded-full 
-           shadow-md border border-white/40 transition-all duration-300 hover:scale-105 hover:shadow-lg;
-}
-
-.badge-category {
-    @apply px-3 py-1.5 text-xs font-bold rounded-full 
-           shadow-md border border-white/40 transition-all duration-300 hover:scale-105 hover:shadow-lg;
-}
-
-/* Typography */
-.price {
-    @apply text-2xl lg:text-3xl font-bold text-green-500 leading-none
-           transition-colors duration-300;
-}
-
-.property-card:hover .price {
-    @apply text-green-600;
-}
-
-.price-period {
-    @apply text-sm font-normal text-slate-500;
-}
-
-.property-title {
-    @apply text-lg font-bold text-gray-900 leading-tight text-balance tracking-tight;
-}
-
-.property-description {
-    @apply text-sm text-slate-600 leading-relaxed line-clamp-2 tracking-tight;
-}
-
-/* Pagination */
-.pagination-link {
-    @apply px-4 py-2 text-sm font-medium rounded-xl border border-slate-200 text-slate-700 
-           hover:bg-slate-50 hover:border-slate-300 transition-all duration-200;
-}
-
-.pagination-active {
-    @apply bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700;
-}
-
-.pagination-disabled {
-    @apply text-slate-400 cursor-not-allowed hover:bg-transparent hover:border-slate-200;
-}
-
-/* Utilities */
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.text-balance {
-    text-wrap: balance;
-}
-</style>

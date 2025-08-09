@@ -1,12 +1,12 @@
 <template>
-  <Head :title="property.title" />
+  <Head :title="project.name" />
 
   <AuthenticatedLayout>
     <template #header>
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-4">
           <Link
-            :href="route('properties.index')"
+            :href="route('projects.index')"
             class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -15,21 +15,21 @@
           </Link>
           <div>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-              {{ property.title }}
+              {{ project.name }}
             </h2>
             <div class="flex items-center space-x-4 mt-1">
-              <span class="text-sm text-gray-500">
-                {{ property.address }}, {{ property.city }}
+              <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getTypeColor(project.type)]">
+                {{ project.type }}
               </span>
-              <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getStatusColor(property.status)]">
-                {{ getStatusName(property.status) }}
+              <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getStatusColor(project.status)]">
+                {{ project.status }}
               </span>
             </div>
           </div>
         </div>
         <div class="flex space-x-2">
           <Link
-            :href="route('properties.edit', property.id)"
+            :href="route('projects.edit', project.id)"
             class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,39 +46,18 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <!-- Main Content -->
           <div class="lg:col-span-2 space-y-6">
-            <!-- Property Images and Videos -->
+            <!-- Project Images and Videos -->
             <div class="bg-white shadow-sm rounded-lg overflow-hidden">
-              <!-- Cover Image -->
               <div class="aspect-video relative">
                 <img
-                  :src="property.cover_image_url"
-                  :alt="property.title"
+                  :src="project.cover_image_url"
+                  :alt="project.name"
                   class="w-full h-full object-cover"
                 />
-                
-                <!-- Badges Overlay -->
-                <div class="absolute top-4 left-4 space-y-2">
-                  <span class="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    {{ property.type === 'sale' ? 'Venta' : 'Alquiler' }}
-                  </span>
-                  <span class="block bg-white bg-opacity-90 text-gray-900 px-3 py-1 rounded-full text-sm font-medium">
-                    {{ getCategoryName(property.category) }}
-                  </span>
-                </div>
-
-                <!-- Price -->
-                <div class="absolute bottom-4 right-4">
-                  <div class="bg-black bg-opacity-75 text-white px-4 py-2 rounded-lg">
-                    <span class="text-2xl font-bold">
-                      ${{ Number(property.price).toLocaleString() }}
-                    </span>
-                    <span v-if="property.type === 'rent'" class="text-sm">/mes</span>
-                  </div>
-                </div>
               </div>
               
               <!-- Gallery -->
-              <div v-if="property.gallery_urls && property.gallery_urls.length > 0" class="p-6">
+              <div v-if="project.gallery_urls && project.gallery_urls.length > 0" class="p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Galería de imágenes</h3>
                 
                 <!-- Gallery Carousel -->
@@ -87,7 +66,7 @@
                     <!-- Main Image Display -->
                     <div class="aspect-video">
                       <img
-                        :src="property.gallery_urls[currentGalleryIndex]"
+                        :src="project.gallery_urls[currentGalleryIndex]"
                         :alt="`Imagen ${currentGalleryIndex + 1}`"
                         class="w-full h-full object-cover cursor-pointer"
                         @click="openLightbox(currentGalleryIndex)"
@@ -95,7 +74,7 @@
                     </div>
                     
                     <!-- Navigation Arrows -->
-                    <div v-if="property.gallery_urls.length > 1" class="absolute inset-0 flex items-center justify-between p-4">
+                    <div v-if="project.gallery_urls.length > 1" class="absolute inset-0 flex items-center justify-between p-4">
                       <button
                         @click="previousGalleryImage"
                         class="p-2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white rounded-full transition-all duration-200 hover:scale-110"
@@ -109,7 +88,7 @@
                       <button
                         @click="nextGalleryImage"
                         class="p-2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white rounded-full transition-all duration-200 hover:scale-110"
-                        :class="{ 'opacity-50 cursor-not-allowed': currentGalleryIndex === property.gallery_urls.length - 1 }"
+                        :class="{ 'opacity-50 cursor-not-allowed': currentGalleryIndex === project.gallery_urls.length - 1 }"
                       >
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -118,9 +97,9 @@
                     </div>
 
                     <!-- Image Counter -->
-                    <div v-if="property.gallery_urls.length > 1" class="absolute top-4 right-4">
+                    <div v-if="project.gallery_urls.length > 1" class="absolute top-4 right-4">
                       <div class="bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
-                        {{ currentGalleryIndex + 1 }} / {{ property.gallery_urls.length }}
+                        {{ currentGalleryIndex + 1 }} / {{ project.gallery_urls.length }}
                       </div>
                     </div>
 
@@ -139,9 +118,9 @@
                   </div>
 
                   <!-- Navigation Dots -->
-                  <div v-if="property.gallery_urls.length > 1" class="flex justify-center space-x-2 mt-4">
+                  <div v-if="project.gallery_urls.length > 1" class="flex justify-center space-x-2 mt-4">
                     <button
-                      v-for="(image, index) in property.gallery_urls"
+                      v-for="(image, index) in project.gallery_urls"
                       :key="index"
                       @click="currentGalleryIndex = index"
                       class="w-3 h-3 rounded-full transition-all duration-200"
@@ -155,7 +134,7 @@
                 <!-- Thumbnail Grid -->
                 <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
                   <div
-                    v-for="(image, index) in property.gallery_urls"
+                    v-for="(image, index) in project.gallery_urls"
                     :key="index"
                     class="aspect-square rounded-lg overflow-hidden cursor-pointer transition-all duration-200 border-2"
                     :class="index === currentGalleryIndex 
@@ -173,108 +152,90 @@
               </div>
 
               <!-- Videos -->
-              <div v-if="property.video_urls && property.video_urls.length > 0" class="p-6 border-t border-gray-200">
+              <div v-if="project.videos && project.videos.length > 0" class="p-6 border-t border-gray-200">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Videos</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div
-                    v-for="(video, index) in property.video_urls"
+                    v-for="(video, index) in project.videos"
                     :key="index"
                     class="aspect-video rounded-lg overflow-hidden"
                   >
                     <video
-                      :src="video"
+                      :src="`/storage/${video}`"
                       class="w-full h-full object-cover"
                       controls
                       preload="metadata"
-                    >
-                      Tu navegador no soporta el elemento video.
-                    </video>
+                    ></video>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Description -->
-            <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+            <div v-if="project.description" class="bg-white shadow-sm rounded-lg overflow-hidden">
               <div class="px-4 py-5 sm:p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-3">Descripción</h3>
-                <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ property.description }}</p>
+                <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ project.description }}</p>
               </div>
             </div>
 
-            <!-- Property Features -->
+            <!-- Properties -->
             <div class="bg-white shadow-sm rounded-lg overflow-hidden">
               <div class="px-4 py-5 sm:p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Características</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                  <div v-if="property.bedrooms > 0" class="text-center">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-2">
-                      <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
-                      </svg>
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-medium text-gray-900">
+                    Propiedades ({{ project.properties.length }})
+                  </h3>
+                  <Link
+                    :href="route('properties.create', { project_id: project.id })"
+                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    Agregar propiedad
+                  </Link>
+                </div>
+
+                <div v-if="project.properties.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div
+                    v-for="property in project.properties"
+                    :key="property.id"
+                    class="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors"
+                  >
+                    <div class="flex items-start justify-between">
+                      <div class="flex-1">
+                        <h4 class="text-sm font-medium text-gray-900">
+                          {{ property.title }}
+                        </h4>
+                        <p class="text-sm text-gray-500 mt-1">
+                          {{ formatPrice(property.price) }}
+                        </p>
+                        <div class="flex items-center space-x-4 mt-2 text-xs text-gray-500">
+                          <span v-if="property.bedrooms">{{ property.bedrooms }} hab.</span>
+                          <span v-if="property.bathrooms">{{ property.bathrooms }} baños</span>
+                          <span v-if="property.area">{{ property.area }}m²</span>
+                        </div>
+                        <p v-if="property.agent" class="text-xs text-gray-500 mt-1">
+                          Agente: {{ property.agent.name }}
+                        </p>
+                      </div>
+                      <Link
+                        :href="route('properties.show', property.id)"
+                        class="text-blue-600 hover:text-blue-800 text-sm"
+                      >
+                        Ver
+                      </Link>
                     </div>
-                    <p class="text-2xl font-bold text-gray-900">{{ property.bedrooms }}</p>
-                    <p class="text-sm text-gray-600">Habitaciones</p>
-                  </div>
-                  
-                  <div v-if="property.bathrooms > 0" class="text-center">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg mb-2">
-                      <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
-                      </svg>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-900">{{ property.bathrooms }}</p>
-                    <p class="text-sm text-gray-600">Baños</p>
-                  </div>
-                  
-                  <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg mb-2">
-                      <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
-                      </svg>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-900">{{ property.area }}</p>
-                    <p class="text-sm text-gray-600">m²</p>
-                  </div>
-                  
-                  <div class="text-center">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-orange-100 rounded-lg mb-2">
-                      <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
-                      </svg>
-                    </div>
-                    <p class="text-lg font-bold text-gray-900">{{ getCategoryName(property.category) }}</p>
-                    <p class="text-sm text-gray-600">Tipo</p>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- Project Information -->
-            <div v-if="property.project" class="bg-white shadow-sm rounded-lg overflow-hidden">
-              <div class="px-4 py-5 sm:p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Proyecto</h3>
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div class="flex-1">
-                    <h4 class="text-lg font-medium text-gray-900">{{ property.project.name }}</h4>
-                    <div class="flex items-center space-x-4 mt-2">
-                      <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getProjectTypeColor(property.project.type)]">
-                        {{ property.project.type }}
-                      </span>
-                      <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getProjectStatusColor(property.project.status)]">
-                        {{ property.project.status }}
-                      </span>
-                    </div>
-                    <p v-if="property.project.description" class="text-sm text-gray-600 mt-2">
-                      {{ property.project.description }}
-                    </p>
-                  </div>
-                  <Link
-                    :href="route('projects.show', property.project.id)"
-                    class="ml-4 inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    Ver proyecto
-                  </Link>
+                <div v-else class="text-center py-8">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
+                  </svg>
+                  <h3 class="mt-2 text-sm font-medium text-gray-900">No hay propiedades</h3>
+                  <p class="mt-1 text-sm text-gray-500">Comienza agregando propiedades a este proyecto.</p>
                 </div>
               </div>
             </div>
@@ -282,78 +243,48 @@
 
           <!-- Sidebar -->
           <div class="space-y-6">
-            <!-- Contact Info -->
+            <!-- Project Stats -->
             <div class="bg-white shadow-sm rounded-lg overflow-hidden">
               <div class="px-4 py-5 sm:p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Agente responsable</h3>
-                
-                <div v-if="property.agent" class="flex items-center space-x-4">
-                  <div class="flex-shrink-0">
-                    <div class="h-12 w-12 rounded-full bg-gray-300 flex items-center justify-center">
-                      <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div>
-                    <p class="text-lg font-medium text-gray-900">{{ property.agent.name }}</p>
-                    <p v-if="property.agent.email" class="text-sm text-gray-600">{{ property.agent.email }}</p>
-                    <p v-if="property.agent.phone" class="text-sm text-gray-600">{{ property.agent.phone }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Property Details -->
-            <div class="bg-white shadow-sm rounded-lg overflow-hidden">
-              <div class="px-4 py-5 sm:p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Información de la propiedad</h3>
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Información del proyecto</h3>
                 
                 <dl class="space-y-4">
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Precio</dt>
-                    <dd class="mt-1 text-lg font-bold text-gray-900">
-                      ${{ Number(property.price).toLocaleString() }}
-                      <span v-if="property.type === 'rent'" class="text-sm font-normal text-gray-600">/mes</span>
-                    </dd>
-                  </div>
-                  
-                  <div>
                     <dt class="text-sm font-medium text-gray-500">Estado</dt>
                     <dd class="mt-1">
-                      <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getStatusColor(property.status)]">
-                        {{ getStatusName(property.status) }}
+                      <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getStatusColor(project.status)]">
+                        {{ project.status }}
                       </span>
                     </dd>
                   </div>
                   
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Tipo de operación</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ property.type === 'sale' ? 'Venta' : 'Alquiler' }}</dd>
-                  </div>
-
-                  <div>
-                    <dt class="text-sm font-medium text-gray-500">Categoría</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ getCategoryName(property.category) }}</dd>
-                  </div>
-
-                  <div>
-                    <dt class="text-sm font-medium text-gray-500">Ubicación completa</dt>
-                    <dd class="mt-1 text-sm text-gray-900">
-                      {{ property.address }}<br>
-                      {{ property.city }}, {{ property.state }}
-                      <span v-if="property.zip_code">{{ property.zip_code }}</span>
+                    <dt class="text-sm font-medium text-gray-500">Tipo</dt>
+                    <dd class="mt-1">
+                      <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getTypeColor(project.type)]">
+                        {{ project.type }}
+                      </span>
                     </dd>
+                  </div>
+
+                  <div v-if="project.property_count">
+                    <dt class="text-sm font-medium text-gray-500">Propiedades planificadas</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ project.property_count }}</dd>
+                  </div>
+
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Propiedades registradas</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ project.properties.length }}</dd>
                   </div>
 
                   <div>
                     <dt class="text-sm font-medium text-gray-500">Fecha de creación</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ formatDate(property.created_at) }}</dd>
+                    <dd class="mt-1 text-sm text-gray-900">{{ formatDate(project.created_at) }}</dd>
                   </div>
 
-                  <div v-if="property.updated_at !== property.created_at">
+                  <div v-if="project.updated_at !== project.created_at">
                     <dt class="text-sm font-medium text-gray-500">Última actualización</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ formatDate(property.updated_at) }}</dd>
+                    <dd class="mt-1 text-sm text-gray-900">{{ formatDate(project.updated_at) }}</dd>
                   </div>
                 </dl>
               </div>
@@ -365,24 +296,23 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Acciones rápidas</h3>
                 <div class="space-y-3">
                   <Link
-                    :href="route('properties.edit', property.id)"
+                    :href="route('properties.create', { project_id: project.id })"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    Agregar propiedad
+                  </Link>
+                  
+                  <Link
+                    :href="route('projects.edit', project.id)"
                     class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
-                    Editar propiedad
-                  </Link>
-                  
-                  <Link
-                    v-if="property.project"
-                    :href="route('projects.show', property.project.id)"
-                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
-                    </svg>
-                    Ver proyecto
+                    Editar proyecto
                   </Link>
                 </div>
               </div>
@@ -410,14 +340,14 @@
           <!-- Main image -->
           <div class="flex items-center justify-center min-h-[60vh] max-h-[80vh] bg-black">
             <img
-              :src="property.gallery_urls[currentImageIndex]"
+              :src="project.gallery_urls[currentImageIndex]"
               :alt="`Imagen ${currentImageIndex + 1}`"
               class="max-w-full max-h-full object-contain"
             />
           </div>
           
           <!-- Navigation arrows -->
-          <div v-if="property.gallery_urls.length > 1" class="absolute inset-y-0 left-0 flex items-center">
+          <div v-if="project.gallery_urls.length > 1" class="absolute inset-y-0 left-0 flex items-center">
             <button
               @click="previousImage"
               class="ml-4 p-3 bg-black bg-opacity-50 hover:bg-opacity-75 text-white rounded-full transition-all duration-200 hover:scale-110"
@@ -431,12 +361,12 @@
             </button>
           </div>
           
-          <div v-if="property.gallery_urls.length > 1" class="absolute inset-y-0 right-0 flex items-center">
+          <div v-if="project.gallery_urls.length > 1" class="absolute inset-y-0 right-0 flex items-center">
             <button
               @click="nextImage"
               class="mr-4 p-3 bg-black bg-opacity-50 hover:bg-opacity-75 text-white rounded-full transition-all duration-200 hover:scale-110"
-              :class="{ 'opacity-50 cursor-not-allowed': currentImageIndex === property.gallery_urls.length - 1 }"
-              :disabled="currentImageIndex === property.gallery_urls.length - 1"
+              :class="{ 'opacity-50 cursor-not-allowed': currentImageIndex === project.gallery_urls.length - 1 }"
+              :disabled="currentImageIndex === project.gallery_urls.length - 1"
               title="Imagen siguiente (→)"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -449,20 +379,20 @@
           <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
             <div class="flex items-center justify-between">
               <div class="text-white">
-                <h4 class="font-medium">{{ property.title }}</h4>
+                <h4 class="font-medium">{{ project.name }}</h4>
                 <p class="text-sm text-gray-300">Galería de imágenes</p>
               </div>
               <div class="bg-black bg-opacity-50 text-white px-3 py-2 rounded-full text-sm font-medium">
-                {{ currentImageIndex + 1 }} / {{ property.gallery_urls.length }}
+                {{ currentImageIndex + 1 }} / {{ project.gallery_urls.length }}
               </div>
             </div>
           </div>
 
           <!-- Thumbnail strip -->
-          <div v-if="property.gallery_urls.length > 1" class="absolute bottom-16 left-1/2 transform -translate-x-1/2">
+          <div v-if="project.gallery_urls.length > 1" class="absolute bottom-16 left-1/2 transform -translate-x-1/2">
             <div class="flex space-x-2 bg-black bg-opacity-50 rounded-lg p-2">
               <button
-                v-for="(image, index) in property.gallery_urls.slice(Math.max(0, currentImageIndex - 2), currentImageIndex + 3)"
+                v-for="(image, index) in project.gallery_urls.slice(Math.max(0, currentImageIndex - 2), currentImageIndex + 3)"
                 :key="index + Math.max(0, currentImageIndex - 2)"
                 @click="currentImageIndex = index + Math.max(0, currentImageIndex - 2)"
                 class="w-12 h-12 rounded overflow-hidden border-2 transition-all duration-200"
@@ -497,7 +427,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import Modal from '@/Components/Modal.vue'
 
 const props = defineProps({
-  property: {
+  project: {
     type: Object,
     required: true
   }
@@ -511,38 +441,7 @@ const showLightbox = ref(false)
 const currentImageIndex = ref(null)
 
 // Methods
-const getCategoryName = (category) => {
-  const categories = {
-    'house': 'Casa',
-    'apartment': 'Apartamento',
-    'office': 'Oficina',
-    'land': 'Terreno',
-    'commercial': 'Local Comercial'
-  }
-  return categories[category] || category
-}
-
-const getStatusName = (status) => {
-  const statuses = {
-    'available': 'Disponible',
-    'sold': 'Vendida',
-    'rented': 'Alquilada',
-    'pending': 'Pendiente'
-  }
-  return statuses[status] || status
-}
-
-const getStatusColor = (status) => {
-  const colors = {
-    'available': 'bg-green-100 text-green-800',
-    'sold': 'bg-red-100 text-red-800',
-    'rented': 'bg-blue-100 text-blue-800',
-    'pending': 'bg-yellow-100 text-yellow-800'
-  }
-  return colors[status] || 'bg-gray-100 text-gray-800'
-}
-
-const getProjectTypeColor = (type) => {
+const getTypeColor = (type) => {
   const colors = {
     'Campestres': 'bg-green-100 text-green-800',
     'Urbanos': 'bg-blue-100 text-blue-800',
@@ -551,13 +450,21 @@ const getProjectTypeColor = (type) => {
   return colors[type] || 'bg-gray-100 text-gray-800'
 }
 
-const getProjectStatusColor = (status) => {
+const getStatusColor = (status) => {
   const colors = {
     'Vendido': 'bg-red-100 text-red-800',
     'Disponible': 'bg-green-100 text-green-800',
     'Reservado': 'bg-yellow-100 text-yellow-800'
   }
   return colors[status] || 'bg-gray-100 text-gray-800'
+}
+
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0
+  }).format(price)
 }
 
 const formatDate = (date) => {
@@ -576,14 +483,14 @@ const previousGalleryImage = () => {
 }
 
 const nextGalleryImage = () => {
-  if (props.property.gallery_urls && currentGalleryIndex.value < props.property.gallery_urls.length - 1) {
+  if (currentGalleryIndex.value < props.project.gallery_urls.length - 1) {
     currentGalleryIndex.value++
   }
 }
 
 // Keyboard navigation
 const handleKeyPress = (event) => {
-  if (!props.property.gallery_urls || props.property.gallery_urls.length === 0) {
+  if (!props.project.gallery_urls || props.project.gallery_urls.length === 0) {
     return
   }
 
@@ -648,7 +555,7 @@ const previousImage = () => {
 }
 
 const nextImage = () => {
-  if (props.property.gallery_urls && currentImageIndex.value < props.property.gallery_urls.length - 1) {
+  if (currentImageIndex.value < props.project.gallery_urls.length - 1) {
     currentImageIndex.value++
     currentGalleryIndex.value = currentImageIndex.value // Sync with gallery
   }

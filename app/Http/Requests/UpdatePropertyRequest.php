@@ -39,7 +39,41 @@ class UpdatePropertyRequest extends FormRequest
             'features' => 'nullable|array',
             'features.*' => 'string',
             'agent_id' => 'required|exists:agents,id',
+            'project_id' => 'nullable|exists:projects,id',
             'status' => 'in:available,sold,rented,pending',
+            
+            // Media fields (nullable for updates)
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
+            'gallery' => 'nullable|array|max:10',
+            'gallery.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'videos' => 'nullable|array|max:5',
+            'videos.*' => 'mimes:mp4,mov,avi,wmv,webm|max:102400', // 100MB max
+            
+            // For updates - files to remove
+            'remove_gallery' => 'nullable|array',
+            'remove_gallery.*' => 'string',
+            'remove_videos' => 'nullable|array',
+            'remove_videos.*' => 'string',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'cover_image.image' => 'La imagen de portada debe ser un archivo de imagen.',
+            'cover_image.mimes' => 'La imagen de portada debe ser de tipo: jpeg, png, jpg, gif o webp.',
+            'cover_image.max' => 'La imagen de portada no debe ser mayor a 5MB.',
+            
+            'gallery.max' => 'Máximo 10 imágenes permitidas en la galería.',
+            'gallery.*.image' => 'Todos los archivos de galería deben ser imágenes.',
+            'gallery.*.mimes' => 'Las imágenes de galería deben ser de tipo: jpeg, png, jpg, gif o webp.',
+            'gallery.*.max' => 'Cada imagen de galería no debe ser mayor a 5MB.',
+            
+            'videos.max' => 'Máximo 5 videos permitidos.',
+            'videos.*.mimes' => 'Los videos deben ser de tipo: mp4, mov, avi, wmv o webm.',
+            'videos.*.max' => 'Cada video no debe ser mayor a 100MB.',
+            
+            'project_id.exists' => 'El proyecto seleccionado no existe.',
         ];
     }
 }

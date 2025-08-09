@@ -1,458 +1,496 @@
 <template>
-    <Head title="Nueva Propiedad" />
+  <Head title="Nueva Propiedad" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-800 text-balance leading-relaxed">
-                        Nueva Propiedad
-                    </h1>
-                    <p class="text-gray-500 text-base leading-relaxed mt-1">
-                        Agrega una nueva propiedad a tu cartera
-                    </p>
-                </div>
-                <Link
-                    :href="route('properties.index')"
-                    class="btn-outline"
-                >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
-                    Volver al listado
-                </Link>
-            </div>
-        </template>
-
-        <div class="py-8 lg:py-12">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <form @submit.prevent="submit" class="property-form">
-                    <div class="form-card">
-                        <!-- Información Básica -->
-                        <div class="form-section">
-                            <h3 class="form-section-title">Información Básica</h3>
-                            
-                            <div class="form-grid">
-                                <div class="form-group col-span-full">
-                                    <label for="title" class="form-label">Título de la propiedad</label>
-                                    <input
-                                        id="title"
-                                        v-model="form.title"
-                                        type="text"
-                                        class="form-input"
-                                        :class="{ 'form-input-error': errors.title }"
-                                        placeholder="Ej: Casa familiar en las afueras"
-                                    />
-                                    <p v-if="errors.title" class="form-error">{{ errors.title }}</p>
-                                </div>
-
-                                <div class="form-group col-span-full">
-                                    <label for="description" class="form-label">Descripción</label>
-                                    <textarea
-                                        id="description"
-                                        v-model="form.description"
-                                        rows="4"
-                                        class="form-textarea"
-                                        :class="{ 'form-input-error': errors.description }"
-                                        placeholder="Describe las características principales de la propiedad..."
-                                    ></textarea>
-                                    <p v-if="errors.description" class="form-error">{{ errors.description }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="price" class="form-label">Precio</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <span class="text-slate-500 sm:text-sm">$</span>
-                                        </div>
-                                        <input
-                                            id="price"
-                                            v-model="form.price"
-                                            type="number"
-                                            step="0.01"
-                                            min="0"
-                                            class="form-input pl-7"
-                                            :class="{ 'form-input-error': errors.price }"
-                                            placeholder="350000"
-                                        />
-                                    </div>
-                                    <p v-if="errors.price" class="form-error">{{ errors.price }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="type" class="form-label">Tipo de operación</label>
-                                    <select
-                                        id="type"
-                                        v-model="form.type"
-                                        class="form-select"
-                                        :class="{ 'form-input-error': errors.type }"
-                                    >
-                                        <option value="">Selecciona el tipo</option>
-                                        <option value="sale">Venta</option>
-                                        <option value="rent">Alquiler</option>
-                                    </select>
-                                    <p v-if="errors.type" class="form-error">{{ errors.type }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="category" class="form-label">Categoría</label>
-                                    <select
-                                        id="category"
-                                        v-model="form.category"
-                                        class="form-select"
-                                        :class="{ 'form-input-error': errors.category }"
-                                    >
-                                        <option value="">Selecciona la categoría</option>
-                                        <option value="house">Casa</option>
-                                        <option value="apartment">Apartamento</option>
-                                        <option value="office">Oficina</option>
-                                        <option value="land">Terreno</option>
-                                        <option value="commercial">Comercial</option>
-                                    </select>
-                                    <p v-if="errors.category" class="form-error">{{ errors.category }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="status" class="form-label">Estado</label>
-                                    <select
-                                        id="status"
-                                        v-model="form.status"
-                                        class="form-select"
-                                        :class="{ 'form-input-error': errors.status }"
-                                    >
-                                        <option value="available">Disponible</option>
-                                        <option value="pending">Pendiente</option>
-                                        <option value="sold">Vendida</option>
-                                        <option value="rented">Alquilada</option>
-                                    </select>
-                                    <p v-if="errors.status" class="form-error">{{ errors.status }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Ubicación -->
-                        <div class="form-section">
-                            <h3 class="form-section-title">Ubicación</h3>
-                            
-                            <div class="form-grid">
-                                <div class="form-group col-span-full">
-                                    <label for="address" class="form-label">Dirección</label>
-                                    <input
-                                        id="address"
-                                        v-model="form.address"
-                                        type="text"
-                                        class="form-input"
-                                        :class="{ 'form-input-error': errors.address }"
-                                        placeholder="Calle Principal 123"
-                                    />
-                                    <p v-if="errors.address" class="form-error">{{ errors.address }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="city" class="form-label">Ciudad</label>
-                                    <input
-                                        id="city"
-                                        v-model="form.city"
-                                        type="text"
-                                        class="form-input"
-                                        :class="{ 'form-input-error': errors.city }"
-                                        placeholder="Madrid"
-                                    />
-                                    <p v-if="errors.city" class="form-error">{{ errors.city }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="state" class="form-label">Provincia/Estado</label>
-                                    <input
-                                        id="state"
-                                        v-model="form.state"
-                                        type="text"
-                                        class="form-input"
-                                        :class="{ 'form-input-error': errors.state }"
-                                        placeholder="Madrid"
-                                    />
-                                    <p v-if="errors.state" class="form-error">{{ errors.state }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="zip_code" class="form-label">Código Postal</label>
-                                    <input
-                                        id="zip_code"
-                                        v-model="form.zip_code"
-                                        type="text"
-                                        class="form-input"
-                                        :class="{ 'form-input-error': errors.zip_code }"
-                                        placeholder="28001"
-                                    />
-                                    <p v-if="errors.zip_code" class="form-error">{{ errors.zip_code }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Características -->
-                        <div class="form-section">
-                            <h3 class="form-section-title">Características</h3>
-                            
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="bedrooms" class="form-label">Habitaciones</label>
-                                    <input
-                                        id="bedrooms"
-                                        v-model="form.bedrooms"
-                                        type="number"
-                                        min="0"
-                                        class="form-input"
-                                        :class="{ 'form-input-error': errors.bedrooms }"
-                                        placeholder="3"
-                                    />
-                                    <p v-if="errors.bedrooms" class="form-error">{{ errors.bedrooms }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="bathrooms" class="form-label">Baños</label>
-                                    <input
-                                        id="bathrooms"
-                                        v-model="form.bathrooms"
-                                        type="number"
-                                        min="0"
-                                        class="form-input"
-                                        :class="{ 'form-input-error': errors.bathrooms }"
-                                        placeholder="2"
-                                    />
-                                    <p v-if="errors.bathrooms" class="form-error">{{ errors.bathrooms }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="area" class="form-label">Área (m²)</label>
-                                    <input
-                                        id="area"
-                                        v-model="form.area"
-                                        type="number"
-                                        step="0.01"
-                                        min="0"
-                                        class="form-input"
-                                        :class="{ 'form-input-error': errors.area }"
-                                        placeholder="120.50"
-                                    />
-                                    <p v-if="errors.area" class="form-error">{{ errors.area }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="agent_id" class="form-label">Agente responsable</label>
-                                    <select
-                                        id="agent_id"
-                                        v-model="form.agent_id"
-                                        class="form-select"
-                                        :class="{ 'form-input-error': errors.agent_id }"
-                                    >
-                                        <option value="">Selecciona un agente</option>
-                                        <option
-                                            v-for="agent in agents"
-                                            :key="agent.id"
-                                            :value="agent.id"
-                                        >
-                                            {{ agent.name }}
-                                        </option>
-                                    </select>
-                                    <p v-if="errors.agent_id" class="form-error">{{ errors.agent_id }}</p>
-                                </div>
-
-                                <div class="form-group col-span-full">
-                                    <label for="features" class="form-label">Características adicionales</label>
-                                    <div class="flex flex-wrap gap-2 mb-3">
-                                        <span
-                                            v-for="(feature, index) in form.features"
-                                            :key="index"
-                                            class="feature-tag"
-                                        >
-                                            {{ feature }}
-                                            <button
-                                                type="button"
-                                                @click="removeFeature(index)"
-                                                class="ml-2 text-slate-400 hover:text-red-500"
-                                            >
-                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <div class="flex gap-2">
-                                        <input
-                                            v-model="newFeature"
-                                            type="text"
-                                            class="form-input flex-1"
-                                            placeholder="Ej: Jardín, Garaje, Terraza..."
-                                            @keyup.enter="addFeature"
-                                        />
-                                        <button
-                                            type="button"
-                                            @click="addFeature"
-                                            class="btn-outline"
-                                        >
-                                            Agregar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Botones de acción -->
-                        <div class="form-actions">
-                            <Link
-                                :href="route('properties.index')"
-                                class="btn-secondary"
-                            >
-                                Cancelar
-                            </Link>
-                            <button
-                                type="submit"
-                                :disabled="form.processing"
-                                class="btn-primary"
-                                :class="{ 'opacity-50 cursor-not-allowed': form.processing }"
-                            >
-                                <svg v-if="form.processing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                {{ form.processing ? 'Guardando...' : 'Crear Propiedad' }}
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+  <AuthenticatedLayout>
+    <template #header>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <Link
+            :href="route('properties.index')"
+            class="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </Link>
+          <div>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+              Nueva Propiedad
+            </h2>
+            <p class="text-gray-500 text-sm mt-1">
+              Agrega una nueva propiedad a tu cartera
+            </p>
+          </div>
         </div>
-    </AuthenticatedLayout>
+      </div>
+    </template>
+
+    <div class="py-12">
+      <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <form @submit.prevent="submit" enctype="multipart/form-data">
+          <!-- Información Básica -->
+          <div class="bg-white shadow-sm rounded-lg overflow-hidden mb-6">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">Información básica</h3>
+              
+              <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <!-- Title -->
+                <div class="sm:col-span-2">
+                  <label for="title" class="block text-sm font-medium text-gray-700">
+                    Título de la propiedad *
+                  </label>
+                  <input
+                    id="title"
+                    v-model="form.title"
+                    type="text"
+                    required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.title }"
+                    placeholder="Ej: Casa familiar con jardín"
+                  />
+                  <p v-if="form.errors.title" class="mt-1 text-sm text-red-600">{{ form.errors.title }}</p>
+                </div>
+
+                <!-- Description -->
+                <div class="sm:col-span-2">
+                  <label for="description" class="block text-sm font-medium text-gray-700">
+                    Descripción *
+                  </label>
+                  <textarea
+                    id="description"
+                    v-model="form.description"
+                    rows="4"
+                    required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.description }"
+                    placeholder="Describe las características principales de la propiedad..."
+                  />
+                  <p v-if="form.errors.description" class="mt-1 text-sm text-red-600">{{ form.errors.description }}</p>
+                </div>
+
+                <!-- Price -->
+                <div>
+                  <label for="price" class="block text-sm font-medium text-gray-700">
+                    Precio *
+                  </label>
+                  <div class="mt-1 relative rounded-md shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span class="text-gray-500 sm:text-sm">$</span>
+                    </div>
+                    <input
+                      id="price"
+                      v-model.number="form.price"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      required
+                      class="block w-full pl-7 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      :class="{ 'border-red-300': form.errors.price }"
+                      placeholder="350000"
+                    />
+                  </div>
+                  <p v-if="form.errors.price" class="mt-1 text-sm text-red-600">{{ form.errors.price }}</p>
+                </div>
+
+                <!-- Type -->
+                <div>
+                  <label for="type" class="block text-sm font-medium text-gray-700">
+                    Tipo de operación *
+                  </label>
+                  <select
+                    id="type"
+                    v-model="form.type"
+                    required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.type }"
+                  >
+                    <option value="">Selecciona el tipo</option>
+                    <option value="sale">Venta</option>
+                    <option value="rent">Alquiler</option>
+                  </select>
+                  <p v-if="form.errors.type" class="mt-1 text-sm text-red-600">{{ form.errors.type }}</p>
+                </div>
+
+                <!-- Category -->
+                <div>
+                  <label for="category" class="block text-sm font-medium text-gray-700">
+                    Categoría *
+                  </label>
+                  <select
+                    id="category"
+                    v-model="form.category"
+                    required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.category }"
+                  >
+                    <option value="">Selecciona la categoría</option>
+                    <option value="house">Casa</option>
+                    <option value="apartment">Apartamento</option>
+                    <option value="office">Oficina</option>
+                    <option value="land">Terreno</option>
+                    <option value="commercial">Local Comercial</option>
+                  </select>
+                  <p v-if="form.errors.category" class="mt-1 text-sm text-red-600">{{ form.errors.category }}</p>
+                </div>
+
+                <!-- Status -->
+                <div>
+                  <label for="status" class="block text-sm font-medium text-gray-700">
+                    Estado
+                  </label>
+                  <select
+                    id="status"
+                    v-model="form.status"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.status }"
+                  >
+                    <option value="available">Disponible</option>
+                    <option value="sold">Vendida</option>
+                    <option value="rented">Alquilada</option>
+                    <option value="pending">Pendiente</option>
+                  </select>
+                  <p v-if="form.errors.status" class="mt-1 text-sm text-red-600">{{ form.errors.status }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ubicación -->
+          <div class="bg-white shadow-sm rounded-lg overflow-hidden mb-6">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">Ubicación</h3>
+              
+              <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <!-- Address -->
+                <div class="sm:col-span-2">
+                  <label for="address" class="block text-sm font-medium text-gray-700">
+                    Dirección *
+                  </label>
+                  <input
+                    id="address"
+                    v-model="form.address"
+                    type="text"
+                    required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.address }"
+                    placeholder="Ej: Calle 123 #45-67"
+                  />
+                  <p v-if="form.errors.address" class="mt-1 text-sm text-red-600">{{ form.errors.address }}</p>
+                </div>
+
+                <!-- City -->
+                <div>
+                  <label for="city" class="block text-sm font-medium text-gray-700">
+                    Ciudad *
+                  </label>
+                  <input
+                    id="city"
+                    v-model="form.city"
+                    type="text"
+                    required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.city }"
+                    placeholder="Ej: Bogotá"
+                  />
+                  <p v-if="form.errors.city" class="mt-1 text-sm text-red-600">{{ form.errors.city }}</p>
+                </div>
+
+                <!-- State -->
+                <div>
+                  <label for="state" class="block text-sm font-medium text-gray-700">
+                    Departamento/Estado *
+                  </label>
+                  <input
+                    id="state"
+                    v-model="form.state"
+                    type="text"
+                    required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.state }"
+                    placeholder="Ej: Cundinamarca"
+                  />
+                  <p v-if="form.errors.state" class="mt-1 text-sm text-red-600">{{ form.errors.state }}</p>
+                </div>
+
+                <!-- Zip Code -->
+                <div class="sm:col-span-2">
+                  <label for="zip_code" class="block text-sm font-medium text-gray-700">
+                    Código Postal
+                  </label>
+                  <input
+                    id="zip_code"
+                    v-model="form.zip_code"
+                    type="text"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.zip_code }"
+                    placeholder="Ej: 110111"
+                  />
+                  <p v-if="form.errors.zip_code" class="mt-1 text-sm text-red-600">{{ form.errors.zip_code }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Características -->
+          <div class="bg-white shadow-sm rounded-lg overflow-hidden mb-6">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">Características</h3>
+              
+              <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                <!-- Bedrooms -->
+                <div>
+                  <label for="bedrooms" class="block text-sm font-medium text-gray-700">
+                    Habitaciones
+                  </label>
+                  <input
+                    id="bedrooms"
+                    v-model.number="form.bedrooms"
+                    type="number"
+                    min="0"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.bedrooms }"
+                  />
+                  <p v-if="form.errors.bedrooms" class="mt-1 text-sm text-red-600">{{ form.errors.bedrooms }}</p>
+                </div>
+
+                <!-- Bathrooms -->
+                <div>
+                  <label for="bathrooms" class="block text-sm font-medium text-gray-700">
+                    Baños
+                  </label>
+                  <input
+                    id="bathrooms"
+                    v-model.number="form.bathrooms"
+                    type="number"
+                    min="0"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.bathrooms }"
+                  />
+                  <p v-if="form.errors.bathrooms" class="mt-1 text-sm text-red-600">{{ form.errors.bathrooms }}</p>
+                </div>
+
+                <!-- Area -->
+                <div>
+                  <label for="area" class="block text-sm font-medium text-gray-700">
+                    Área (m²) *
+                  </label>
+                  <input
+                    id="area"
+                    v-model.number="form.area"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    :class="{ 'border-red-300': form.errors.area }"
+                    placeholder="120"
+                  />
+                  <p v-if="form.errors.area" class="mt-1 text-sm text-red-600">{{ form.errors.area }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Proyecto -->
+          <div class="bg-white shadow-sm rounded-lg overflow-hidden mb-6">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">Proyecto</h3>
+              
+              <ProjectSelect
+                id="project_id"
+                v-model="form.project_id"
+                :projects="projects"
+                :types="types"
+                :statuses="statuses"
+                :error="form.errors.project_id"
+                label="Proyecto asociado"
+                @project-created="handleProjectCreated"
+              />
+            </div>
+          </div>
+
+          <!-- Multimedia -->
+          <div class="bg-white shadow-sm rounded-lg overflow-hidden mb-6">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">Multimedia</h3>
+
+              <!-- Cover Image -->
+              <div class="mb-6">
+                <FileUploader
+                  id="cover_image"
+                  label="Imagen de portada *"
+                  accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                  :required="true"
+                  drag-text="Arrastra la imagen de portada aquí"
+                  help-text="JPG, PNG, GIF hasta 5MB. Recomendado: 1200x600px"
+                  @files-changed="handleCoverImageChange"
+                />
+                <p v-if="form.errors.cover_image" class="mt-1 text-sm text-red-600">{{ form.errors.cover_image }}</p>
+              </div>
+
+              <!-- Gallery -->
+              <div class="mb-6">
+                <FileUploader
+                  id="gallery"
+                  label="Galería de imágenes"
+                  accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                  :multiple="true"
+                  :max-files="10"
+                  drag-text="Arrastra imágenes adicionales aquí"
+                  help-text="JPG, PNG, GIF hasta 5MB cada una. Máximo 10 imágenes"
+                  @files-changed="handleGalleryChange"
+                />
+                <p v-if="form.errors.gallery" class="mt-1 text-sm text-red-600">{{ form.errors.gallery }}</p>
+              </div>
+
+              <!-- Videos -->
+              <div>
+                <FileUploader
+                  id="videos"
+                  label="Videos"
+                  accept="video/mp4,video/mov,video/avi,video/wmv,video/webm"
+                  :multiple="true"
+                  :max-files="5"
+                  :max-size="104857600"
+                  drag-text="Arrastra videos aquí"
+                  help-text="MP4, MOV, AVI, WMV, WEBM hasta 100MB cada uno. Máximo 5 videos"
+                  @files-changed="handleVideosChange"
+                />
+                <p v-if="form.errors.videos" class="mt-1 text-sm text-red-600">{{ form.errors.videos }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Agente -->
+          <div class="bg-white shadow-sm rounded-lg overflow-hidden mb-6">
+            <div class="px-4 py-5 sm:p-6">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">Agente responsable</h3>
+              
+              <AgentSelect
+                id="agent_id"
+                v-model="form.agent_id"
+                :agents="agents"
+                :required="true"
+                :error="form.errors.agent_id"
+                label="Agente responsable"
+                @agent-created="handleAgentCreated"
+              />
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="flex justify-end space-x-3">
+            <Link
+              :href="route('properties.index')"
+              class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Cancelar
+            </Link>
+            <button
+              type="submit"
+              :disabled="form.processing"
+              class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            >
+              <svg v-if="form.processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {{ form.processing ? 'Creando...' : 'Crear propiedad' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </AuthenticatedLayout>
 </template>
 
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { computed, onMounted } from 'vue'
+import { Head, Link, useForm, router } from '@inertiajs/vue3'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import FileUploader from '@/Components/FileUploader.vue'
+import ProjectSelect from '@/Components/ProjectSelect.vue'
+import AgentSelect from '@/Components/AgentSelect.vue'
 
 const props = defineProps({
-    agents: Array,
-    errors: Object,
-});
+  agents: {
+    type: Array,
+    required: true
+  },
+  projects: {
+    type: Array,
+    required: true
+  },
+  preselectedProject: {
+    type: Object,
+    default: null
+  },
+  types: {
+    type: Object,
+    required: true
+  },
+  statuses: {
+    type: Object,
+    required: true
+  }
+})
 
+// Form
 const form = useForm({
-    title: '',
-    description: '',
-    price: '',
-    type: '',
-    category: '',
-    address: '',
-    city: '',
-    state: '',
-    zip_code: '',
-    bedrooms: 0,
-    bathrooms: 0,
-    area: '',
-    features: [],
-    agent_id: '',
-    status: 'available',
-});
+  title: '',
+  description: '',
+  price: '',
+  type: '',
+  category: '',
+  address: '',
+  city: '',
+  state: '',
+  zip_code: '',
+  bedrooms: 0,
+  bathrooms: 0,
+  area: '',
+  agent_id: '',
+  project_id: props.preselectedProject?.id || '',
+  status: 'available',
+  cover_image: null,
+  gallery: [],
+  videos: []
+})
 
-const newFeature = ref('');
+// Handle file uploads
+const handleCoverImageChange = (files) => {
+  form.cover_image = files[0] || null
+}
 
-const addFeature = () => {
-    if (newFeature.value.trim() && !form.features.includes(newFeature.value.trim())) {
-        form.features.push(newFeature.value.trim());
-        newFeature.value = '';
-    }
-};
+const handleGalleryChange = (files) => {
+  form.gallery = files
+}
 
-const removeFeature = (index) => {
-    form.features.splice(index, 1);
-};
+const handleVideosChange = (files) => {
+  form.videos = files
+}
+
+const handleProjectCreated = (project) => {
+  // Project is already selected by ProjectSelect component
+  console.log('Nuevo proyecto creado:', project)
+}
+
+const handleAgentCreated = (agent) => {
+  // Agent is already selected by AgentSelect component
+  console.log('Nuevo agente creado:', agent)
+}
 
 const submit = () => {
-    form.post(route('properties.store'));
-};
+  // Use POST with multipart/form-data for file uploads
+  form.post(route('properties.store'), {
+    preserveScroll: true
+  })
+}
+
+// Initialize form with preselected project if available
+onMounted(() => {
+  if (props.preselectedProject) {
+    form.project_id = props.preselectedProject.id
+  }
+})
 </script>
-
-<style scoped>
-/* Form Styles */
-.property-form {
-    @apply max-w-none;
-}
-
-.form-card {
-    @apply bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden;
-}
-
-.form-section {
-    @apply p-6 lg:p-8 border-b border-slate-100 last:border-b-0;
-}
-
-.form-section-title {
-    @apply text-xl font-bold text-gray-800 mb-6 text-balance;
-}
-
-.form-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
-}
-
-.form-group {
-    @apply flex flex-col;
-}
-
-.form-label {
-    @apply block text-sm font-semibold text-slate-700 mb-2;
-}
-
-.form-input {
-    @apply block w-full px-4 py-3 text-slate-900 bg-white border border-slate-200 rounded-xl
-           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-           transition-all duration-200 placeholder-slate-400;
-}
-
-.form-textarea {
-    @apply block w-full px-4 py-3 text-slate-900 bg-white border border-slate-200 rounded-xl
-           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-           transition-all duration-200 placeholder-slate-400;
-    resize: vertical;
-}
-
-.form-select {
-    @apply block w-full px-4 py-3 text-slate-900 bg-white border border-slate-200 rounded-xl
-           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-           transition-all duration-200;
-}
-
-.form-input-error {
-    @apply border-red-300 focus:ring-red-500;
-}
-
-.form-error {
-    @apply mt-1 text-sm text-red-600;
-}
-
-.form-actions {
-    @apply flex flex-col sm:flex-row gap-4 justify-end p-6 lg:p-8 bg-slate-50;
-}
-
-/* Feature Tags */
-.feature-tag {
-    @apply inline-flex items-center px-3 py-1 text-sm font-medium text-slate-700 bg-slate-100 rounded-full;
-}
-
-/* Button Styles - Reusing from Index */
-.btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium text-sm rounded-xl 
-           hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
-           transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 hover:shadow-lg;
-}
-
-.btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-700 font-medium text-sm rounded-xl 
-           hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
-           transition-all duration-200 ease-in-out;
-}
-
-.btn-outline {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 font-medium text-sm rounded-xl 
-           hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
-           transition-all duration-200 ease-in-out;
-}
-</style>

@@ -132,6 +132,12 @@ const navigationItems = computed(() => [
         icon: 'dashboard'
     },
     {
+        name: 'Proyectos',
+        href: route('projects.index'),
+        current: currentRoute.value.startsWith('/projects'),
+        icon: 'projects'
+    },
+    {
         name: 'Propiedades',
         href: route('properties.index'),
         current: currentRoute.value.startsWith('/properties'),
@@ -139,7 +145,7 @@ const navigationItems = computed(() => [
     },
     {
         name: 'Agentes',
-        href: '#', // route('agents.index') when implemented
+        href: route('agents.index'),
         current: currentRoute.value.startsWith('/agents'),
         icon: 'agents'
     },

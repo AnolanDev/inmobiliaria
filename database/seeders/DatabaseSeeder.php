@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AgentSeeder::class,
+            ProjectSeeder::class,
             PropertySeeder::class,
             ClientSeeder::class,
         ]);
