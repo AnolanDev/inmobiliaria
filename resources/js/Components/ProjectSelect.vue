@@ -162,7 +162,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 import Modal from '@/Components/Modal.vue'
 
 const props = defineProps({
@@ -208,7 +208,7 @@ const showModal = ref(false)
 // Form state
 const form = reactive({
   name: '',
-  type: 'Disponible',
+  type: '',
   status: 'Disponible',
   description: '',
   processing: false,
@@ -237,12 +237,24 @@ const createProject = async () => {
   form.processing = true
   form.errors = {}
 
+
   try {
+    // Get CSRF token from page props or meta tag
+    const csrfToken = usePage().props.csrf_token || 
+      document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+      document.head.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+    
+    if (!csrfToken) {
+      console.error('CSRF token not found')
+      form.errors = { general: 'Error de seguridad. Recarga la página e intenta nuevamente.' }
+      return
+    }
+
     const response = await fetch(route('properties.projects.quick'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        'X-CSRF-TOKEN': csrfToken,
         'Accept': 'application/json'
       },
       body: JSON.stringify({

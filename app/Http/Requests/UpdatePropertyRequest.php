@@ -38,7 +38,7 @@ class UpdatePropertyRequest extends FormRequest
             'images.*' => 'string',
             'features' => 'nullable|array',
             'features.*' => 'string',
-            'agent_id' => 'required|exists:agents,id',
+            'agent_id' => 'nullable|exists:agents,id',
             'project_id' => 'nullable|exists:projects,id',
             'status' => 'in:available,sold,rented,pending',
             

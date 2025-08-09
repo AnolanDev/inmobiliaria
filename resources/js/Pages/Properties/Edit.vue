@@ -387,7 +387,7 @@
                 id="agent_id"
                 v-model="form.agent_id"
                 :agents="agents"
-                :required="true"
+                :required="false"
                 :error="form.errors.agent_id"
                 label="Agente responsable"
                 @agent-created="handleAgentCreated"
