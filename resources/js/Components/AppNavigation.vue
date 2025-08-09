@@ -151,7 +151,7 @@ const navigationItems = computed(() => [
     },
     {
         name: 'Clientes',
-        href: '#', // route('clients.index') when implemented
+        href: route('clients.index'),
         current: currentRoute.value.startsWith('/clients'),
         icon: 'clients'
     },

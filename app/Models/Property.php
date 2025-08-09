@@ -114,4 +114,11 @@ class Property extends Model
             return null;
         }, $this->videos));
     }
+
+    public function clients()
+    {
+        return $this->belongsToMany(Client::class, 'client_property')
+                    ->withPivot('interest_type', 'status', 'notes')
+                    ->withTimestamps();
+    }
 }

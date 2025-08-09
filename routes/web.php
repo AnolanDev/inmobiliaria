@@ -39,6 +39,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/agents/quick', [AgentController::class, 'quickCreate'])->name('agents.quick');
     Route::patch('/agents/{agent}/toggle-status', [AgentController::class, 'toggleStatus'])->name('agents.toggle-status');
     Route::resource('clients', ClientController::class);
+    Route::post('/clients/quick', [ClientController::class, 'quickCreate'])->name('clients.quick');
+    Route::get('/clients-select', [ClientController::class, 'getForSelect'])->name('clients.select');
+    Route::post('/clients/{client}/associate-property', [ClientController::class, 'associateProperty'])->name('clients.associate-property');
+    Route::get('/clients/export/excel', [ClientController::class, 'exportExcel'])->name('clients.export.excel');
+    Route::get('/clients/export/pdf', [ClientController::class, 'exportPdf'])->name('clients.export.pdf');
+    
     Route::resource('visits', VisitController::class);
 });
 
