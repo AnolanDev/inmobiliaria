@@ -46,6 +46,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/clients/export/pdf', [ClientController::class, 'exportPdf'])->name('clients.export.pdf');
     
     Route::resource('visits', VisitController::class);
+    Route::patch('/visits/{visit}/complete', [VisitController::class, 'markCompleted'])->name('visits.complete');
+    Route::patch('/visits/{visit}/cancel', [VisitController::class, 'markCancelled'])->name('visits.cancel');
+    Route::patch('/visits/{visit}/no-show', [VisitController::class, 'markNoShow'])->name('visits.no-show');
+    Route::post('/visits/{visit}/reminder', [VisitController::class, 'sendReminder'])->name('visits.send-reminder');
+    Route::post('/visits/{visit}/follow-up', [VisitController::class, 'scheduleFollowUp'])->name('visits.schedule-follow-up');
 });
 
 require __DIR__.'/auth.php';
