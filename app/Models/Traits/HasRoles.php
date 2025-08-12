@@ -41,7 +41,7 @@ trait HasRoles
             return $this->roles()->where('slug', $role)->exists();
         }
 
-        return $this->roles()->where('id', $role->id)->exists();
+        return $this->roles()->where('roles.id', $role->id)->exists();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,6 +10,7 @@ use Illuminate\Support\Str;
 
 class Role extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'name',
         'slug',
@@ -76,6 +78,17 @@ class Role extends Model
     public function hasPermission(string $permission): bool
     {
         return $this->permissions()->where('slug', $permission)->exists();
+    }
+
+    /**
+     * Alias for hasPermission (for compatibility)
+     */
+    public function hasPermissionTo(string|Permission $permission): bool
+    {
+        if (is_object($permission)) {
+            $permission = $permission->slug;
+        }
+        return $this->hasPermission($permission);
     }
 
     /**

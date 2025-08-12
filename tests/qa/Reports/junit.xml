@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Config/phpunit.qa.xml" tests="10" assertions="31" errors="0" failures="0" skipped="0" time="23.424535">
+    <testsuite name="QA Unit Tests" tests="10" assertions="31" errors="0" failures="0" skipped="0" time="23.424535">
+      <testsuite name="Tests\QA\Unit\RoleModelTest" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/RoleModelTest.php" tests="5" assertions="16" errors="0" failures="0" skipped="0" time="23.326146">
+        <testcase name="test_role_factory_creates_valid_role" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/RoleModelTest.php" line="17" class="Tests\QA\Unit\RoleModelTest" classname="Tests.QA.Unit.RoleModelTest" assertions="5" time="23.231134"/>
+        <testcase name="test_role_can_be_assigned_permissions" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/RoleModelTest.php" line="31" class="Tests\QA\Unit\RoleModelTest" classname="Tests.QA.Unit.RoleModelTest" assertions="2" time="0.029818"/>
+        <testcase name="test_role_can_have_users" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/RoleModelTest.php" line="45" class="Tests\QA\Unit\RoleModelTest" classname="Tests.QA.Unit.RoleModelTest" assertions="3" time="0.025508"/>
+        <testcase name="test_role_active_properties" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/RoleModelTest.php" line="62" class="Tests\QA\Unit\RoleModelTest" classname="Tests.QA.Unit.RoleModelTest" assertions="2" time="0.018280"/>
+        <testcase name="test_role_slug_generation" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/RoleModelTest.php" line="74" class="Tests\QA\Unit\RoleModelTest" classname="Tests.QA.Unit.RoleModelTest" assertions="4" time="0.021406"/>
+      </testsuite>
+      <testsuite name="Tests\QA\Unit\UserModelTest" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/UserModelTest.php" tests="5" assertions="15" errors="0" failures="0" skipped="0" time="0.098389">
+        <testcase name="test_user_factory_creates_valid_user" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/UserModelTest.php" line="17" class="Tests\QA\Unit\UserModelTest" classname="Tests.QA.Unit.UserModelTest" assertions="6" time="0.019980"/>
+        <testcase name="test_user_can_be_assigned_roles" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/UserModelTest.php" line="32" class="Tests\QA\Unit\UserModelTest" classname="Tests.QA.Unit.UserModelTest" assertions="3" time="0.019644"/>
+        <testcase name="test_user_permission_checking" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/UserModelTest.php" line="50" class="Tests\QA\Unit\UserModelTest" classname="Tests.QA.Unit.UserModelTest" assertions="2" time="0.023909"/>
+        <testcase name="test_user_without_permissions_returns_false" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/UserModelTest.php" line="66" class="Tests\QA\Unit\UserModelTest" classname="Tests.QA.Unit.UserModelTest" assertions="2" time="0.016984"/>
+        <testcase name="test_user_can_be_deactivated" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Unit/UserModelTest.php" line="77" class="Tests\QA\Unit\UserModelTest" classname="Tests.QA.Unit.UserModelTest" assertions="2" time="0.017872"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

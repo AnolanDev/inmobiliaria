@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="../../../vendor/autoload.php"
+         colors="true"
+         stopOnFailure="false"
+         processIsolation="false"
+         backupGlobals="false"
+         cacheDirectory="../../../.phpunit.cache">
+    
+    <testsuites>
+        <testsuite name="QA Unit Tests">
+            <directory>../Unit</directory>
+        </testsuite>
+        <testsuite name="QA Integration Tests">
+            <directory>../Integration</directory>
+        </testsuite>
+        <testsuite name="QA API Tests">
+            <directory>../API</directory>
+        </testsuite>
+        <testsuite name="QA Security Tests">
+            <directory>../Security</directory>
+        </testsuite>
+        <testsuite name="QA Performance Tests">
+            <directory>../Performance</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory suffix=".php">../../../app</directory>
+        </include>
+        <exclude>
+            <directory>../../../app/Console</directory>
+            <directory>../../../app/Exceptions</directory>
+            <directory>../../../app/Providers</directory>
+        </exclude>
+    </source>
+
+    <coverage>
+        <report>
+            <html outputDirectory="../Reports/coverage/html"/>
+            <text outputFile="../Reports/coverage/coverage.txt"/>
+            <xml outputDirectory="../Reports/coverage/xml"/>
+        </report>
+    </coverage>
+
+    <logging>
+        <junit outputFile="../Reports/junit.xml"/>
+        <teamcity outputFile="../Reports/teamcity.txt"/>
+    </logging>
+
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_PORT" value="3306"/>
+        <env name="DB_DATABASE" value="inmobiliaria_testing"/>
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value="Scott2024"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+    </php>
+</phpunit>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Config/phpunit.qa.xml" tests="8" assertions="2" errors="6" failures="2" skipped="0" time="23.013899">
+    <testsuite name="QA Integration Tests" tests="8" assertions="2" errors="6" failures="2" skipped="0" time="23.013899">
+      <testsuite name="Tests\QA\Integration\UserRoleIntegrationTest" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php" tests="8" assertions="2" errors="6" failures="2" skipped="0" time="23.013899">
+        <testcase name="test_complete_user_role_permission_workflow" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php" line="60" class="Tests\QA\Integration\UserRoleIntegrationTest" classname="Tests.QA.Integration.UserRoleIntegrationTest" assertions="1" time="22.856216">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\QA\Integration\UserRoleIntegrationTest::test_complete_user_role_permission_workflow
+Expected response status code [201, 301, 302, 303, 307, 308] but received 403.
+Failed asserting that false is true.
+
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:199
+/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php:71</failure>
+        </testcase>
+        <testcase name="test_role_deactivation_affects_user_access" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php" line="118" class="Tests\QA\Integration\UserRoleIntegrationTest" classname="Tests.QA.Integration.UserRoleIntegrationTest" assertions="0" time="0.024268">
+          <error type="Illuminate\Database\Eloquent\ModelNotFoundException">Tests\QA\Integration\UserRoleIntegrationTest::test_role_deactivation_affects_user_access
+Illuminate\Database\Eloquent\ModelNotFoundException: No query results for model [App\Models\Permission].
+
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php:750
+/home/golivera/ts/inmobiliaria/inmobiliaria/app/Models/Role.php:129
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Arr.php:754
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Collection.php:809
+/home/golivera/ts/inmobiliaria/inmobiliaria/app/Models/Role.php:127
+/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php:127</error>
+        </testcase>
+        <testcase name="test_role_deletion_cascade_operations" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php" line="156" class="Tests\QA\Integration\UserRoleIntegrationTest" classname="Tests.QA.Integration.UserRoleIntegrationTest" assertions="0" time="0.023705">
+          <error type="Illuminate\Database\QueryException">Tests\QA\Integration\UserRoleIntegrationTest::test_role_deletion_cascade_operations
+Illuminate\Database\QueryException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'is_system_role' in 'field list' (Connection: mysql, SQL: insert into `roles` (`is_active`, `sort_order`, `color`, `name`, `slug`, `description`, `is_system_role`, `updated_at`, `created_at`) values (1, 89, #7b3c86, QA Deletable Role, atmospheric-and-space-scientist-role, Eos ut aliquam quaerat reprehenderit voluptatum optio., 0, 2025-08-11 20:54:27, 2025-08-11 20:54:27))
+
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Connection.php:824
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Connection.php:778
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/MySqlConnection.php:42
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Query/Processors/MySqlProcessor.php:35
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php:3853
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php:2205
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php:1427
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php:1392
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php:1231
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:357
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php:271
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:352
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:308
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:302
+/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php:161</error>
+        </testcase>
+        <testcase name="test_multiple_role_assignment_permission_inheritance" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php" line="206" class="Tests\QA\Integration\UserRoleIntegrationTest" classname="Tests.QA.Integration.UserRoleIntegrationTest" assertions="0" time="0.017302">
+          <error type="Illuminate\Database\Eloquent\ModelNotFoundException">Tests\QA\Integration\UserRoleIntegrationTest::test_multiple_role_assignment_permission_inheritance
+Illuminate\Database\Eloquent\ModelNotFoundException: No query results for model [App\Models\Permission].
+
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php:750
+/home/golivera/ts/inmobiliaria/inmobiliaria/app/Models/Role.php:129
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Arr.php:754
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Collection.php:809
+/home/golivera/ts/inmobiliaria/inmobiliaria/app/Models/Role.php:127
+/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php:212</error>
+        </testcase>
+        <testcase name="test_permission_changes_propagate_to_users" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php" line="249" class="Tests\QA\Integration\UserRoleIntegrationTest" classname="Tests.QA.Integration.UserRoleIntegrationTest" assertions="0" time="0.018950">
+          <error type="Illuminate\Database\Eloquent\ModelNotFoundException">Tests\QA\Integration\UserRoleIntegrationTest::test_permission_changes_propagate_to_users
+Illuminate\Database\Eloquent\ModelNotFoundException: No query results for model [App\Models\Permission].
+
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php:750
+/home/golivera/ts/inmobiliaria/inmobiliaria/app/Models/Role.php:129
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Arr.php:754
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Collection.php:809
+/home/golivera/ts/inmobiliaria/inmobiliaria/app/Models/Role.php:127
+/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php:256</error>
+        </testcase>
+        <testcase name="test_user_deactivation_prevents_access" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php" line="291" class="Tests\QA\Integration\UserRoleIntegrationTest" classname="Tests.QA.Integration.UserRoleIntegrationTest" assertions="0" time="0.020705">
+          <error type="Illuminate\Database\Eloquent\ModelNotFoundException">Tests\QA\Integration\UserRoleIntegrationTest::test_user_deactivation_prevents_access
+Illuminate\Database\Eloquent\ModelNotFoundException: No query results for model [App\Models\Permission].
+
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php:750
+/home/golivera/ts/inmobiliaria/inmobiliaria/app/Models/Role.php:129
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Arr.php:754
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Collection.php:809
+/home/golivera/ts/inmobiliaria/inmobiliaria/app/Models/Role.php:127
+/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php:298</error>
+        </testcase>
+        <testcase name="test_system_role_protection" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php" line="322" class="Tests\QA\Integration\UserRoleIntegrationTest" classname="Tests.QA.Integration.UserRoleIntegrationTest" assertions="0" time="0.018475">
+          <error type="Illuminate\Database\QueryException">Tests\QA\Integration\UserRoleIntegrationTest::test_system_role_protection
+Illuminate\Database\QueryException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'is_system_role' in 'field list' (Connection: mysql, SQL: insert into `roles` (`is_active`, `sort_order`, `color`, `name`, `slug`, `description`, `is_system_role`, `updated_at`, `created_at`) values (1, 52, #5404ce, QA System Role, health-educator-role, Aut qui dolore laborum voluptatem consequatur., 1, 2025-08-11 20:54:27, 2025-08-11 20:54:27))
+
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Connection.php:824
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Connection.php:778
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/MySqlConnection.php:42
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Query/Processors/MySqlProcessor.php:35
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php:3853
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php:2205
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php:1427
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php:1392
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php:1231
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:357
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php:271
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:352
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:308
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php:302
+/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php:327</error>
+        </testcase>
+        <testcase name="test_api_endpoint_integration" file="/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php" line="350" class="Tests\QA\Integration\UserRoleIntegrationTest" classname="Tests.QA.Integration.UserRoleIntegrationTest" assertions="1" time="0.034278">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\QA\Integration\UserRoleIntegrationTest::test_api_endpoint_integration
+Expected response status code [200] but received 403.
+Failed asserting that 403 is identical to 200.
+
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+/home/golivera/ts/inmobiliaria/inmobiliaria/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:174
+/home/golivera/ts/inmobiliaria/inmobiliaria/tests/qa/Integration/UserRoleIntegrationTest.php:362</failure>
+        </testcase>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
