@@ -13,12 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@inmobiliaria.com',
-        ]);
-
         $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
             AgentSeeder::class,
             ProjectSeeder::class,
             PropertySeeder::class,

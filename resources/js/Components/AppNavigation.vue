@@ -40,15 +40,113 @@
 
             <!-- Mobile Navigation -->
             <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <!-- Dashboard -->
                 <NavLink 
-                    v-for="item in navigationItems" 
-                    :key="item.name"
-                    :href="item.href"
-                    :active="item.current"
-                    :icon="item.icon"
-                    :name="item.name"
+                    name="Dashboard"
+                    :href="route('dashboard')"
+                    :active="currentRoute === '/dashboard'"
+                    icon="dashboard"
                     @click="closeMobileMenu"
                 />
+                
+                <!-- Separator -->
+                <div class="border-t border-gray-200 my-3"></div>
+                
+                <!-- Inmobiliaria Section -->
+                <div v-if="hasAnyPropertyPermission" class="space-y-1">
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Gestión Inmobiliaria
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasProjectsPermission"
+                        name="Proyectos"
+                        :href="route('projects.index')"
+                        :active="currentRoute.startsWith('/projects')"
+                        icon="projects"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasPropertiesPermission"
+                        name="Propiedades"
+                        :href="route('properties.index')"
+                        :active="currentRoute.startsWith('/properties')"
+                        icon="properties"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <div class="border-t border-gray-200 my-3"></div>
+                </div>
+                
+                <!-- People Section -->
+                <div v-if="hasAnyPeoplePermission" class="space-y-1">
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Gestión de Personas
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasClientsPermission"
+                        name="Clientes"
+                        :href="route('clients.index')"
+                        :active="currentRoute.startsWith('/clients')"
+                        icon="clients"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasAgentsPermission"
+                        name="Agentes"
+                        :href="route('agents.index')"
+                        :active="currentRoute.startsWith('/agents')"
+                        icon="agents"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <div class="border-t border-gray-200 my-3"></div>
+                </div>
+                
+                <!-- Activities -->
+                <NavLink 
+                    v-if="hasVisitsPermission"
+                    name="Visitas"
+                    :href="route('visits.index')"
+                    :active="currentRoute.startsWith('/visits')"
+                    icon="visits"
+                    @click="closeMobileMenu"
+                />
+                
+                <!-- Admin Section -->
+                <div v-if="hasAnyAdminPermission" class="space-y-1">
+                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Administración
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasUsersPermission"
+                        name="Usuarios"
+                        :href="route('users.index')"
+                        :active="currentRoute.startsWith('/users')"
+                        icon="users"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasRolesPermission"
+                        name="Roles y Permisos"
+                        :href="route('roles.index')"
+                        :active="currentRoute.startsWith('/roles')"
+                        icon="roles"
+                        @click="closeMobileMenu"
+                    />
+                </div>
             </nav>
 
             <!-- Mobile User Section -->
@@ -77,14 +175,105 @@
 
             <!-- Desktop Navigation -->
             <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                <!-- Dashboard -->
                 <NavLink 
-                    v-for="item in navigationItems" 
-                    :key="item.name"
-                    :href="item.href"
-                    :active="item.current"
-                    :icon="item.icon"
-                    :name="item.name"
+                    name="Dashboard"
+                    :href="route('dashboard')"
+                    :active="currentRoute === '/dashboard'"
+                    icon="dashboard"
                 />
+                
+                <!-- Separator -->
+                <div class="border-t border-gray-200 my-3"></div>
+                
+                <!-- Inmobiliaria Section -->
+                <div v-if="hasAnyPropertyPermission" class="space-y-1">
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Gestión Inmobiliaria
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasProjectsPermission"
+                        name="Proyectos"
+                        :href="route('projects.index')"
+                        :active="currentRoute.startsWith('/projects')"
+                        icon="projects"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasPropertiesPermission"
+                        name="Propiedades"
+                        :href="route('properties.index')"
+                        :active="currentRoute.startsWith('/properties')"
+                        icon="properties"
+                    />
+                    
+                    <div class="border-t border-gray-200 my-3"></div>
+                </div>
+                
+                <!-- People Section -->
+                <div v-if="hasAnyPeoplePermission" class="space-y-1">
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Gestión de Personas
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasClientsPermission"
+                        name="Clientes"
+                        :href="route('clients.index')"
+                        :active="currentRoute.startsWith('/clients')"
+                        icon="clients"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasAgentsPermission"
+                        name="Agentes"
+                        :href="route('agents.index')"
+                        :active="currentRoute.startsWith('/agents')"
+                        icon="agents"
+                    />
+                    
+                    <div class="border-t border-gray-200 my-3"></div>
+                </div>
+                
+                <!-- Activities -->
+                <NavLink 
+                    v-if="hasVisitsPermission"
+                    name="Visitas"
+                    :href="route('visits.index')"
+                    :active="currentRoute.startsWith('/visits')"
+                    icon="visits"
+                />
+                
+                <!-- Admin Section -->
+                <div v-if="hasAnyAdminPermission" class="space-y-1">
+                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Administración
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasUsersPermission"
+                        name="Usuarios"
+                        :href="route('users.index')"
+                        :active="currentRoute.startsWith('/users')"
+                        icon="users"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasRolesPermission"
+                        name="Roles y Permisos"
+                        :href="route('roles.index')"
+                        :active="currentRoute.startsWith('/roles')"
+                        icon="roles"
+                    />
+                </div>
             </nav>
 
             <!-- Desktop User Section -->
@@ -123,57 +312,19 @@ const user = computed(() => page.props.auth?.user)
 // Get current route for active state
 const currentRoute = computed(() => page.url)
 
-// Navigation items
-const navigationItems = computed(() => [
-    {
-        name: 'Dashboard',
-        href: route('dashboard'),
-        current: currentRoute.value === '/dashboard',
-        icon: 'dashboard'
-    },
-    {
-        name: 'Proyectos',
-        href: route('projects.index'),
-        current: currentRoute.value.startsWith('/projects'),
-        icon: 'projects'
-    },
-    {
-        name: 'Propiedades',
-        href: route('properties.index'),
-        current: currentRoute.value.startsWith('/properties'),
-        icon: 'properties'
-    },
-    {
-        name: 'Agentes',
-        href: route('agents.index'),
-        current: currentRoute.value.startsWith('/agents'),
-        icon: 'agents'
-    },
-    {
-        name: 'Clientes',
-        href: route('clients.index'),
-        current: currentRoute.value.startsWith('/clients'),
-        icon: 'clients'
-    },
-    {
-        name: 'Visitas',
-        href: route('visits.index'),
-        current: currentRoute.value.startsWith('/visits'),
-        icon: 'visits'
-    },
-    {
-        name: 'Estadísticas',
-        href: '#', // route('statistics.index') when implemented
-        current: currentRoute.value.startsWith('/statistics'),
-        icon: 'statistics'
-    },
-    {
-        name: 'Configuración',
-        href: '#', // route('settings.index') when implemented
-        current: currentRoute.value.startsWith('/settings'),
-        icon: 'settings'
-    }
-])
+// Permission checks
+const hasProjectsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'projects-view') || user.value?.is_super_admin)
+const hasPropertiesPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'properties-view') || user.value?.is_super_admin)
+const hasClientsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'clients-view') || user.value?.is_super_admin)
+const hasAgentsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'agents-view') || user.value?.is_super_admin)
+const hasVisitsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'visits-view') || user.value?.is_super_admin)
+const hasUsersPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'users-view') || user.value?.is_super_admin)
+const hasRolesPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'roles-view') || user.value?.is_super_admin)
+
+// Section visibility
+const hasAnyPropertyPermission = computed(() => hasProjectsPermission.value || hasPropertiesPermission.value)
+const hasAnyPeoplePermission = computed(() => hasClientsPermission.value || hasAgentsPermission.value)
+const hasAnyAdminPermission = computed(() => hasUsersPermission.value || hasRolesPermission.value)
 
 // Mobile menu functions
 const openMobileMenu = () => {
