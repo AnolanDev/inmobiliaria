@@ -63,17 +63,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-profile', [UserController::class, 'profile'])->name('user.profile');
     Route::patch('/my-profile', [UserController::class, 'updateProfile'])->name('user.profile.update');
 
-    // Project management routes
+    // Project management routes - FIXED ORDER: create routes before {project} routes
     Route::middleware('permission:projects:view')->group(function () {
         Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
         Route::get('/projects-select', [ProjectController::class, 'getForSelect'])->name('projects.select');
-        Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
         
         Route::middleware('permission:projects:create')->group(function () {
             Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
             Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
             Route::post('/projects-quick', [ProjectController::class, 'quickStore'])->name('projects.quick');
         });
+        
+        Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
         
         Route::middleware('permission:projects:edit')->group(function () {
             Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
@@ -85,16 +86,17 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Property management routes
+    // Property management routes - FIXED ORDER: create routes before {property} routes
     Route::middleware('permission:properties:view')->group(function () {
         Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
-        Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
         
         Route::middleware('permission:properties:create')->group(function () {
             Route::get('/properties/create', [PropertyController::class, 'create'])->name('properties.create');
             Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
             Route::post('/properties/projects/quick', [PropertyController::class, 'quickCreateProject'])->name('properties.projects.quick');
         });
+        
+        Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
         
         Route::middleware('permission:properties:edit')->group(function () {
             Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
@@ -106,16 +108,17 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Agent management routes
+    // Agent management routes - FIXED ORDER: create routes before {agent} routes
     Route::middleware('permission:agents:view')->group(function () {
         Route::get('/agents', [AgentController::class, 'index'])->name('agents.index');
-        Route::get('/agents/{agent}', [AgentController::class, 'show'])->name('agents.show');
         
         Route::middleware('permission:agents:create')->group(function () {
             Route::get('/agents/create', [AgentController::class, 'create'])->name('agents.create');
             Route::post('/agents', [AgentController::class, 'store'])->name('agents.store');
             Route::post('/agents/quick', [AgentController::class, 'quickCreate'])->name('agents.quick');
         });
+        
+        Route::get('/agents/{agent}', [AgentController::class, 'show'])->name('agents.show');
         
         Route::middleware('permission:agents:edit')->group(function () {
             Route::get('/agents/{agent}/edit', [AgentController::class, 'edit'])->name('agents.edit');
@@ -128,10 +131,9 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Client management routes
+    // Client management routes - FIXED ORDER: create and specific routes before {client} routes
     Route::middleware('permission:clients:view')->group(function () {
         Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
-        Route::get('/clients/{client}', [ClientController::class, 'show'])->name('clients.show');
         Route::get('/clients-select', [ClientController::class, 'getForSelect'])->name('clients.select');
         
         Route::middleware('permission:clients:create')->group(function () {
@@ -140,15 +142,17 @@ Route::middleware('auth')->group(function () {
             Route::post('/clients/quick', [ClientController::class, 'quickCreate'])->name('clients.quick');
         });
         
+        Route::middleware('permission:clients:export')->group(function () {
+            Route::get('/clients/export/excel', [ClientController::class, 'exportExcel'])->name('clients.export.excel');
+            Route::get('/clients/export/pdf', [ClientController::class, 'exportPdf'])->name('clients.export.pdf');
+        });
+        
+        Route::get('/clients/{client}', [ClientController::class, 'show'])->name('clients.show');
+        
         Route::middleware('permission:clients:edit')->group(function () {
             Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
             Route::patch('/clients/{client}', [ClientController::class, 'update'])->name('clients.update');
             Route::post('/clients/{client}/associate-property', [ClientController::class, 'associateProperty'])->name('clients.associate-property');
-        });
-        
-        Route::middleware('permission:clients:export')->group(function () {
-            Route::get('/clients/export/excel', [ClientController::class, 'exportExcel'])->name('clients.export.excel');
-            Route::get('/clients/export/pdf', [ClientController::class, 'exportPdf'])->name('clients.export.pdf');
         });
         
         Route::middleware('permission:clients:delete')->group(function () {
@@ -156,15 +160,16 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    // Visit management routes
+    // Visit management routes - FIXED ORDER: create routes before {visit} routes
     Route::middleware('permission:visits:view')->group(function () {
         Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
-        Route::get('/visits/{visit}', [VisitController::class, 'show'])->name('visits.show');
         
         Route::middleware('permission:visits:create')->group(function () {
             Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');
             Route::post('/visits', [VisitController::class, 'store'])->name('visits.store');
         });
+        
+        Route::get('/visits/{visit}', [VisitController::class, 'show'])->name('visits.show');
         
         Route::middleware('permission:visits:edit')->group(function () {
             Route::get('/visits/{visit}/edit', [VisitController::class, 'edit'])->name('visits.edit');
