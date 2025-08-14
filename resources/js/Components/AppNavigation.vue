@@ -110,15 +110,81 @@
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
                 
-                <!-- Activities -->
-                <NavLink 
-                    v-if="hasVisitsPermission"
-                    name="Visitas"
-                    :href="route('visits.index')"
-                    :active="currentRoute.startsWith('/visits')"
-                    icon="visits"
-                    @click="closeMobileMenu"
-                />
+                <!-- Marketing Section -->
+                <div v-if="hasAnyMarketingPermission" class="space-y-1">
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Marketing
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasCampaignsPermission"
+                        name="Campañas"
+                        :href="route('campaigns.index')"
+                        :active="currentRoute.startsWith('/campaigns')"
+                        icon="campaigns"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasLeadsPermission"
+                        name="Leads"
+                        :href="route('leads.index')"
+                        :active="currentRoute.startsWith('/leads')"
+                        icon="leads"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasEmailMarketingPermission"
+                        name="Email Templates"
+                        :href="route('email-templates.index')"
+                        :active="currentRoute.startsWith('/email-templates')"
+                        icon="email-templates"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasEmailMarketingPermission"
+                        name="Email Campaigns"
+                        :href="route('email-campaigns.index')"
+                        :active="currentRoute.startsWith('/email-campaigns')"
+                        icon="email-campaigns"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <div class="border-t border-gray-200 my-3"></div>
+                </div>
+                
+                <!-- Activities Section -->
+                <div v-if="hasActivitiesPermission" class="space-y-1">
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Actividades
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasActivitiesPermission"
+                        name="Actividades"
+                        :href="route('activities.index')"
+                        :active="currentRoute.startsWith('/activities')"
+                        icon="activities"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasVisitsPermission"
+                        name="Visitas"
+                        :href="route('visits.index')"
+                        :active="currentRoute.startsWith('/visits')"
+                        icon="visits"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <div class="border-t border-gray-200 my-3"></div>
+                </div>
                 
                 <!-- Admin Section -->
                 <div v-if="hasAnyAdminPermission" class="space-y-1">
@@ -144,6 +210,15 @@
                         :href="route('roles.index')"
                         :active="currentRoute.startsWith('/roles')"
                         icon="roles"
+                        @click="closeMobileMenu"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasEmailMarketingConfigPermission"
+                        name="Configuración Email"
+                        :href="route('email-marketing.config')"
+                        :active="currentRoute.startsWith('/email-marketing/config')"
+                        icon="email-config"
                         @click="closeMobileMenu"
                     />
                 </div>
@@ -240,14 +315,75 @@
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
                 
-                <!-- Activities -->
-                <NavLink 
-                    v-if="hasVisitsPermission"
-                    name="Visitas"
-                    :href="route('visits.index')"
-                    :active="currentRoute.startsWith('/visits')"
-                    icon="visits"
-                />
+                <!-- Marketing Section -->
+                <div v-if="hasAnyMarketingPermission" class="space-y-1">
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Marketing
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasCampaignsPermission"
+                        name="Campañas"
+                        :href="route('campaigns.index')"
+                        :active="currentRoute.startsWith('/campaigns')"
+                        icon="campaigns"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasLeadsPermission"
+                        name="Leads"
+                        :href="route('leads.index')"
+                        :active="currentRoute.startsWith('/leads')"
+                        icon="leads"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasEmailMarketingPermission"
+                        name="Email Templates"
+                        :href="route('email-templates.index')"
+                        :active="currentRoute.startsWith('/email-templates')"
+                        icon="email-templates"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasEmailMarketingPermission"
+                        name="Email Campaigns"
+                        :href="route('email-campaigns.index')"
+                        :active="currentRoute.startsWith('/email-campaigns')"
+                        icon="email-campaigns"
+                    />
+                    
+                    <div class="border-t border-gray-200 my-3"></div>
+                </div>
+                
+                <!-- Activities Section -->
+                <div v-if="hasActivitiesPermission" class="space-y-1">
+                    <div class="px-3 py-1">
+                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Actividades
+                        </h3>
+                    </div>
+                    
+                    <NavLink 
+                        v-if="hasActivitiesPermission"
+                        name="Actividades"
+                        :href="route('activities.index')"
+                        :active="currentRoute.startsWith('/activities')"
+                        icon="activities"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasVisitsPermission"
+                        name="Visitas"
+                        :href="route('visits.index')"
+                        :active="currentRoute.startsWith('/visits')"
+                        icon="visits"
+                    />
+                    
+                    <div class="border-t border-gray-200 my-3"></div>
+                </div>
                 
                 <!-- Admin Section -->
                 <div v-if="hasAnyAdminPermission" class="space-y-1">
@@ -272,6 +408,14 @@
                         :href="route('roles.index')"
                         :active="currentRoute.startsWith('/roles')"
                         icon="roles"
+                    />
+                    
+                    <NavLink 
+                        v-if="hasEmailMarketingConfigPermission"
+                        name="Configuración Email"
+                        :href="route('email-marketing.config')"
+                        :active="currentRoute.startsWith('/email-marketing/config')"
+                        icon="email-config"
                     />
                 </div>
             </nav>
@@ -318,13 +462,19 @@ const hasPropertiesPermission = computed(() => user.value?.permissions?.some(p =
 const hasClientsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'clients-view') || user.value?.is_super_admin)
 const hasAgentsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'agents-view') || user.value?.is_super_admin)
 const hasVisitsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'visits-view') || user.value?.is_super_admin)
+const hasCampaignsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'campaigns-view') || user.value?.is_super_admin)
+const hasLeadsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'leads-view') || user.value?.is_super_admin)
+const hasActivitiesPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'activities-view') || user.value?.is_super_admin)
+const hasEmailMarketingPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'email-marketing-view') || user.value?.is_super_admin)
+const hasEmailMarketingConfigPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'email-marketing-config') || user.value?.is_super_admin)
 const hasUsersPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'users-view') || user.value?.is_super_admin)
 const hasRolesPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'roles-view') || user.value?.is_super_admin)
 
 // Section visibility
 const hasAnyPropertyPermission = computed(() => hasProjectsPermission.value || hasPropertiesPermission.value)
 const hasAnyPeoplePermission = computed(() => hasClientsPermission.value || hasAgentsPermission.value)
-const hasAnyAdminPermission = computed(() => hasUsersPermission.value || hasRolesPermission.value)
+const hasAnyMarketingPermission = computed(() => hasCampaignsPermission.value || hasLeadsPermission.value || hasEmailMarketingPermission.value)
+const hasAnyAdminPermission = computed(() => hasUsersPermission.value || hasRolesPermission.value || hasEmailMarketingConfigPermission.value)
 
 // Mobile menu functions
 const openMobileMenu = () => {

@@ -363,6 +363,133 @@ class PermissionSeeder extends Seeder
                 'description' => 'Permite gestionar la configuración general del sistema',
                 'sort_order' => 2,
             ],
+
+            // Marketing permissions
+            [
+                'name' => 'Ver Marketing',
+                'module' => 'marketing',
+                'action' => 'view',
+                'description' => 'Permite acceder al módulo de marketing',
+                'sort_order' => 1,
+            ],
+
+            // Campaigns permissions
+            [
+                'name' => 'Ver Campañas',
+                'module' => 'campaigns',
+                'action' => 'view',
+                'description' => 'Permite ver la lista de campañas de marketing',
+                'sort_order' => 1,
+            ],
+            [
+                'name' => 'Crear Campañas',
+                'module' => 'campaigns',
+                'action' => 'create',
+                'description' => 'Permite crear nuevas campañas de marketing',
+                'sort_order' => 2,
+            ],
+            [
+                'name' => 'Editar Campañas',
+                'module' => 'campaigns',
+                'action' => 'edit',
+                'description' => 'Permite editar campañas de marketing existentes',
+                'sort_order' => 3,
+            ],
+            [
+                'name' => 'Eliminar Campañas',
+                'module' => 'campaigns',
+                'action' => 'delete',
+                'description' => 'Permite eliminar campañas de marketing',
+                'sort_order' => 4,
+            ],
+            [
+                'name' => 'Gestionar Campañas',
+                'module' => 'campaigns',
+                'action' => 'manage',
+                'description' => 'Permite gestión completa de campañas de marketing',
+                'sort_order' => 5,
+            ],
+
+            // Leads permissions
+            [
+                'name' => 'Ver Leads',
+                'module' => 'leads',
+                'action' => 'view',
+                'description' => 'Permite ver la lista de leads',
+                'sort_order' => 1,
+            ],
+            [
+                'name' => 'Crear Leads',
+                'module' => 'leads',
+                'action' => 'create',
+                'description' => 'Permite crear nuevos leads',
+                'sort_order' => 2,
+            ],
+            [
+                'name' => 'Editar Leads',
+                'module' => 'leads',
+                'action' => 'edit',
+                'description' => 'Permite editar leads existentes',
+                'sort_order' => 3,
+            ],
+            [
+                'name' => 'Eliminar Leads',
+                'module' => 'leads',
+                'action' => 'delete',
+                'description' => 'Permite eliminar leads',
+                'sort_order' => 4,
+            ],
+            [
+                'name' => 'Gestionar Leads',
+                'module' => 'leads',
+                'action' => 'manage',
+                'description' => 'Permite gestión completa de leads',
+                'sort_order' => 5,
+            ],
+            [
+                'name' => 'Exportar Leads',
+                'module' => 'leads',
+                'action' => 'export',
+                'description' => 'Permite exportar datos de leads',
+                'sort_order' => 6,
+            ],
+
+            // Activities permissions
+            [
+                'name' => 'Ver Actividades',
+                'module' => 'activities',
+                'action' => 'view',
+                'description' => 'Permite ver la lista de actividades y timeline',
+                'sort_order' => 1,
+            ],
+            [
+                'name' => 'Crear Actividades',
+                'module' => 'activities',
+                'action' => 'create',
+                'description' => 'Permite crear nuevas actividades y tareas',
+                'sort_order' => 2,
+            ],
+            [
+                'name' => 'Editar Actividades',
+                'module' => 'activities',
+                'action' => 'edit',
+                'description' => 'Permite editar actividades y cambiar su estado',
+                'sort_order' => 3,
+            ],
+            [
+                'name' => 'Eliminar Actividades',
+                'module' => 'activities',
+                'action' => 'delete',
+                'description' => 'Permite eliminar actividades',
+                'sort_order' => 4,
+            ],
+            [
+                'name' => 'Gestionar Actividades',
+                'module' => 'activities',
+                'action' => 'manage',
+                'description' => 'Permite gestión completa del sistema de actividades',
+                'sort_order' => 5,
+            ],
         ];
 
         foreach ($permissions as $permission) {

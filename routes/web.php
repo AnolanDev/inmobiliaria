@@ -1,8 +1,15 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmailCampaignController;
+use App\Http\Controllers\EmailMarketingConfigController;
+use App\Http\Controllers\EmailTemplateController;
+use App\Http\Controllers\EmailTrackingController;
+use App\Http\Controllers\LeadController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PropertyController;
@@ -185,6 +192,140 @@ Route::middleware('auth')->group(function () {
             Route::delete('/visits/{visit}', [VisitController::class, 'destroy'])->name('visits.destroy');
         });
     });
+
+    // Marketing management routes - FIXED ORDER: create routes before {id} routes
+    Route::middleware('permission:marketing:view')->group(function () {
+        // Campaign routes
+        Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
+        Route::get('/campaigns/create', [CampaignController::class, 'create'])->name('campaigns.create')->middleware('permission:campaigns:create');
+        Route::post('/campaigns', [CampaignController::class, 'store'])->name('campaigns.store')->middleware('permission:campaigns:create');
+        Route::get('/campaigns/{campaign}', [CampaignController::class, 'show'])->name('campaigns.show');
+        Route::get('/campaigns/{campaign}/edit', [CampaignController::class, 'edit'])->name('campaigns.edit')->middleware('permission:campaigns:edit');
+        Route::patch('/campaigns/{campaign}', [CampaignController::class, 'update'])->name('campaigns.update')->middleware('permission:campaigns:edit');
+        Route::delete('/campaigns/{campaign}', [CampaignController::class, 'destroy'])->name('campaigns.destroy')->middleware('permission:campaigns:delete');
+        Route::patch('/campaigns/{campaign}/toggle-status', [CampaignController::class, 'toggleStatus'])->name('campaigns.toggle-status')->middleware('permission:campaigns:edit');
+        Route::post('/campaigns/{campaign}/duplicate', [CampaignController::class, 'duplicate'])->name('campaigns.duplicate')->middleware('permission:campaigns:create');
+        Route::get('/campaigns/{campaign}/analytics', [CampaignController::class, 'analytics'])->name('campaigns.analytics');
+
+        // Lead routes
+        Route::get('/leads', [LeadController::class, 'index'])->name('leads.index');
+        Route::get('/leads-select', [LeadController::class, 'getForSelect'])->name('leads.select');
+        Route::get('/leads/create', [LeadController::class, 'create'])->name('leads.create')->middleware('permission:leads:create');
+        Route::post('/leads', [LeadController::class, 'store'])->name('leads.store')->middleware('permission:leads:create');
+        Route::get('/leads/export', [LeadController::class, 'export'])->name('leads.export')->middleware('permission:leads:export');
+        Route::get('/leads/analytics', [LeadController::class, 'analytics'])->name('leads.analytics');
+        Route::get('/leads/{lead}', [LeadController::class, 'show'])->name('leads.show');
+        Route::get('/leads/{lead}/edit', [LeadController::class, 'edit'])->name('leads.edit')->middleware('permission:leads:edit');
+        Route::patch('/leads/{lead}', [LeadController::class, 'update'])->name('leads.update')->middleware('permission:leads:edit');
+        Route::delete('/leads/{lead}', [LeadController::class, 'destroy'])->name('leads.destroy')->middleware('permission:leads:delete');
+        Route::post('/leads/{lead}/assign-agent', [LeadController::class, 'assignAgent'])->name('leads.assign-agent')->middleware('permission:leads:edit');
+        Route::patch('/leads/{lead}/update-status', [LeadController::class, 'updateStatus'])->name('leads.update-status')->middleware('permission:leads:edit');
+        Route::post('/leads/{lead}/convert-to-client', [LeadController::class, 'convertToClient'])->name('leads.convert-to-client')->middleware('permission:leads:edit');
+        Route::post('/leads/{lead}/schedule-follow-up', [LeadController::class, 'scheduleFollowUp'])->name('leads.schedule-follow-up')->middleware('permission:leads:edit');
+    });
+
+    // Activities Routes
+    Route::middleware('permission:activities:view')->group(function () {
+        Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
+        Route::get('/activities/dashboard', [ActivityController::class, 'dashboard'])->name('activities.dashboard');
+        Route::get('/activities/leads/{lead}', [ActivityController::class, 'getForLead'])->name('activities.for-lead');
+        
+        Route::middleware('permission:activities:create')->group(function () {
+            Route::get('/activities/create', [ActivityController::class, 'create'])->name('activities.create');
+            Route::post('/activities', [ActivityController::class, 'store'])->name('activities.store');
+            Route::post('/activities/{activity}/follow-up', [ActivityController::class, 'createFollowUp'])->name('activities.follow-up');
+        });
+        
+        Route::get('/activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
+        
+        Route::middleware('permission:activities:edit')->group(function () {
+            Route::get('/activities/{activity}/edit', [ActivityController::class, 'edit'])->name('activities.edit');
+            Route::patch('/activities/{activity}', [ActivityController::class, 'update'])->name('activities.update');
+            Route::post('/activities/{activity}/complete', [ActivityController::class, 'markCompleted'])->name('activities.complete');
+            Route::post('/activities/{activity}/cancel', [ActivityController::class, 'markCancelled'])->name('activities.cancel');
+        });
+        
+        Route::middleware('permission:activities:delete')->group(function () {
+            Route::delete('/activities/{activity}', [ActivityController::class, 'destroy'])->name('activities.destroy');
+        });
+    });
+});
+
+// Email Templates Routes
+Route::middleware(['auth', 'permission:email-marketing-view'])->group(function () {
+        Route::get('/email-templates', [EmailTemplateController::class, 'index'])->name('email-templates.index');
+        Route::get('/email-templates/{emailTemplate}/preview', [EmailTemplateController::class, 'preview'])->name('email-templates.preview');
+        Route::get('/email-templates/variables', [EmailTemplateController::class, 'getVariables'])->name('email-templates.variables');
+        
+        Route::middleware('permission:email-marketing-create')->group(function () {
+            Route::get('/email-templates/create', [EmailTemplateController::class, 'create'])->name('email-templates.create');
+            Route::post('/email-templates', [EmailTemplateController::class, 'store'])->name('email-templates.store');
+            Route::post('/email-templates/{emailTemplate}/duplicate', [EmailTemplateController::class, 'duplicate'])->name('email-templates.duplicate');
+        });
+        
+        Route::get('/email-templates/{emailTemplate}', [EmailTemplateController::class, 'show'])->name('email-templates.show');
+        Route::get('/email-templates/{emailTemplate}/test', [EmailTemplateController::class, 'test'])->name('email-templates.test');
+        
+        Route::middleware('permission:email-marketing-edit')->group(function () {
+            Route::get('/email-templates/{emailTemplate}/edit', [EmailTemplateController::class, 'edit'])->name('email-templates.edit');
+            Route::patch('/email-templates/{emailTemplate}', [EmailTemplateController::class, 'update'])->name('email-templates.update');
+        });
+        
+        Route::middleware('permission:email-marketing-delete')->group(function () {
+            Route::delete('/email-templates/{emailTemplate}', [EmailTemplateController::class, 'destroy'])->name('email-templates.destroy');
+        });
+    });
+
+// Email Campaigns Routes
+Route::middleware(['auth', 'permission:email-marketing-view'])->group(function () {
+        Route::get('/email-campaigns', [EmailCampaignController::class, 'index'])->name('email-campaigns.index');
+        Route::get('/email-campaigns/{emailCampaign}/preview', [EmailCampaignController::class, 'preview'])->name('email-campaigns.preview');
+        Route::get('/email-campaigns/{emailCampaign}/recipients', [EmailCampaignController::class, 'recipients'])->name('email-campaigns.recipients');
+        Route::post('/email-campaigns/calculate-recipients', [EmailCampaignController::class, 'calculateRecipients'])->name('email-campaigns.calculate-recipients');
+        
+        Route::middleware('permission:email-marketing-create')->group(function () {
+            Route::get('/email-campaigns/create', [EmailCampaignController::class, 'create'])->name('email-campaigns.create');
+            Route::post('/email-campaigns', [EmailCampaignController::class, 'store'])->name('email-campaigns.store');
+            Route::post('/email-campaigns/{emailCampaign}/duplicate', [EmailCampaignController::class, 'duplicate'])->name('email-campaigns.duplicate');
+        });
+        
+        Route::get('/email-campaigns/{emailCampaign}', [EmailCampaignController::class, 'show'])->name('email-campaigns.show');
+        
+        Route::middleware('permission:email-marketing-edit')->group(function () {
+            Route::get('/email-campaigns/{emailCampaign}/edit', [EmailCampaignController::class, 'edit'])->name('email-campaigns.edit');
+            Route::patch('/email-campaigns/{emailCampaign}', [EmailCampaignController::class, 'update'])->name('email-campaigns.update');
+            Route::post('/email-campaigns/{emailCampaign}/send', [EmailCampaignController::class, 'send'])->name('email-campaigns.send');
+            Route::post('/email-campaigns/{emailCampaign}/schedule', [EmailCampaignController::class, 'schedule'])->name('email-campaigns.schedule');
+            Route::post('/email-campaigns/{emailCampaign}/pause', [EmailCampaignController::class, 'pause'])->name('email-campaigns.pause');
+            Route::post('/email-campaigns/{emailCampaign}/resume', [EmailCampaignController::class, 'resume'])->name('email-campaigns.resume');
+            Route::post('/email-campaigns/{emailCampaign}/cancel', [EmailCampaignController::class, 'cancel'])->name('email-campaigns.cancel');
+        });
+        
+        Route::middleware('permission:email-marketing-delete')->group(function () {
+            Route::delete('/email-campaigns/{emailCampaign}', [EmailCampaignController::class, 'destroy'])->name('email-campaigns.destroy');
+        });
+    });
+
+// Email Tracking Routes (public, no auth required)
+Route::get('/email/track/{token}', [EmailTrackingController::class, 'trackOpen'])->name('email.track');
+Route::get('/email/click/{token}', [EmailTrackingController::class, 'trackClick'])->name('email.click');
+Route::get('/unsubscribe/{token}', [EmailTrackingController::class, 'showUnsubscribeForm'])->name('email.unsubscribe.form');
+Route::post('/unsubscribe/{token}', [EmailTrackingController::class, 'processUnsubscribe'])->name('email.unsubscribe.process');
+Route::get('/unsubscribe/{token}/direct', [EmailTrackingController::class, 'unsubscribe'])->name('email.unsubscribe.direct');
+
+// Email Analytics API Routes (auth required)
+Route::middleware('auth')->group(function () {
+    Route::get('/api/email/stats', [EmailTrackingController::class, 'getStats'])->name('email.stats');
+    Route::get('/api/email/clicks', [EmailTrackingController::class, 'getClickHeatmap'])->name('email.clicks');
+    Route::get('/api/email/geo', [EmailTrackingController::class, 'getGeoData'])->name('email.geo');
+    Route::get('/api/email/devices', [EmailTrackingController::class, 'getDeviceStats'])->name('email.devices');
+});
+
+// Email Marketing Configuration Routes
+Route::middleware(['auth', 'permission:email-marketing-config'])->group(function () {
+    Route::get('/email-marketing/config', [EmailMarketingConfigController::class, 'index'])->name('email-marketing.config');
+    Route::post('/email-marketing/config', [EmailMarketingConfigController::class, 'update'])->name('email-marketing.config.update');
+    Route::post('/email-marketing/config/test', [EmailMarketingConfigController::class, 'test'])->name('email-marketing.config.test');
 });
 
 require __DIR__.'/auth.php';
