@@ -19,7 +19,7 @@
             <!-- Mobile Header -->
             <div class="flex h-16 items-center justify-between px-6 border-b border-gray-100">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: #00bf63;">
                         <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M10.3 8.2l-0.9 0.9c-0.1 0.1-0.1 0.4 0 0.5l5.1 5.1c0.1 0.1 0.4 0.1 0.5 0l0.9-0.9c0.1-0.1 0.1-0.4 0-0.5l-5.1-5.1c-0.1-0.1-0.4-0.1-0.5 0z"/>
                             <path d="M8.7 8.7l0.9-0.9c0.1-0.1 0.4-0.1 0.5 0l5.1 5.1c0.1 0.1 0.1 0.4 0 0.5l-0.9 0.9c-0.1 0.1-0.4 0.1-0.5 0l-5.1-5.1c-0.1-0.1-0.1-0.4 0-0.5z"/>
@@ -237,7 +237,7 @@
             <!-- Desktop Header -->
             <div class="flex h-16 items-center px-6 border-b border-gray-100">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: #00bf63;">
                         <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M10.3 8.2l-0.9 0.9c-0.1 0.1-0.1 0.4 0 0.5l5.1 5.1c0.1 0.1 0.4 0.1 0.5 0l0.9-0.9c0.1-0.1 0.1-0.4 0-0.5l-5.1-5.1c-0.1-0.1-0.4-0.1-0.5 0z"/>
                             <path d="M8.7 8.7l0.9-0.9c0.1-0.1 0.4-0.1 0.5 0l5.1 5.1c0.1 0.1 0.1 0.4 0 0.5l-0.9 0.9c-0.1 0.1-0.4 0.1-0.5 0l-5.1-5.1c-0.1-0.1-0.1-0.4 0-0.5z"/>
@@ -431,7 +431,7 @@
     <div class="lg:hidden">
         <button
             @click="openMobileMenu"
-            class="fixed top-4 left-4 z-30 p-2 text-gray-600 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="fixed top-4 left-4 z-30 p-2 text-gray-600 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500" style="--tw-ring-color: #00bf63;"
         >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />

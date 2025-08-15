@@ -12,7 +12,7 @@
                 <div class="flex items-center gap-3">
                     <Link
                         :href="route('email-campaigns.create')"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -32,8 +32,8 @@
                             <p class="text-sm font-medium text-gray-600">Total</p>
                             <p class="text-2xl font-bold text-gray-900">{{ stats.total }}</p>
                         </div>
-                        <div class="p-3 bg-blue-50 rounded-lg">
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-3 bg-green-50 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
                             </svg>
                         </div>
@@ -58,10 +58,10 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-600">Programadas</p>
-                            <p class="text-2xl font-bold text-blue-600">{{ stats.scheduled }}</p>
+                            <p class="text-2xl font-bold text-green-600">{{ stats.scheduled }}</p>
                         </div>
-                        <div class="p-3 bg-blue-50 rounded-lg">
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="p-3 bg-green-50 rounded-lg">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
@@ -112,7 +112,7 @@
                                 v-model="searchQuery"
                                 type="text"
                                 placeholder="Buscar por nombre o descripción..."
-                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                                 @input="debouncedSearch"
                             />
                         </div>
@@ -122,7 +122,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tipo</label>
                         <select
                             v-model="selectedType"
-                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                             @change="applyFilters"
                         >
                             <option value="">Todos los tipos</option>
@@ -136,7 +136,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
                         <select
                             v-model="selectedStatus"
-                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                             @change="applyFilters"
                         >
                             <option value="">Todos los estados</option>
@@ -150,7 +150,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Filtros</label>
                         <select
                             v-model="selectedFilter"
-                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                             @change="applyFilters"
                         >
                             <option value="">Todos</option>
@@ -176,7 +176,7 @@
                     <div class="mt-6">
                         <Link
                             :href="route('email-campaigns.create')"
-                            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
                         >
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -197,7 +197,7 @@
                                 <div class="flex items-center gap-3 mb-2">
                                     <Link
                                         :href="route('email-campaigns.show', campaign.id)"
-                                        class="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+                                        class="text-lg font-semibold text-gray-900 hover:text-green-600 transition-colors"
                                     >
                                         {{ campaign.name }}
                                     </Link>
@@ -214,7 +214,7 @@
                                     <span
                                         :class="[
                                             'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                                            'bg-blue-100 text-blue-800'
+                                            'bg-green-100 text-green-800'
                                         ]"
                                     >
                                         {{ types[campaign.type] }}
@@ -278,7 +278,7 @@
                                         <div class="text-xs text-gray-500">Apertura</div>
                                     </div>
                                     <div class="text-center">
-                                        <div class="text-lg font-semibold text-blue-600">{{ campaign.click_rate }}%</div>
+                                        <div class="text-lg font-semibold text-green-600">{{ campaign.click_rate }}%</div>
                                         <div class="text-xs text-gray-500">Clics</div>
                                     </div>
                                     <div class="text-center">
@@ -317,7 +317,7 @@
                                 <template v-if="campaign.status === 'paused'">
                                     <button
                                         @click="resumeCampaign(campaign)"
-                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-sm text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -328,7 +328,7 @@
                                 
                                 <Link
                                     :href="route('email-campaigns.edit', campaign.id)"
-                                    class="inline-flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                    class="inline-flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                                 >
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2.828 2.828 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -441,7 +441,7 @@ const closeDropdowns = () => {
 const getStatusClass = (status) => {
     const classes = {
         'draft': 'bg-yellow-100 text-yellow-800',
-        'scheduled': 'bg-blue-100 text-blue-800',
+        'scheduled': 'bg-green-100 text-green-800',
         'sending': 'bg-orange-100 text-orange-800',
         'sent': 'bg-green-100 text-green-800',
         'paused': 'bg-gray-100 text-gray-800',

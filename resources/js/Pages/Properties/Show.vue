@@ -21,7 +21,10 @@
               <span class="text-sm text-gray-500">
                 {{ property.address }}, {{ property.city }}
               </span>
-              <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getStatusColor(property.status)]">
+              <span 
+                :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getStatusColor(property.status)]"
+                :style="getStatusStyle(property.status)"
+              >
                 {{ getStatusName(property.status) }}
               </span>
             </div>
@@ -39,7 +42,7 @@
           </Link>
           <Link
             :href="route('properties.edit', property.id)"
-            class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150"
+            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:border-green-900 focus:ring focus:ring-green-300 disabled:opacity-25 transition ease-in-out duration-150"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -67,7 +70,7 @@
                 
                 <!-- Badges Overlay -->
                 <div class="absolute top-4 left-4 space-y-2">
-                  <span class="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <span class="inline-block bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                     {{ property.type === 'sale' ? 'Venta' : 'Alquiler' }}
                   </span>
                   <span class="block bg-white bg-opacity-90 text-gray-900 px-3 py-1 rounded-full text-sm font-medium">
@@ -155,7 +158,7 @@
                       @click="currentGalleryIndex = index"
                       class="w-3 h-3 rounded-full transition-all duration-200"
                       :class="index === currentGalleryIndex 
-                        ? 'bg-blue-600' 
+                        ? 'bg-green-600' 
                         : 'bg-gray-300 hover:bg-gray-400'"
                     />
                   </div>
@@ -168,7 +171,7 @@
                     :key="index"
                     class="aspect-square rounded-lg overflow-hidden cursor-pointer transition-all duration-200 border-2"
                     :class="index === currentGalleryIndex 
-                      ? 'border-blue-500 shadow-lg' 
+                      ? 'border-green-500 shadow-lg' 
                       : 'border-transparent hover:border-gray-300 hover:shadow-md'"
                     @click="currentGalleryIndex = index"
                   >
@@ -217,8 +220,8 @@
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Características</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                   <div v-if="property.bedrooms > 0" class="text-center">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-2">
-                      <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-lg mb-2">
+                      <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
                       </svg>
                     </div>
@@ -267,10 +270,16 @@
                   <div class="flex-1">
                     <h4 class="text-lg font-medium text-gray-900">{{ property.project.name }}</h4>
                     <div class="flex items-center space-x-4 mt-2">
-                      <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getProjectTypeColor(property.project.type)]">
+                      <span 
+                        :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getProjectTypeColor(property.project.type)]"
+                        :style="getProjectTypeStyle(property.project.type)"
+                      >
                         {{ property.project.type }}
                       </span>
-                      <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getProjectStatusColor(property.project.status)]">
+                      <span 
+                        :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getProjectStatusColor(property.project.status)]"
+                        :style="getProjectStatusStyle(property.project.status)"
+                      >
                         {{ property.project.status }}
                       </span>
                     </div>
@@ -280,7 +289,7 @@
                   </div>
                   <Link
                     :href="route('projects.show', property.project.id)"
-                    class="ml-4 inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="ml-4 inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     Ver proyecto
                   </Link>
@@ -330,7 +339,10 @@
                   <div>
                     <dt class="text-sm font-medium text-gray-500">Estado</dt>
                     <dd class="mt-1">
-                      <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getStatusColor(property.status)]">
+                      <span 
+                        :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', getStatusColor(property.status)]"
+                        :style="getStatusStyle(property.status)"
+                      >
                         {{ getStatusName(property.status) }}
                       </span>
                     </dd>
@@ -375,7 +387,7 @@
                 <div class="space-y-3">
                   <Link
                     :href="route('properties.edit', property.id)"
-                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -386,7 +398,7 @@
                   <Link
                     v-if="property.project"
                     :href="route('projects.show', property.project.id)"
-                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
@@ -543,30 +555,60 @@ const getStatusName = (status) => {
 
 const getStatusColor = (status) => {
   const colors = {
-    'available': 'bg-green-100 text-green-800',
-    'sold': 'bg-red-100 text-red-800',
-    'rented': 'bg-blue-100 text-blue-800',
-    'pending': 'bg-yellow-100 text-yellow-800'
+    'available': '',       // Se maneja con estilos inline
+    'sold': '',            // Se maneja con estilos inline
+    'rented': '',          // Se maneja con estilos inline
+    'pending': '',         // Se maneja con estilos inline
+    'reserved': ''         // Se maneja con estilos inline
   }
   return colors[status] || 'bg-gray-100 text-gray-800'
+}
+
+const getStatusStyle = (status) => {
+  const styles = {
+    'available': { backgroundColor: '#10b981', color: 'white' },    // Verde vibrante
+    'sold': { backgroundColor: '#ef4444', color: 'white' },         // Rojo intenso
+    'rented': { backgroundColor: '#3b82f6', color: 'white' },       // Azul brillante
+    'pending': { backgroundColor: '#eab308', color: 'white' },      // Amarillo vibrante
+    'reserved': { backgroundColor: '#a855f7', color: 'white' }      // Púrpura intenso
+  }
+  return styles[status] || {}
 }
 
 const getProjectTypeColor = (type) => {
   const colors = {
-    'Campestres': 'bg-green-100 text-green-800',
-    'Urbanos': 'bg-blue-100 text-blue-800',
-    'Turísticos': 'bg-purple-100 text-purple-800'
+    'Campestres': '',         // Se maneja con estilos inline
+    'Urbanos': '',            // Se maneja con estilos inline
+    'Turísticos': ''          // Se maneja con estilos inline
   }
   return colors[type] || 'bg-gray-100 text-gray-800'
 }
 
+const getProjectTypeStyle = (type) => {
+  const styles = {
+    'Campestres': { backgroundColor: '#10b981', color: 'white' },     // Verde vibrante
+    'Urbanos': { backgroundColor: '#3b82f6', color: 'white' },        // Azul brillante
+    'Turísticos': { backgroundColor: '#a855f7', color: 'white' }      // Púrpura intenso
+  }
+  return styles[type] || {}
+}
+
 const getProjectStatusColor = (status) => {
   const colors = {
-    'Vendido': 'bg-red-100 text-red-800',
-    'Disponible': 'bg-green-100 text-green-800',
-    'Reservado': 'bg-yellow-100 text-yellow-800'
+    'Vendido': '',              // Se maneja con estilos inline
+    'Disponible': '',           // Se maneja con estilos inline
+    'Reservado': ''             // Se maneja con estilos inline
   }
   return colors[status] || 'bg-gray-100 text-gray-800'
+}
+
+const getProjectStatusStyle = (status) => {
+  const styles = {
+    'Vendido': { backgroundColor: '#ef4444', color: 'white' },        // Rojo intenso
+    'Disponible': { backgroundColor: '#10b981', color: 'white' },     // Verde vibrante
+    'Reservado': { backgroundColor: '#eab308', color: 'white' }       // Amarillo vibrante
+  }
+  return styles[status] || {}
 }
 
 const formatDate = (date) => {

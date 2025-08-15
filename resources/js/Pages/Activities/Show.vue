@@ -50,7 +50,7 @@
           </button>
           <Link
             :href="route('activities.edit', activity.id)"
-            class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
+            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700"
           >
             Editar
           </Link>
@@ -145,7 +145,7 @@
                       <Link
                         v-if="getRelatedLink(activity.related_type, activity.related.id)"
                         :href="getRelatedLink(activity.related_type, activity.related.id)"
-                        class="text-blue-600 hover:text-blue-900"
+                        class="text-green-600 hover:text-green-900"
                       >
                         {{ getRelatedName(activity.related) }}
                       </Link>
@@ -202,7 +202,7 @@
                   <div>
                     <Link
                       :href="route('activities.show', activity.parent_activity.id)"
-                      class="text-blue-600 hover:text-blue-900 text-sm font-medium"
+                      class="text-green-600 hover:text-green-900 text-sm font-medium"
                     >
                       {{ activity.parent_activity.subject }}
                     </Link>
@@ -226,7 +226,7 @@
                     <div class="flex-1 min-w-0">
                       <Link
                         :href="route('activities.show', followUp.id)"
-                        class="text-blue-600 hover:text-blue-900 text-sm font-medium"
+                        class="text-green-600 hover:text-green-900 text-sm font-medium"
                       >
                         {{ followUp.subject }}
                       </Link>
@@ -260,7 +260,7 @@
                   </button>
                   <button
                     @click="showFollowUpModal = true"
-                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-green-300 text-sm font-medium rounded-md text-green-700 bg-green-50 hover:bg-green-100"
                   >
                     Programar Seguimiento
                   </button>
@@ -283,7 +283,7 @@
             <select
               id="followup_type"
               v-model="followUpForm.type"
-              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
               required
             >
               <option v-for="(label, value) in types" :key="value" :value="value">
@@ -298,7 +298,7 @@
               id="followup_subject"
               v-model="followUpForm.subject"
               type="text"
-              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
               required
             />
           </div>
@@ -309,7 +309,7 @@
               id="followup_description"
               v-model="followUpForm.description"
               rows="3"
-              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
             />
           </div>
 
@@ -319,7 +319,7 @@
               id="followup_scheduled_at"
               v-model="followUpForm.scheduled_at"
               type="datetime-local"
-              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
               required
             />
           </div>
@@ -329,7 +329,7 @@
             <select
               id="followup_priority"
               v-model="followUpForm.priority"
-              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
               required
             >
               <option v-for="(label, value) in priorities" :key="value" :value="value">
@@ -349,7 +349,7 @@
             <button
               type="submit"
               :disabled="followUpForm.processing"
-              class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 disabled:opacity-50"
+              class="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 disabled:opacity-50"
             >
               Crear Seguimiento
             </button>
@@ -388,7 +388,7 @@ const followUpForm = useForm({
 // Methods
 const getTypeColor = (type) => {
   const colors = {
-    call: 'bg-blue-100 text-blue-800',
+    call: 'bg-green-100 text-green-800',
     email: 'bg-green-100 text-green-800',
     meeting: 'bg-purple-100 text-purple-800',
     note: 'bg-yellow-100 text-yellow-800',

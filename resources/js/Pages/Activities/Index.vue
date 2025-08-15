@@ -14,7 +14,7 @@
         </div>
         <Link
           :href="route('activities.create')"
-          class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
+          class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -120,7 +120,7 @@
                     v-model="search"
                     type="text"
                     placeholder="Buscar actividades..."
-                    class="w-full md:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full md:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                     @input="performSearch"
                   />
                   <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,7 +132,7 @@
                 <select
                   v-model="selectedType"
                   @change="applyFilters"
-                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="">Todos los tipos</option>
                   <option v-for="(label, value) in types" :key="value" :value="value">
@@ -144,7 +144,7 @@
                 <select
                   v-model="selectedStatus"
                   @change="applyFilters"
-                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="">Todos los estados</option>
                   <option v-for="(label, value) in statuses" :key="value" :value="value">
@@ -156,7 +156,7 @@
                 <select
                   v-model="selectedPriority"
                   @change="applyFilters"
-                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="">Todas las prioridades</option>
                   <option v-for="(label, value) in priorities" :key="value" :value="value">
@@ -168,7 +168,7 @@
                 <select
                   v-model="selectedUser"
                   @change="applyFilters"
-                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="">Todos los usuarios</option>
                   <option v-for="user in users" :key="user.id" :value="user.id">
@@ -193,7 +193,7 @@
                   :class="[
                     'px-3 py-2 rounded-md text-sm font-medium',
                     filters.my_activities
-                      ? 'bg-blue-100 text-blue-800'
+                      ? 'bg-green-100 text-green-800'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   ]"
                 >
@@ -247,7 +247,11 @@
                   <td class="px-6 py-4">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 h-8 w-8">
-                        <div :class="getActivityIconColor(activity.type)" class="h-8 w-8 rounded-full flex items-center justify-center">
+                        <div 
+                          :class="getActivityIconColor(activity.type)" 
+                          class="h-8 w-8 rounded-full flex items-center justify-center"
+                          :style="getActivityIconStyle(activity.type)"
+                        >
                           <component :is="getActivityIcon(activity.type)" class="h-4 w-4" />
                         </div>
                       </div>
@@ -260,17 +264,29 @@
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span :class="getTypeColor(activity.type)" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                    <span 
+                      :class="getTypeColor(activity.type)" 
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                      :style="getTypeStyle(activity.type)"
+                    >
                       {{ activity.formatted_type }}
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span :class="getStatusColor(activity.status)" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                    <span 
+                      :class="getStatusColor(activity.status)" 
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                      :style="getStatusStyleActivity(activity.status)"
+                    >
                       {{ activity.formatted_status }}
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <span :class="getPriorityColor(activity.priority)" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                    <span 
+                      :class="getPriorityColor(activity.priority)" 
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                      :style="getPriorityStyle(activity.priority)"
+                    >
                       {{ activity.formatted_priority }}
                     </span>
                   </td>
@@ -317,7 +333,7 @@
             <h3 class="mt-2 text-sm font-medium text-gray-900">No hay actividades</h3>
             <p class="mt-1 text-sm text-gray-500">Comienza creando tu primera actividad.</p>
             <div class="mt-6">
-              <Link :href="route('activities.create')" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+              <Link :href="route('activities.create')" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
                 <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
                 </svg>
@@ -339,7 +355,7 @@
               :class="[
                 'px-3 py-2 text-sm font-medium rounded-md',
                 link.active
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-green-600 text-white'
                   : link.url
                   ? 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
@@ -466,46 +482,98 @@ const getActivityIcon = (type) => {
 
 const getActivityIconColor = (type) => {
   const colors = {
-    call: 'bg-blue-100 text-blue-600',
-    email: 'bg-green-100 text-green-600',
-    meeting: 'bg-purple-100 text-purple-600',
-    note: 'bg-yellow-100 text-yellow-600',
-    task: 'bg-gray-100 text-gray-600'
+    call: '',
+    email: '',
+    meeting: '',
+    note: '',
+    task: '',
+    sms: '',
+    whatsapp: '',
+    visit: ''
   }
-  return colors[type] || 'bg-gray-100 text-gray-600'
+  
+  return colors[type] || 'bg-gray-500 text-white'
+}
+
+const getActivityIconStyle = (type) => {
+  const styles = {
+    call: { backgroundColor: '#10b981', color: 'white' },        // Verde vibrante
+    email: { backgroundColor: '#3b82f6', color: 'white' },       // Azul brillante
+    meeting: { backgroundColor: '#a855f7', color: 'white' },     // Púrpura intenso
+    note: { backgroundColor: '#eab308', color: 'white' },        // Amarillo vibrante
+    task: { backgroundColor: '#6b7280', color: 'white' },        // Gris
+    sms: { backgroundColor: '#f97316', color: 'white' },         // Naranja
+    whatsapp: { backgroundColor: '#10b981', color: 'white' },    // Verde vibrante
+    visit: { backgroundColor: '#6366f1', color: 'white' }        // Índigo
+  }
+  
+  return styles[type] || { backgroundColor: '#6b7280', color: 'white' }
 }
 
 const getTypeColor = (type) => {
   const colors = {
-    call: 'bg-blue-100 text-blue-800',
-    email: 'bg-green-100 text-green-800',
-    meeting: 'bg-purple-100 text-purple-800',
-    note: 'bg-yellow-100 text-yellow-800',
-    task: 'bg-gray-100 text-gray-800',
-    sms: 'bg-indigo-100 text-indigo-800',
-    whatsapp: 'bg-green-100 text-green-800',
-    visit: 'bg-orange-100 text-orange-800'
+    call: '',
+    email: '',
+    meeting: '',
+    note: '',
+    task: '',
+    sms: '',
+    whatsapp: '',
+    visit: ''
   }
-  return colors[type] || 'bg-gray-100 text-gray-800'
+  return colors[type] || 'bg-gray-500 text-white'
+}
+
+const getTypeStyle = (type) => {
+  const styles = {
+    call: { backgroundColor: '#10b981', color: 'white' },        // Verde vibrante
+    email: { backgroundColor: '#3b82f6', color: 'white' },       // Azul brillante
+    meeting: { backgroundColor: '#a855f7', color: 'white' },     // Púrpura intenso
+    note: { backgroundColor: '#eab308', color: 'white' },        // Amarillo vibrante
+    task: { backgroundColor: '#6b7280', color: 'white' },        // Gris
+    sms: { backgroundColor: '#f97316', color: 'white' },         // Naranja
+    whatsapp: { backgroundColor: '#10b981', color: 'white' },    // Verde vibrante
+    visit: { backgroundColor: '#6366f1', color: 'white' }        // Índigo
+  }
+  return styles[type] || { backgroundColor: '#6b7280', color: 'white' }
 }
 
 const getStatusColor = (status) => {
   const colors = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    completed: 'bg-green-100 text-green-800',
-    cancelled: 'bg-red-100 text-red-800'
+    pending: '',
+    completed: '',
+    cancelled: ''
   }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+  return colors[status] || 'bg-gray-500 text-white'
+}
+
+const getStatusStyleActivity = (status) => {
+  const styles = {
+    pending: { backgroundColor: '#eab308', color: 'white' },     // Amarillo vibrante
+    completed: { backgroundColor: '#10b981', color: 'white' },   // Verde vibrante
+    cancelled: { backgroundColor: '#ef4444', color: 'white' }    // Rojo intenso
+  }
+  return styles[status] || { backgroundColor: '#6b7280', color: 'white' }
 }
 
 const getPriorityColor = (priority) => {
   const colors = {
-    low: 'bg-green-100 text-green-800',
-    medium: 'bg-yellow-100 text-yellow-800',
-    high: 'bg-orange-100 text-orange-800',
-    urgent: 'bg-red-100 text-red-800'
+    low: '',
+    medium: '',
+    high: '',
+    urgent: ''
   }
-  return colors[priority] || 'bg-gray-100 text-gray-800'
+  return colors[priority] || 'bg-gray-500 text-white'
+}
+
+const getPriorityStyle = (priority) => {
+  const styles = {
+    low: { backgroundColor: '#10b981', color: 'white' },         // Verde vibrante
+    medium: { backgroundColor: '#eab308', color: 'white' },      // Amarillo vibrante
+    high: { backgroundColor: '#f97316', color: 'white' },        // Naranja
+    urgent: { backgroundColor: '#ef4444', color: 'white' }       // Rojo intenso
+  }
+  return styles[priority] || { backgroundColor: '#6b7280', color: 'white' }
 }
 
 const getRelatedTypeName = (type) => {

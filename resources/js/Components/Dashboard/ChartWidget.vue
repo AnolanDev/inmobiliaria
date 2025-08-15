@@ -11,7 +11,7 @@
             :class="[
               'px-3 py-1 text-sm rounded-md transition-colors',
               selectedPeriod === period.value
-                ? 'bg-blue-100 text-blue-700'
+                ? 'bg-green-100 text-green-700'
                 : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
             ]"
           >
@@ -40,7 +40,7 @@
         <div v-else-if="type === 'pie'" class="flex items-center justify-center">
           <div class="relative w-48 h-48">
             <!-- Pie chart placeholder -->
-            <div class="w-full h-full border-8 border-blue-500 rounded-full"></div>
+            <div class="w-full h-full border-8 border-green-500 rounded-full"></div>
             <div class="absolute inset-0 flex items-center justify-center">
               <span class="text-2xl font-bold text-gray-900">{{ totalValue }}</span>
             </div>
@@ -52,7 +52,7 @@
             v-for="(item, index) in chartData"
             :key="index"
             :style="{ height: `${(item.value / maxValue) * 100}%` }"
-            :class="['w-8 bg-blue-500 rounded-t', index % 2 === 0 ? 'opacity-75' : '']"
+            :class="['w-8 bg-green-500 rounded-t', index % 2 === 0 ? 'opacity-75' : '']"
           ></div>
         </div>
         
@@ -137,7 +137,7 @@ const totalValue = computed(() => {
 
 const getBarColor = (index) => {
   const colors = [
-    'bg-blue-500',
+    'bg-green-500',
     'bg-green-500',
     'bg-yellow-500',
     'bg-purple-500',

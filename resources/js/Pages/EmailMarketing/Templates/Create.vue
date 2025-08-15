@@ -39,7 +39,7 @@
                                         v-model="form.name"
                                         type="text"
                                         required
-                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                                         placeholder="Ej: Bienvenida nuevos leads"
                                     />
                                     <div v-if="errors.name" class="mt-1 text-sm text-red-600">{{ errors.name }}</div>
@@ -54,7 +54,7 @@
                                         v-model="form.subject"
                                         type="text"
                                         required
-                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                                         placeholder="Ej: ¡Bienvenido {{recipient_name}}!"
                                     />
                                     <div v-if="errors.subject" class="mt-1 text-sm text-red-600">{{ errors.subject }}</div>
@@ -68,7 +68,7 @@
                                         id="description"
                                         v-model="form.description"
                                         rows="3"
-                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                                         placeholder="Describe el propósito de este template..."
                                     ></textarea>
                                     <div v-if="errors.description" class="mt-1 text-sm text-red-600">{{ errors.description }}</div>
@@ -83,7 +83,7 @@
                                             id="category"
                                             v-model="form.category"
                                             required
-                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                                             @change="updateAvailableVariables"
                                         >
                                             <option value="">Selecciona una categoría</option>
@@ -102,7 +102,7 @@
                                             id="status"
                                             v-model="form.status"
                                             required
-                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
                                         >
                                             <option v-for="(label, value) in statuses" :key="value" :value="value">
                                                 {{ label }}
@@ -128,7 +128,7 @@
                                         v-model="form.html_content"
                                         rows="15"
                                         required
-                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-mono"
+                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm font-mono"
                                         placeholder="Ingresa el contenido HTML del email..."
                                     ></textarea>
                                     <div v-if="errors.html_content" class="mt-1 text-sm text-red-600">{{ errors.html_content }}</div>
@@ -142,7 +142,7 @@
                                         id="text_content"
                                         v-model="form.text_content"
                                         rows="8"
-                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-mono"
+                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm font-mono"
                                         placeholder="Versión en texto plano del email (recomendado para mejor compatibilidad)..."
                                     ></textarea>
                                     <div v-if="errors.text_content" class="mt-1 text-sm text-red-600">{{ errors.text_content }}</div>
@@ -157,7 +157,7 @@
                                 <button
                                     type="button"
                                     @click="refreshPreview"
-                                    class="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                    class="inline-flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                                 >
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -198,7 +198,7 @@
                                 <button
                                     type="submit"
                                     :disabled="processing"
-                                    class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                                    class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                                 >
                                     <svg v-if="processing" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -232,7 +232,7 @@
                                         @click="insertVariable(variable)"
                                         class="w-full text-left p-2 rounded-lg hover:bg-gray-50 transition-colors group"
                                     >
-                                        <div class="text-sm font-mono text-blue-600 group-hover:text-blue-700">
+                                        <div class="text-sm font-mono text-green-600 group-hover:text-green-700">
                                             {{ getVariableDisplay(variable) }}
                                         </div>
                                         <div class="text-xs text-gray-500 mt-1">
@@ -242,8 +242,8 @@
                                 </div>
                             </div>
                             
-                            <div class="mt-4 p-3 bg-blue-50 rounded-lg">
-                                <p class="text-xs text-blue-700">
+                            <div class="mt-4 p-3 bg-green-50 rounded-lg">
+                                <p class="text-xs text-green-700">
                                     Haz clic en cualquier variable para insertarla en el cursor del contenido HTML.
                                 </p>
                             </div>

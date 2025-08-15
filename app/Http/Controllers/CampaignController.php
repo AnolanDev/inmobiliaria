@@ -187,9 +187,9 @@ class CampaignController extends Controller
     }
 
     /**
-     * Get campaign analytics data.
+     * Show campaign analytics page.
      */
-    public function analytics(Campaign $campaign)
+    public function analytics(Request $request, Campaign $campaign)
     {
         $leadsOverTime = $campaign->leads()
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
@@ -207,7 +207,8 @@ class CampaignController extends Controller
             ->groupBy('source')
             ->get();
 
-        return response()->json([
+        $data = [
+            'campaign' => $campaign,
             'leads_over_time' => $leadsOverTime,
             'leads_by_status' => $leadsByStatus,
             'leads_by_source' => $leadsBySource,
@@ -221,7 +222,15 @@ class CampaignController extends Controller
                     ? round((($campaign->conversions * 1000) - $campaign->spent) / $campaign->spent * 100, 2) 
                     : 0,
             ]
-        ]);
+        ];
+
+        // If it's an AJAX request, return JSON
+        if ($request->wantsJson() || $request->expectsJson()) {
+            return response()->json($data);
+        }
+
+        // Otherwise, return Inertia page
+        return Inertia::render('Marketing/Campaigns/Analytics', $data);
     }
 
     /**

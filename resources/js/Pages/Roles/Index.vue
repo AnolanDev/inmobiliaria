@@ -99,7 +99,7 @@
                                     
                                     <span
                                         v-if="role.is_system_role"
-                                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+                                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
                                     >
                                         Sistema
                                     </span>
@@ -144,7 +144,7 @@
                                     <button
                                         v-if="!role.is_system_role"
                                         @click="duplicateRole(role)"
-                                        class="text-blue-600 hover:text-blue-900"
+                                        class="text-green-600 hover:text-green-900"
                                         title="Duplicar"
                                     >
                                         <IconCopy class="w-4 h-4" />

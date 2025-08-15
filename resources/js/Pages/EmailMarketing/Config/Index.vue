@@ -39,7 +39,7 @@
                                     />
                                     <div :class="[
                                         'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
-                                        autoRefresh ? 'bg-blue-600' : 'bg-gray-200'
+                                        autoRefresh ? 'bg-green-600' : 'bg-gray-200'
                                     ]">
                                         <span :class="[
                                             'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
@@ -54,7 +54,7 @@
                         <!-- Advanced Status Grid -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                             <!-- Mail System -->
-                            <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+                            <div class="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <div class="flex items-center mb-2">
@@ -191,7 +191,7 @@
                                         'p-3 rounded-lg border-l-4 flex items-center justify-between',
                                         alert.type === 'error' ? 'bg-red-50 border-red-400' : 
                                         alert.type === 'warning' ? 'bg-yellow-50 border-yellow-400' : 
-                                        'bg-blue-50 border-blue-400'
+                                        'bg-green-50 border-green-400'
                                     ]"
                                 >
                                     <div class="flex items-center">
@@ -199,13 +199,13 @@
                                             'text-sm font-medium mr-2',
                                             alert.type === 'error' ? 'text-red-800' : 
                                             alert.type === 'warning' ? 'text-yellow-800' : 
-                                            'text-blue-800'
+                                            'text-green-800'
                                         ]">{{ alert.title }}</span>
                                         <span :class="[
                                             'text-sm',
                                             alert.type === 'error' ? 'text-red-600' : 
                                             alert.type === 'warning' ? 'text-yellow-600' : 
-                                            'text-blue-600'
+                                            'text-green-600'
                                         ]">{{ alert.message }}</span>
                                     </div>
                                     <button 
@@ -214,7 +214,7 @@
                                             'text-sm px-2 py-1 rounded',
                                             alert.type === 'error' ? 'text-red-600 hover:bg-red-100' : 
                                             alert.type === 'warning' ? 'text-yellow-600 hover:bg-yellow-100' : 
-                                            'text-blue-600 hover:bg-blue-100'
+                                            'text-green-600 hover:bg-green-100'
                                         ]"
                                     >
                                         ×
@@ -242,10 +242,10 @@
                         <!-- KPI Cards -->
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                             <!-- Total Emails -->
-                            <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-lg text-white">
+                            <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-lg text-white">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-blue-100 text-sm font-medium">Total Enviados</p>
+                                        <p class="text-green-100 text-sm font-medium">Total Enviados</p>
                                         <p class="text-3xl font-bold">{{ formatNumber(stats.total_emails_sent || 0) }}</p>
                                         <div class="flex items-center mt-2 text-sm">
                                             <svg class="w-4 h-4 mr-1" :class="emailsTrend >= 0 ? 'text-green-300' : 'text-red-300'" fill="currentColor" viewBox="0 0 20 20">
@@ -361,7 +361,7 @@
                                 <h4 class="text-sm font-medium text-gray-900">Estado de la Cola de Envíos</h4>
                                 <div class="flex items-center space-x-4">
                                     <div class="flex items-center">
-                                        <div class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></div>
+                                        <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                                         <span class="text-sm text-gray-600">Procesando: {{ queueStats.processing || 0 }}</span>
                                     </div>
                                     <div class="flex items-center">
@@ -377,7 +377,7 @@
                             
                             <!-- Queue Progress Bar -->
                             <div class="w-full bg-gray-200 rounded-full h-3 mb-2">
-                                <div class="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-500" 
+                                <div class="bg-gradient-to-r from-green-500 to-green-500 h-3 rounded-full transition-all duration-500" 
                                      :style="{ width: queueProgressPercentage + '%' }"></div>
                             </div>
                             <div class="flex justify-between text-xs text-gray-500">
@@ -401,7 +401,7 @@
                                         <input
                                             type="checkbox"
                                             v-model="form.enabled"
-                                            class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                            class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                         />
                                         <span class="ml-2 text-sm text-gray-700">Habilitar Email Marketing</span>
                                     </label>
@@ -414,7 +414,7 @@
                                         id="provider"
                                         v-model="form.provider"
                                         @change="onProviderChange"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     >
                                         <option v-for="(label, value) in providers" :key="value" :value="value">
                                             {{ label }}
@@ -437,7 +437,7 @@
                                         id="smtp_host"
                                         v-model="form.smtp_config.host"
                                         placeholder="ej: smtp.gmail.com"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -445,7 +445,7 @@
                                     <select
                                         id="smtp_port"
                                         v-model="form.smtp_config.port"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     >
                                         <option value="25">25 (Sin cifrado)</option>
                                         <option value="587">587 (TLS)</option>
@@ -460,7 +460,7 @@
                                         id="smtp_username"
                                         v-model="form.smtp_config.username"
                                         placeholder="tu-email@gmail.com"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -470,7 +470,7 @@
                                         id="smtp_password"
                                         v-model="form.smtp_config.password"
                                         placeholder="Contraseña o App Password"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -478,7 +478,7 @@
                                     <select
                                         id="smtp_encryption"
                                         v-model="form.smtp_config.encryption"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     >
                                         <option value="">Sin cifrado</option>
                                         <option value="tls">TLS</option>
@@ -492,7 +492,7 @@
                                         id="smtp_from_address"
                                         v-model="form.smtp_config.from_address"
                                         placeholder="noreply@tudominio.com"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                             </div>
@@ -506,10 +506,10 @@
                                         id="sendgrid_api_key"
                                         v-model="form.sendgrid_config.api_key"
                                         placeholder="SG.xxxxxxxxxx"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                     <p class="mt-1 text-sm text-gray-500">
-                                        <a href="https://app.sendgrid.com/settings/api_keys" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                        <a href="https://app.sendgrid.com/settings/api_keys" target="_blank" class="text-green-600 hover:text-green-800">
                                             Obtener API Key en SendGrid →
                                         </a>
                                     </p>
@@ -521,7 +521,7 @@
                                         id="sendgrid_from_address"
                                         v-model="form.sendgrid_config.from_address"
                                         placeholder="noreply@tudominio.com"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -531,7 +531,7 @@
                                         id="sendgrid_from_name"
                                         v-model="form.sendgrid_config.from_name"
                                         placeholder="Tu Empresa"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                             </div>
@@ -545,7 +545,7 @@
                                         id="mailgun_domain"
                                         v-model="form.mailgun_config.domain"
                                         placeholder="ej: mail.tudominio.com"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -555,7 +555,7 @@
                                         id="mailgun_secret"
                                         v-model="form.mailgun_config.secret"
                                         placeholder="key-xxxxxxxxxx"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -563,7 +563,7 @@
                                     <select
                                         id="mailgun_endpoint"
                                         v-model="form.mailgun_config.endpoint"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     >
                                         <option value="api.mailgun.net">US - api.mailgun.net</option>
                                         <option value="api.eu.mailgun.net">EU - api.eu.mailgun.net</option>
@@ -576,7 +576,7 @@
                                         id="mailgun_from_address"
                                         v-model="form.mailgun_config.from_address"
                                         placeholder="noreply@tudominio.com"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                             </div>
@@ -590,7 +590,7 @@
                                         id="ses_key"
                                         v-model="form.ses_config.key"
                                         placeholder="AKIA..."
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -600,7 +600,7 @@
                                         id="ses_secret"
                                         v-model="form.ses_config.secret"
                                         placeholder="Secret Key"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -608,7 +608,7 @@
                                     <select
                                         id="ses_region"
                                         v-model="form.ses_config.region"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     >
                                         <option value="us-east-1">US East (Virginia)</option>
                                         <option value="us-west-2">US West (Oregon)</option>
@@ -623,7 +623,7 @@
                                         id="ses_from_address"
                                         v-model="form.ses_config.from_address"
                                         placeholder="noreply@tudominio.com"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                             </div>
@@ -637,7 +637,7 @@
                                         id="postmark_token"
                                         v-model="form.postmark_config.token"
                                         placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -647,7 +647,7 @@
                                         id="postmark_from_address"
                                         v-model="form.postmark_config.from_address"
                                         placeholder="noreply@tudominio.com"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -657,7 +657,7 @@
                                         id="postmark_from_name"
                                         v-model="form.postmark_config.from_name"
                                         placeholder="Tu Empresa"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                             </div>
@@ -671,7 +671,7 @@
                                         id="mailtrap_username"
                                         v-model="form.mailtrap_config.username"
                                         placeholder="Username de Mailtrap"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -681,7 +681,7 @@
                                         id="mailtrap_password"
                                         v-model="form.mailtrap_config.password"
                                         placeholder="Password de Mailtrap"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -691,7 +691,7 @@
                                         id="mailtrap_from_address"
                                         v-model="form.mailtrap_config.from_address"
                                         placeholder="test@example.com"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                             </div>
@@ -706,7 +706,7 @@
                                     <input
                                         type="checkbox"
                                         v-model="form.rate_limiting.enabled"
-                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                     <span class="ml-2 text-sm text-gray-700">Habilitar Limitación de Envío</span>
                                 </label>
@@ -721,7 +721,7 @@
                                         v-model.number="form.rate_limiting.emails_per_minute"
                                         min="1"
                                         max="100"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -732,7 +732,7 @@
                                         v-model.number="form.rate_limiting.emails_per_hour"
                                         min="1"
                                         max="5000"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -743,7 +743,7 @@
                                         v-model.number="form.rate_limiting.emails_per_day"
                                         min="1"
                                         max="50000"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                                 <div>
@@ -754,7 +754,7 @@
                                         v-model.number="form.rate_limiting.delay_between_emails"
                                         min="0"
                                         max="60"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                 </div>
                             </div>
@@ -769,7 +769,7 @@
                                     <input
                                         type="checkbox"
                                         v-model="form.tracking.enabled"
-                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                     <span class="ml-2 text-sm text-gray-700">Habilitar Tracking</span>
                                 </label>
@@ -779,7 +779,7 @@
                                         <input
                                             type="checkbox"
                                             v-model="form.tracking.open_tracking"
-                                            class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                            class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                         />
                                         <span class="ml-2 text-sm text-gray-700">Tracking de Apertura</span>
                                     </label>
@@ -787,7 +787,7 @@
                                         <input
                                             type="checkbox"
                                             v-model="form.tracking.click_tracking"
-                                            class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                            class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                         />
                                         <span class="ml-2 text-sm text-gray-700">Tracking de Clicks</span>
                                     </label>
@@ -804,7 +804,7 @@
                                     <input
                                         type="checkbox"
                                         v-model="form.compliance.require_double_opt_in"
-                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                     <span class="ml-2 text-sm text-gray-700">Requerir Double Opt-in</span>
                                 </label>
@@ -812,7 +812,7 @@
                                     <input
                                         type="checkbox"
                                         v-model="form.compliance.include_physical_address"
-                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                     <span class="ml-2 text-sm text-gray-700">Incluir Dirección Física</span>
                                 </label>
@@ -820,7 +820,7 @@
                                     <input
                                         type="checkbox"
                                         v-model="form.compliance.unsubscribe_footer"
-                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                     <span class="ml-2 text-sm text-gray-700">Footer de Unsubscribe</span>
                                 </label>
@@ -828,7 +828,7 @@
                                     <input
                                         type="checkbox"
                                         v-model="form.compliance.list_unsubscribe_header"
-                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                     />
                                     <span class="ml-2 text-sm text-gray-700">Header List-Unsubscribe</span>
                                 </label>
@@ -841,7 +841,7 @@
                                 <button
                                     type="submit"
                                     :disabled="form.processing"
-                                    class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                    class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150"
                                 >
                                     <span v-if="form.processing" class="mr-2">
                                         <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
@@ -859,7 +859,7 @@
                                     type="email"
                                     v-model="testEmail"
                                     placeholder="Email para prueba"
-                                    class="rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                    class="rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                                 />
                                 <button
                                     type="button"

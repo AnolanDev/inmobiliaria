@@ -39,7 +39,7 @@
           </Link>
           <Link
             :href="route('projects.edit', project.id)"
-            class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150"
+            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:border-green-900 focus:ring focus:ring-green-300 disabled:opacity-25 transition ease-in-out duration-150"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -134,7 +134,7 @@
                       @click="currentGalleryIndex = index"
                       class="w-3 h-3 rounded-full transition-all duration-200"
                       :class="index === currentGalleryIndex 
-                        ? 'bg-blue-600' 
+                        ? 'bg-green-600' 
                         : 'bg-gray-300 hover:bg-gray-400'"
                     />
                   </div>
@@ -147,7 +147,7 @@
                     :key="index"
                     class="aspect-square rounded-lg overflow-hidden cursor-pointer transition-all duration-200 border-2"
                     :class="index === currentGalleryIndex 
-                      ? 'border-blue-500 shadow-lg' 
+                      ? 'border-green-500 shadow-lg' 
                       : 'border-transparent hover:border-gray-300 hover:shadow-md'"
                     @click="currentGalleryIndex = index"
                   >
@@ -197,7 +197,7 @@
                   </h3>
                   <Link
                     :href="route('properties.create', { project_id: project.id })"
-                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -231,7 +231,7 @@
                       </div>
                       <Link
                         :href="route('properties.show', property.id)"
-                        class="text-blue-600 hover:text-blue-800 text-sm"
+                        class="text-green-600 hover:text-green-800 text-sm"
                       >
                         Ver
                       </Link>
@@ -306,7 +306,7 @@
                 <div class="space-y-3">
                   <Link
                     :href="route('properties.create', { project_id: project.id })"
-                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -316,7 +316,7 @@
                   
                   <Link
                     :href="route('projects.edit', project.id)"
-                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -453,7 +453,7 @@ const currentImageIndex = ref(null)
 const getTypeColor = (type) => {
   const colors = {
     'Campestres': 'bg-green-100 text-green-800',
-    'Urbanos': 'bg-blue-100 text-blue-800',
+    'Urbanos': 'bg-green-100 text-green-800',
     'Turísticos': 'bg-purple-100 text-purple-800'
   }
   return colors[type] || 'bg-gray-100 text-gray-800'

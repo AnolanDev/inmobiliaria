@@ -15,7 +15,7 @@
         <div class="flex space-x-3">
           <Link
             :href="route('activities.create')"
-            class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
+            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -40,8 +40,8 @@
             <div class="p-6">
               <div class="flex items-center">
                 <div class="flex-shrink-0">
-                  <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V5a2 2 0 012-2h4a2 2 0 012 2v2m-6 0h8"/>
                     </svg>
                   </div>
@@ -138,7 +138,7 @@
                 <h3 class="text-lg font-medium text-gray-900">Próximas Actividades</h3>
                 <Link 
                   :href="route('activities.index', { my_activities: 1 })"
-                  class="text-sm text-blue-600 hover:text-blue-900"
+                  class="text-sm text-green-600 hover:text-green-900"
                 >
                   Ver todas
                 </Link>
@@ -160,7 +160,7 @@
                     <div class="flex items-center justify-between">
                       <Link
                         :href="route('activities.show', activity.id)"
-                        class="text-sm font-medium text-gray-900 hover:text-blue-600"
+                        class="text-sm font-medium text-gray-900 hover:text-green-600"
                       >
                         {{ activity.subject }}
                       </Link>
@@ -286,11 +286,11 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link
                 :href="route('activities.create', { type: 'call' })"
-                class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
+                class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors"
               >
                 <div class="flex-shrink-0">
-                  <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                     </svg>
                   </div>
@@ -374,7 +374,7 @@ const getActivityIcon = (type) => {
 
 const getActivityIconColor = (type) => {
   const colors = {
-    call: 'bg-blue-100 text-blue-600',
+    call: 'bg-green-100 text-green-600',
     email: 'bg-green-100 text-green-600',
     meeting: 'bg-purple-100 text-purple-600',
     note: 'bg-yellow-100 text-yellow-600',
@@ -385,7 +385,7 @@ const getActivityIconColor = (type) => {
 
 const getTypeColor = (type) => {
   const colors = {
-    call: 'bg-blue-100 text-blue-800',
+    call: 'bg-green-100 text-green-800',
     email: 'bg-green-100 text-green-800',
     meeting: 'bg-purple-100 text-purple-800',
     note: 'bg-yellow-100 text-yellow-800',

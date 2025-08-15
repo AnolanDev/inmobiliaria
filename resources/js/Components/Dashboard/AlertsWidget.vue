@@ -149,7 +149,7 @@
         </button>
         <button
           @click="$emit('view-all-alerts')"
-          class="text-sm text-blue-600 hover:text-blue-800 font-medium"
+          class="text-sm text-green-600 hover:text-green-800 font-medium"
         >
           Ver todas las alertas
         </button>

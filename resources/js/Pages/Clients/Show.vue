@@ -25,7 +25,7 @@
             <div class="flex items-center space-x-3">
               <Link
                 :href="route('clients.edit', client.id)"
-                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 shadow-sm"
+                class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 shadow-sm"
               >
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -63,7 +63,7 @@
                   />
                   <div
                     v-else
-                    class="h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-4 ring-white shadow-lg"
+                    class="h-24 w-24 rounded-full bg-gradient-to-br from-green-500 to-purple-600 flex items-center justify-center ring-4 ring-white shadow-lg"
                   >
                     <span class="text-2xl font-bold text-white">
                       {{ getInitials(client.name) }}
@@ -103,7 +103,7 @@
                         :class="[
                           'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium',
                           client.interest_level === 'high' ? 'bg-red-100 text-red-800' :
-                          client.interest_level === 'medium' ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'
+                          client.interest_level === 'medium' ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'
                         ]"
                       >
                         Interés {{ getInterestLevelLabel(client.interest_level) }}
@@ -127,7 +127,7 @@
                     <a
                       v-if="client.email"
                       :href="`mailto:${client.email}`"
-                      class="inline-flex items-center p-2 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg transition-colors duration-200"
+                      class="inline-flex items-center p-2 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg transition-colors duration-200"
                       title="Enviar email"
                     >
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,7 +200,7 @@
                 @click="activeTab = 'overview'"
                 :class="[
                   activeTab === 'overview'
-                    ? 'border-blue-500 text-blue-600'
+                    ? 'border-green-500 text-green-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                   'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200'
                 ]"
@@ -215,7 +215,7 @@
                 @click="activeTab = 'interactions'"
                 :class="[
                   activeTab === 'interactions'
-                    ? 'border-blue-500 text-blue-600'
+                    ? 'border-green-500 text-green-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                   'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200'
                 ]"
@@ -224,7 +224,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                 </svg>
                 Historial de Interacciones
-                <span v-if="getInteractionsCount() > 0" class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                <span v-if="getInteractionsCount() > 0" class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   {{ getInteractionsCount() }}
                 </span>
               </button>
@@ -233,7 +233,7 @@
                 @click="activeTab = 'properties'"
                 :class="[
                   activeTab === 'properties'
-                    ? 'border-blue-500 text-blue-600'
+                    ? 'border-green-500 text-green-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                   'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200'
                 ]"
@@ -270,7 +270,7 @@
                     <div>
                       <dt class="text-sm font-medium text-gray-500">Correo electrónico</dt>
                       <dd class="mt-1 text-sm text-gray-900">
-                        <a :href="`mailto:${client.email}`" class="text-blue-600 hover:text-blue-800">
+                        <a :href="`mailto:${client.email}`" class="text-green-600 hover:text-green-800">
                           {{ client.email }}
                         </a>
                       </dd>
@@ -286,7 +286,7 @@
                     <div v-if="client.phone">
                       <dt class="text-sm font-medium text-gray-500">Teléfono principal</dt>
                       <dd class="mt-1 text-sm text-gray-900">
-                        <a :href="`tel:${client.phone}`" class="text-blue-600 hover:text-blue-800">
+                        <a :href="`tel:${client.phone}`" class="text-green-600 hover:text-green-800">
                           {{ client.phone }}
                         </a>
                       </dd>
@@ -295,7 +295,7 @@
                     <div v-if="client.secondary_phone">
                       <dt class="text-sm font-medium text-gray-500">Teléfono secundario</dt>
                       <dd class="mt-1 text-sm text-gray-900">
-                        <a :href="`tel:${client.secondary_phone}`" class="text-blue-600 hover:text-blue-800">
+                        <a :href="`tel:${client.secondary_phone}`" class="text-green-600 hover:text-green-800">
                           {{ client.secondary_phone }}
                         </a>
                       </dd>
@@ -343,7 +343,7 @@
                       target="_blank"
                       class="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                     >
-                      <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
                       </svg>
                       <div>
@@ -419,7 +419,7 @@
                 <h3 class="text-lg font-semibold text-gray-900">Historial de Interacciones</h3>
                 <button
                   @click="showNewInteractionModal = true"
-                  class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 shadow-sm"
+                  class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 shadow-sm"
                 >
                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -440,7 +440,7 @@
                           <span :class="[
                             'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white',
                             interaction.type === 'call' ? 'bg-green-500' :
-                            interaction.type === 'email' ? 'bg-blue-500' :
+                            interaction.type === 'email' ? 'bg-green-500' :
                             interaction.type === 'meeting' ? 'bg-purple-500' :
                             interaction.type === 'visit' ? 'bg-orange-500' : 'bg-gray-500'
                           ]">
@@ -553,7 +553,7 @@
                   <div class="mt-4 flex items-center justify-between">
                     <Link
                       :href="route('properties.show', property.id)"
-                      class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      class="text-green-600 hover:text-green-800 text-sm font-medium"
                     >
                       Ver Detalles
                     </Link>
@@ -576,7 +576,7 @@
                 <h3 class="mt-2 text-sm font-medium text-gray-900">No hay propiedades asociadas</h3>
                 <p class="mt-1 text-sm text-gray-500">Este cliente aún no tiene propiedades de interés asociadas.</p>
                 <div class="mt-6">
-                  <button class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                  <button class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
                     <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                     </svg>
@@ -723,7 +723,7 @@ const getInterestStatusLabel = (status) => {
 
 const getInterestStatusColor = (status) => {
   const colors = {
-    interesado: 'bg-blue-100 text-blue-800',
+    interesado: 'bg-green-100 text-green-800',
     contactado: 'bg-yellow-100 text-yellow-800',
     visitado: 'bg-purple-100 text-purple-800',
     negociando: 'bg-orange-100 text-orange-800',

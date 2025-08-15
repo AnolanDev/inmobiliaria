@@ -53,7 +53,7 @@
             />
             <span
               v-else-if="link.active"
-              class="relative inline-flex items-center px-4 py-2 border border-blue-500 bg-blue-50 text-sm font-medium text-blue-600"
+              class="relative inline-flex items-center px-4 py-2 border border-green-500 bg-green-50 text-sm font-medium text-green-600"
               v-html="link.label"
             />
             <span

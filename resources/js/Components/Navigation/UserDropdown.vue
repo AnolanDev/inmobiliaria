@@ -5,10 +5,14 @@
             @click="toggleDropdown"
             :class="[
                 'w-full flex items-center gap-3 px-3 py-2.5 text-sm text-left text-gray-700 rounded-xl transition-all duration-200 group',
-                isOpen ? 'bg-blue-50 border-l-4 border-blue-600' : 'hover:bg-gray-100 hover:border-l-4 hover:border-blue-200 border-l-4 border-transparent'
+                isOpen ? 'bg-green-50 border-l-4 border-green-600' : 'hover:bg-gray-100 hover:border-l-4 hover:border-green-200 border-l-4 border-transparent'
             ]"
+            :style="isOpen ? { backgroundColor: '#00bf6320', borderLeftColor: '#00bf63' } : {}"
         >
-            <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-110 shadow-md">
+            <div 
+                class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-110 shadow-md"
+                style="background: linear-gradient(135deg, #00bf63, #009951);"
+            >
                 <span class="text-white font-bold text-sm">
                     {{ user?.name?.charAt(0)?.toUpperCase() || 'U' }}
                 </span>
@@ -20,8 +24,9 @@
             <svg 
                 :class="[
                     'w-4 h-4 transition-all duration-200', 
-                    isOpen ? 'rotate-180 text-blue-600' : 'text-gray-500 group-hover:text-blue-600'
+                    isOpen ? 'rotate-180' : 'text-gray-500 group-hover:text-green-600'
                 ]"
+                :style="isOpen ? { color: '#00bf63' } : {}"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24"
             >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
@@ -40,10 +45,10 @@
                 <!-- Profile Link -->
                 <Link
                     :href="route('profile.edit')"
-                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 group"
+                    class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all duration-200 group"
                     @click="closeDropdown"
                 >
-                    <svg class="w-4 h-4 text-gray-500 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 text-gray-500 group-hover:text-green-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
                               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
@@ -83,13 +88,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Overlay for closing dropdown -->
-    <div 
-        v-if="isOpen && !isMobile" 
-        class="fixed inset-0 z-40" 
-        @click="closeDropdown"
-    ></div>
 </template>
 
 <script setup>

@@ -346,7 +346,7 @@ class LeadController extends Controller
     }
 
     /**
-     * Get lead analytics data.
+     * Show lead analytics page.
      */
     public function analytics(Request $request)
     {
@@ -368,7 +368,7 @@ class LeadController extends Controller
             ? round((Lead::where('status', 'converted')->count() / Lead::count()) * 100, 2)
             : 0;
 
-        return response()->json([
+        $data = [
             'leads_by_status' => $leadsByStatus,
             'leads_by_source' => $leadsBySource,
             'leads_over_time' => $leadsOverTime,
@@ -380,6 +380,14 @@ class LeadController extends Controller
                 'conversion_rate' => $conversionRate,
                 'overdue_followups' => Lead::overdue()->count(),
             ]
-        ]);
+        ];
+
+        // If it's an AJAX request, return JSON
+        if ($request->wantsJson() || $request->expectsJson()) {
+            return response()->json($data);
+        }
+
+        // Otherwise, return Inertia page
+        return Inertia::render('Marketing/Leads/Analytics', $data);
     }
 }

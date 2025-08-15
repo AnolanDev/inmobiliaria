@@ -39,7 +39,7 @@
                         v-model="visitSubjectType"
                         type="radio"
                         value="property"
-                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                       />
                       <span class="ml-2 text-sm text-gray-700">Propiedad Individual</span>
                     </label>
@@ -48,7 +48,7 @@
                         v-model="visitSubjectType"
                         type="radio"
                         value="project"
-                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                       />
                       <span class="ml-2 text-sm text-gray-700">Proyecto</span>
                     </label>
@@ -62,7 +62,7 @@
                   </label>
                   <select
                     v-model="form.property_id"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.property_id }"
                   >
                     <option value="">Seleccionar propiedad</option>
@@ -80,7 +80,7 @@
                   </label>
                   <select
                     v-model="form.project_id"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.project_id }"
                   >
                     <option value="">Seleccionar proyecto</option>
@@ -98,7 +98,7 @@
                   </label>
                   <select
                     v-model="form.client_id"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.client_id }"
                     required
                   >
@@ -117,7 +117,7 @@
                   </label>
                   <select
                     v-model="form.agent_id"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.agent_id }"
                     required
                   >
@@ -136,7 +136,7 @@
                   </label>
                   <select
                     v-model="form.type"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.type }"
                     required
                   >
@@ -156,7 +156,7 @@
                   </label>
                   <select
                     v-model="form.status"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.status }"
                   >
                     <option value="scheduled">Programada</option>
@@ -181,7 +181,7 @@
                   <input
                     v-model="form.scheduled_at"
                     type="datetime-local"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.scheduled_at }"
                     required
                   />
@@ -199,7 +199,7 @@
                     min="15"
                     max="480"
                     step="15"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.estimated_duration }"
                   />
                   <p v-if="errors.estimated_duration" class="text-red-500 text-sm mt-1">{{ errors.estimated_duration }}</p>
@@ -212,7 +212,7 @@
                   </label>
                   <select
                     v-model="form.priority"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.priority }"
                     required
                   >
@@ -238,7 +238,7 @@
                   <input
                     v-model="form.client_phone"
                     type="tel"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.client_phone }"
                   />
                   <p v-if="errors.client_phone" class="text-red-500 text-sm mt-1">{{ errors.client_phone }}</p>
@@ -252,7 +252,7 @@
                   <input
                     v-model="form.client_email"
                     type="email"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.client_email }"
                   />
                   <p v-if="errors.client_email" class="text-red-500 text-sm mt-1">{{ errors.client_email }}</p>
@@ -274,7 +274,7 @@
                     type="number"
                     min="1"
                     max="480"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.actual_duration }"
                   />
                   <p v-if="errors.actual_duration" class="text-red-500 text-sm mt-1">{{ errors.actual_duration }}</p>
@@ -287,7 +287,7 @@
                   </label>
                   <select
                     v-model="form.outcome"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.outcome }"
                   >
                     <option value="">Seleccionar resultado</option>
@@ -310,7 +310,7 @@
                     type="number"
                     min="1"
                     max="5"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.client_rating }"
                   />
                   <p v-if="errors.client_rating" class="text-red-500 text-sm mt-1">{{ errors.client_rating }}</p>
@@ -326,7 +326,7 @@
                     type="number"
                     min="0"
                     step="0.01"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.offered_price }"
                   />
                   <p v-if="errors.offered_price" class="text-red-500 text-sm mt-1">{{ errors.offered_price }}</p>
@@ -340,7 +340,7 @@
                   <textarea
                     v-model="form.client_feedback"
                     rows="3"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.client_feedback }"
                   ></textarea>
                   <p v-if="errors.client_feedback" class="text-red-500 text-sm mt-1">{{ errors.client_feedback }}</p>
@@ -354,7 +354,7 @@
                   <textarea
                     v-model="form.agent_observations"
                     rows="3"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.agent_observations }"
                   ></textarea>
                   <p v-if="errors.agent_observations" class="text-red-500 text-sm mt-1">{{ errors.agent_observations }}</p>
@@ -368,7 +368,7 @@
                   <textarea
                     v-model="form.financing_discussed"
                     rows="2"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.financing_discussed }"
                   ></textarea>
                   <p v-if="errors.financing_discussed" class="text-red-500 text-sm mt-1">{{ errors.financing_discussed }}</p>
@@ -386,7 +386,7 @@
                     <input
                       v-model="form.requires_follow_up"
                       type="checkbox"
-                      class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                      class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                     />
                     <span class="ml-2 text-sm text-gray-700">Requiere seguimiento</span>
                   </label>
@@ -399,7 +399,7 @@
                   <input
                     v-model="form.follow_up_date"
                     type="date"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.follow_up_date }"
                   />
                   <p v-if="errors.follow_up_date" class="text-red-500 text-sm mt-1">{{ errors.follow_up_date }}</p>
@@ -412,7 +412,7 @@
                   <textarea
                     v-model="form.follow_up_notes"
                     rows="2"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.follow_up_notes }"
                   ></textarea>
                   <p v-if="errors.follow_up_notes" class="text-red-500 text-sm mt-1">{{ errors.follow_up_notes }}</p>
@@ -431,7 +431,7 @@
                   </label>
                   <select
                     v-model.number="form.reminder_hours_before"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     :class="{ 'border-red-500': errors.reminder_hours_before }"
                   >
                     <option value="1">1 hora</option>
@@ -457,7 +457,7 @@
                   <input
                     v-model="participant.name"
                     type="text"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -465,7 +465,7 @@
                   <input
                     v-model="participant.phone"
                     type="tel"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -474,7 +474,7 @@
                     v-model="participant.role"
                     type="text"
                     placeholder="Ej: Cónyuge, Asesor"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
                 <div class="flex items-end">
@@ -493,7 +493,7 @@
               <button
                 type="button"
                 @click="addParticipant"
-                class="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
+                class="flex items-center gap-2 text-green-600 hover:text-green-800 text-sm font-medium"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -510,7 +510,7 @@
               <textarea
                 v-model="form.notes"
                 rows="4"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 :class="{ 'border-red-500': errors.notes }"
                 placeholder="Notas adicionales sobre la visita..."
               ></textarea>
@@ -526,7 +526,7 @@
                 type="file"
                 multiple
                 @change="handleFileUpload"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
               />
               <p class="text-xs text-gray-500 mt-1">
@@ -545,7 +545,7 @@
               <button
                 type="submit"
                 :disabled="processing"
-                class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium disabled:opacity-50 flex items-center gap-2"
+                class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 font-medium disabled:opacity-50 flex items-center gap-2"
               >
                 <svg v-if="processing" class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

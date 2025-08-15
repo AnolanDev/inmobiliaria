@@ -25,7 +25,7 @@
         <div class="flex space-x-2">
           <Link
             :href="route('properties.show', property.id)"
-            class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -56,7 +56,7 @@
                     v-model="form.title"
                     type="text"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.title }"
                     placeholder="Ej: Casa familiar con jardín"
                   />
@@ -73,7 +73,7 @@
                     v-model="form.description"
                     rows="4"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.description }"
                     placeholder="Describe las características principales de la propiedad..."
                   />
@@ -96,7 +96,7 @@
                       step="0.01"
                       min="0"
                       required
-                      class="block w-full pl-7 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      class="block w-full pl-7 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                       :class="{ 'border-red-300': form.errors.price }"
                       placeholder="350000"
                     />
@@ -113,7 +113,7 @@
                     id="type"
                     v-model="form.type"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.type }"
                   >
                     <option value="">Selecciona el tipo</option>
@@ -132,7 +132,7 @@
                     id="category"
                     v-model="form.category"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.category }"
                   >
                     <option value="">Selecciona la categoría</option>
@@ -153,7 +153,7 @@
                   <select
                     id="status"
                     v-model="form.status"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.status }"
                   >
                     <option value="available">Disponible</option>
@@ -183,7 +183,7 @@
                     v-model="form.address"
                     type="text"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.address }"
                     placeholder="Ej: Calle 123 #45-67"
                   />
@@ -200,7 +200,7 @@
                     v-model="form.city"
                     type="text"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.city }"
                     placeholder="Ej: Bogotá"
                   />
@@ -217,7 +217,7 @@
                     v-model="form.state"
                     type="text"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.state }"
                     placeholder="Ej: Cundinamarca"
                   />
@@ -233,7 +233,7 @@
                     id="zip_code"
                     v-model="form.zip_code"
                     type="text"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.zip_code }"
                     placeholder="Ej: 110111"
                   />
@@ -259,7 +259,7 @@
                     v-model.number="form.bedrooms"
                     type="number"
                     min="0"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.bedrooms }"
                   />
                   <p v-if="form.errors.bedrooms" class="mt-1 text-sm text-red-600">{{ form.errors.bedrooms }}</p>
@@ -275,7 +275,7 @@
                     v-model.number="form.bathrooms"
                     type="number"
                     min="0"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.bathrooms }"
                   />
                   <p v-if="form.errors.bathrooms" class="mt-1 text-sm text-red-600">{{ form.errors.bathrooms }}</p>
@@ -293,7 +293,7 @@
                     step="0.01"
                     min="0"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.area }"
                     placeholder="120"
                   />
@@ -399,14 +399,14 @@
           <div class="flex justify-end space-x-3">
             <Link
               :href="route('properties.show', property.id)"
-              class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Cancelar
             </Link>
             <button
               type="submit"
               :disabled="form.processing"
-              class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
             >
               <svg v-if="form.processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

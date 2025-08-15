@@ -10,7 +10,7 @@
           </div>
           <Link
             :href="route('visits.create')"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium shadow-sm transition-colors inline-flex items-center gap-2"
+            class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium shadow-sm transition-colors inline-flex items-center gap-2"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -34,10 +34,10 @@
             <div class="flex items-center justify-between">
               <div>
                 <p class="text-sm font-medium text-gray-600">Programadas Hoy</p>
-                <p class="text-2xl font-bold text-blue-600">{{ todayCount }}</p>
+                <p class="text-2xl font-bold text-green-600">{{ todayCount }}</p>
               </div>
-              <div class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center">
+                <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
               </div>
@@ -147,7 +147,7 @@
                 v-model="filters.search"
                 type="text"
                 placeholder="Cliente, propiedad, agente..."
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
             </div>
             
@@ -156,7 +156,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
               <select
                 v-model="filters.status"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               >
                 <option value="">Todos</option>
                 <option v-for="(label, value) in statuses" :key="value" :value="value">
@@ -170,7 +170,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
               <select
                 v-model="filters.type"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               >
                 <option value="">Todos</option>
                 <option v-for="(label, value) in types" :key="value" :value="value">
@@ -184,7 +184,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Prioridad</label>
               <select
                 v-model="filters.priority"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               >
                 <option value="">Todas</option>
                 <option v-for="(label, value) in priorities" :key="value" :value="value">
@@ -215,7 +215,7 @@
                 @click="viewMode = 'cards'"
                 :class="[
                   viewMode === 'cards' 
-                    ? 'bg-blue-100 text-blue-700' 
+                    ? 'bg-green-100 text-green-700' 
                     : 'text-gray-500 hover:text-gray-700',
                   'p-2 rounded transition-colors'
                 ]"
@@ -229,7 +229,7 @@
                 @click="viewMode = 'table'"
                 :class="[
                   viewMode === 'table' 
-                    ? 'bg-blue-100 text-blue-700' 
+                    ? 'bg-green-100 text-green-700' 
                     : 'text-gray-500 hover:text-gray-700',
                   'p-2 rounded transition-colors'
                 ]"
@@ -243,7 +243,7 @@
                 @click="viewMode = 'calendar'"
                 :class="[
                   viewMode === 'calendar' 
-                    ? 'bg-blue-100 text-blue-700' 
+                    ? 'bg-green-100 text-green-700' 
                     : 'text-gray-500 hover:text-gray-700',
                   'p-2 rounded transition-colors'
                 ]"
@@ -318,7 +318,7 @@
           <div class="mt-6">
             <Link
               :href="route('visits.create')"
-              class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
             >
               <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>

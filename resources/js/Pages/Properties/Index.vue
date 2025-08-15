@@ -14,7 +14,7 @@
         </div>
         <Link
           :href="route('properties.create')"
-          class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150"
+          class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:border-green-900 focus:ring focus:ring-green-300 disabled:opacity-25 transition ease-in-out duration-150"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -43,7 +43,7 @@
                     @input="debouncedFilter"
                     type="text"
                     placeholder="Buscar propiedades..."
-                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -53,7 +53,7 @@
                 <select
                   v-model="filters.project_id"
                   @change="applyFilters"
-                  class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
                 >
                   <option value="">Todos los proyectos</option>
                   <option v-for="project in projects" :key="project.id" :value="project.id">
@@ -67,9 +67,9 @@
                 <button
                   @click="viewMode = 'grid'"
                   :class="[
-                    'relative inline-flex items-center px-4 py-2 rounded-l-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500',
+                    'relative inline-flex items-center px-4 py-2 rounded-l-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500',
                     viewMode === 'grid'
-                      ? 'bg-blue-600 border-blue-600 text-white'
+                      ? 'bg-green-600 border-green-600 text-white'
                       : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                   ]"
                 >
@@ -80,9 +80,9 @@
                 <button
                   @click="viewMode = 'list'"
                   :class="[
-                    'relative -ml-px inline-flex items-center px-4 py-2 rounded-r-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500',
+                    'relative -ml-px inline-flex items-center px-4 py-2 rounded-r-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500',
                     viewMode === 'list'
-                      ? 'bg-blue-600 border-blue-600 text-white'
+                      ? 'bg-green-600 border-green-600 text-white'
                       : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                   ]"
                 >
@@ -121,10 +121,13 @@
               
               <!-- Badges -->
               <div class="absolute top-3 left-3 space-y-1">
-                <span class="inline-block bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+                <span class="inline-block bg-green-600 text-white px-2 py-1 rounded-full text-xs font-medium">
                   {{ property.type === 'sale' ? 'Venta' : 'Alquiler' }}
                 </span>
-                <span :class="['block px-2 py-1 rounded-full text-xs font-medium', getStatusColor(property.status)]">
+                <span 
+                  :class="['block px-2 py-1 rounded-full text-xs font-medium', getStatusColor(property.status)]"
+                  :style="getStatusStyle(property.status)"
+                >
                   {{ getStatusName(property.status) }}
                 </span>
               </div>
@@ -208,7 +211,7 @@
                 </div>
                 <button
                   @click.stop="goToProperty(property.id)"
-                  class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  class="text-green-600 hover:text-green-800 text-sm font-medium"
                 >
                   Ver detalles →
                 </button>
@@ -254,7 +257,7 @@
                       <div v-if="property.bedrooms > 0">{{ property.bedrooms }} hab.</div>
                       <div v-if="property.bathrooms > 0">{{ property.bathrooms }} baños</div>
                       <div>{{ property.area }} m²</div>
-                      <div v-if="property.project" class="text-blue-600">{{ property.project.name }}</div>
+                      <div v-if="property.project" class="text-green-600">{{ property.project.name }}</div>
                     </div>
                   </div>
 
@@ -266,10 +269,13 @@
                     </div>
                     
                     <div class="flex items-center space-x-2 mb-2">
-                      <span class="inline-block bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+                      <span class="inline-block bg-green-600 text-white px-2 py-1 rounded-full text-xs font-medium">
                         {{ property.type === 'sale' ? 'Venta' : 'Alquiler' }}
                       </span>
-                      <span :class="['px-2 py-1 rounded-full text-xs font-medium', getStatusColor(property.status)]">
+                      <span 
+                        :class="['px-2 py-1 rounded-full text-xs font-medium', getStatusColor(property.status)]"
+                        :style="getStatusStyle(property.status)"
+                      >
                         {{ getStatusName(property.status) }}
                       </span>
                     </div>
@@ -294,7 +300,7 @@
           <div class="mt-6">
             <Link
               :href="route('properties.create')"
-              class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -396,12 +402,24 @@ const getStatusName = (status) => {
 
 const getStatusColor = (status) => {
   const colors = {
-    'available': 'bg-green-100 text-green-800',
-    'sold': 'bg-red-100 text-red-800',
-    'rented': 'bg-blue-100 text-blue-800',
-    'pending': 'bg-yellow-100 text-yellow-800'
+    'available': '',       // Se maneja con estilos inline
+    'sold': '',            // Se maneja con estilos inline
+    'rented': '',          // Se maneja con estilos inline
+    'pending': '',         // Se maneja con estilos inline
+    'reserved': ''         // Se maneja con estilos inline
   }
   return colors[status] || 'bg-gray-100 text-gray-800'
+}
+
+const getStatusStyle = (status) => {
+  const styles = {
+    'available': { backgroundColor: '#10b981', color: 'white' },    // Verde vibrante
+    'sold': { backgroundColor: '#ef4444', color: 'white' },         // Rojo intenso
+    'rented': { backgroundColor: '#3b82f6', color: 'white' },       // Azul brillante
+    'pending': { backgroundColor: '#eab308', color: 'white' },      // Amarillo vibrante
+    'reserved': { backgroundColor: '#a855f7', color: 'white' }      // Púrpura intenso
+  }
+  return styles[status] || {}
 }
 
 const goToProperty = (propertyId) => {

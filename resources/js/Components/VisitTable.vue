@@ -70,7 +70,7 @@
                 <span v-if="visit.is_project_visit" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
                   Proyecto
                 </span>
-                <span v-else-if="visit.is_property_visit" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                <span v-else-if="visit.is_property_visit" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   Propiedad
                 </span>
               </div>
@@ -113,7 +113,7 @@
               <div 
                 :class="[
                   'text-sm font-medium',
-                  visit.is_overdue ? 'text-red-600' : visit.is_today ? 'text-blue-600' : 'text-gray-900'
+                  visit.is_overdue ? 'text-red-600' : visit.is_today ? 'text-green-600' : 'text-gray-900'
                 ]"
               >
                 {{ formatDateTime(visit.scheduled_at) }}
@@ -153,7 +153,7 @@
               <!-- View Button -->
               <button
                 @click="$emit('view', visit)"
-                class="text-blue-600 hover:text-blue-900"
+                class="text-green-600 hover:text-green-900"
                 title="Ver detalles"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -292,7 +292,7 @@ const getOutcomeColor = (outcome) => {
     interested: 'bg-green-100 text-green-800',
     not_interested: 'bg-red-100 text-red-800',
     needs_follow_up: 'bg-yellow-100 text-yellow-800',
-    offer_made: 'bg-blue-100 text-blue-800',
+    offer_made: 'bg-green-100 text-green-800',
     deal_closed: 'bg-purple-100 text-purple-800'
   }
   return colors[outcome] || 'bg-gray-100 text-gray-800'

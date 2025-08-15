@@ -62,7 +62,7 @@
                     <template v-if="campaign.status === 'paused'">
                         <button
                             @click="resumeCampaign"
-                            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
                         >
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -103,7 +103,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Template</label>
                                     <Link 
                                         :href="route('email-templates.show', campaign.email_template.id)"
-                                        class="text-sm text-blue-600 hover:text-blue-700 underline"
+                                        class="text-sm text-green-600 hover:text-green-700 underline"
                                     >
                                         {{ campaign.email_template.name }}
                                     </Link>
@@ -148,7 +148,7 @@
                                 <div class="text-xs text-gray-400 mt-1">{{ formatNumber(campaign.opens_count || 0) }} aperturas</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-3xl font-bold text-blue-600">{{ campaign.click_rate || 0 }}%</div>
+                                <div class="text-3xl font-bold text-green-600">{{ campaign.click_rate || 0 }}%</div>
                                 <div class="text-sm text-gray-500">Clics</div>
                                 <div class="text-xs text-gray-400 mt-1">{{ formatNumber(campaign.clicks_count || 0) }} clics</div>
                             </div>
@@ -167,7 +167,7 @@
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
                                 <div 
-                                    class="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                                    class="bg-green-600 h-2 rounded-full transition-all duration-300" 
                                     :style="{ width: Math.round((campaign.emails_sent / campaign.estimated_recipients) * 100) + '%' }"
                                 ></div>
                             </div>
@@ -206,7 +206,7 @@
                                         <span 
                                             v-for="status in campaign.segment_criteria.lead_status" 
                                             :key="status"
-                                            class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800"
+                                            class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800"
                                         >
                                             {{ getLeadStatusLabel(status) }}
                                         </span>
@@ -244,12 +244,12 @@
                                 <p class="text-sm text-gray-900">{{ campaign.segment_criteria.interests }}</p>
                             </div>
 
-                            <div class="bg-blue-50 rounded-lg p-4">
+                            <div class="bg-green-50 rounded-lg p-4">
                                 <div class="flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
-                                    <span class="text-sm font-medium text-blue-900">
+                                    <span class="text-sm font-medium text-green-900">
                                         {{ formatNumber(campaign.estimated_recipients) }} destinatarios estimados
                                     </span>
                                 </div>
@@ -298,7 +298,7 @@
                         <div class="space-y-3">
                             <Link
                                 :href="route('email-campaigns.recipients', campaign.id)"
-                                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-100 transition-colors"
+                                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-50 text-green-700 text-sm font-medium rounded-lg hover:bg-green-100 transition-colors"
                             >
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -339,7 +339,7 @@
                                 :key="activity.id"
                                 class="flex items-start gap-3 text-sm"
                             >
-                                <div class="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                                <div class="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-gray-900">{{ activity.description }}</p>
                                     <p class="text-gray-500 text-xs">{{ formatDateTime(activity.created_at) }}</p>
@@ -354,7 +354,7 @@
                         
                         <div class="space-y-4">
                             <div class="flex items-start gap-3">
-                                <div class="w-3 h-3 bg-blue-600 rounded-full mt-1"></div>
+                                <div class="w-3 h-3 bg-green-600 rounded-full mt-1"></div>
                                 <div>
                                     <p class="text-sm font-medium text-gray-900">Campaña creada</p>
                                     <p class="text-xs text-gray-500">{{ formatDateTime(campaign.created_at) }}</p>
@@ -459,7 +459,7 @@ const stripScripts = (html) => {
 const getStatusClass = (status) => {
     const classes = {
         'draft': 'bg-yellow-100 text-yellow-800',
-        'scheduled': 'bg-blue-100 text-blue-800',
+        'scheduled': 'bg-green-100 text-green-800',
         'sending': 'bg-orange-100 text-orange-800',
         'sent': 'bg-green-100 text-green-800',
         'paused': 'bg-gray-100 text-gray-800',

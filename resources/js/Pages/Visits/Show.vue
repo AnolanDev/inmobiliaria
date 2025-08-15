@@ -29,7 +29,7 @@
               <Link
                 v-if="visit.status === 'scheduled'"
                 :href="route('visits.edit', visit.id)"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
               >
                 Editar Visita
               </Link>
@@ -161,8 +161,8 @@
                 <h4 class="text-sm font-medium text-gray-600 mb-2">Cliente Principal</h4>
                 <div class="bg-gray-50 rounded-lg p-4">
                   <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                      <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                      <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                       </svg>
                     </div>
@@ -330,7 +330,7 @@
                   <a 
                     :href="`/storage/${attachment.path}`" 
                     target="_blank"
-                    class="text-blue-600 hover:text-blue-800"
+                    class="text-green-600 hover:text-green-800"
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -380,7 +380,7 @@
 
                 <button
                   @click="sendReminder"
-                  class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                  class="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 7h8M4 11h8M4 15h8"/>
@@ -429,7 +429,7 @@
                     v-model.number="completeForm.actual_duration"
                     type="number"
                     min="1"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                 </div>
                 
@@ -437,7 +437,7 @@
                   <label class="block text-sm font-medium text-gray-700 mb-1">Resultado</label>
                   <select
                     v-model="completeForm.outcome"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   >
                     <option value="">Seleccionar resultado</option>
                     <option value="interested">Interesado</option>
@@ -478,7 +478,7 @@
                 <textarea
                   v-model="cancelForm.cancellation_reason"
                   rows="3"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 ></textarea>
               </div>
@@ -577,7 +577,7 @@ const getOutcomeColor = (outcome) => {
     interested: 'bg-green-100 text-green-800',
     not_interested: 'bg-red-100 text-red-800',
     needs_follow_up: 'bg-yellow-100 text-yellow-800',
-    offer_made: 'bg-blue-100 text-blue-800',
+    offer_made: 'bg-green-100 text-green-800',
     deal_closed: 'bg-purple-100 text-purple-800'
   }
   return colors[outcome] || 'bg-gray-100 text-gray-800'

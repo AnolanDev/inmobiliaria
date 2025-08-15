@@ -31,7 +31,7 @@
         <div class="flex space-x-2">
           <Link
             :href="route('agents.edit', agent.id)"
-            class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150"
+            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:border-green-900 focus:ring focus:ring-green-300 disabled:opacity-25 transition ease-in-out duration-150"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -60,7 +60,7 @@
                 <!-- Badges Overlay -->
                 <div class="absolute top-4 left-4 space-y-2">
                   <span :class="['inline-block px-3 py-1 rounded-full text-sm font-medium',
-                    agent.type === 'Interno' ? 'bg-blue-600 text-white' : 'bg-purple-600 text-white']">
+                    agent.type === 'Interno' ? 'bg-green-600 text-white' : 'bg-purple-600 text-white']">
                     {{ agent.type }}
                   </span>
                 </div>
@@ -122,7 +122,7 @@
               <div class="px-4 py-5 sm:p-6">
                 <div class="flex items-center justify-between mb-4">
                   <h3 class="text-lg font-medium text-gray-900">Propiedades asignadas</h3>
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                     {{ agent.properties.length }} {{ agent.properties.length === 1 ? 'propiedad' : 'propiedades' }}
                   </span>
                 </div>
@@ -157,7 +157,7 @@
                 <div v-if="agent.properties.length >= 10" class="mt-4 text-center">
                   <Link
                     :href="route('properties.index', { agent_id: agent.id })"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     Ver todas las propiedades
                   </Link>
@@ -177,7 +177,7 @@
                   <div>
                     <dt class="text-sm font-medium text-gray-500">Correo electrónico</dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      <a :href="`mailto:${agent.email}`" class="text-blue-600 hover:text-blue-800">
+                      <a :href="`mailto:${agent.email}`" class="text-green-600 hover:text-green-800">
                         {{ agent.email }}
                       </a>
                     </dd>
@@ -186,7 +186,7 @@
                   <div>
                     <dt class="text-sm font-medium text-gray-500">Teléfono</dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      <a :href="`tel:${agent.phone}`" class="text-blue-600 hover:text-blue-800">
+                      <a :href="`tel:${agent.phone}`" class="text-green-600 hover:text-green-800">
                         {{ agent.phone }}
                       </a>
                     </dd>
@@ -196,7 +196,7 @@
                     <dt class="text-sm font-medium text-gray-500">Tipo de agente</dt>
                     <dd class="mt-1">
                       <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                        agent.type === 'Interno' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800']">
+                        agent.type === 'Interno' ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800']">
                         {{ agent.type }}
                       </span>
                     </dd>
@@ -223,7 +223,7 @@
                 <div class="space-y-3">
                   <div v-if="agent.facebook" class="flex items-center">
                     <div class="flex-shrink-0">
-                      <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                       </svg>
                     </div>
@@ -232,7 +232,7 @@
                         :href="agent.facebook"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="text-sm text-blue-600 hover:text-blue-800"
+                        class="text-sm text-green-600 hover:text-green-800"
                       >
                         Facebook
                       </a>
@@ -259,7 +259,7 @@
 
                   <div v-if="agent.linkedin" class="flex items-center">
                     <div class="flex-shrink-0">
-                      <svg class="w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 24 24">
+                      <svg class="w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                       </svg>
                     </div>
@@ -268,7 +268,7 @@
                         :href="agent.linkedin"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="text-sm text-blue-700 hover:text-blue-900"
+                        class="text-sm text-green-700 hover:text-green-900"
                       >
                         LinkedIn
                       </a>
@@ -285,7 +285,7 @@
                 <div class="space-y-3">
                   <Link
                     :href="route('agents.edit', agent.id)"
-                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -295,7 +295,7 @@
                   
                   <Link
                     :href="route('properties.index', { agent_id: agent.id })"
-                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
@@ -418,7 +418,7 @@ const getStatusColor = (status) => {
   const colors = {
     'available': 'bg-green-100 text-green-800',
     'sold': 'bg-red-100 text-red-800',
-    'rented': 'bg-blue-100 text-blue-800',
+    'rented': 'bg-green-100 text-green-800',
     'pending': 'bg-yellow-100 text-yellow-800'
   }
   return colors[status] || 'bg-gray-100 text-gray-800'
