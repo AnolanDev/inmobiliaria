@@ -30,7 +30,7 @@
                   id="name"
                   v-model="form.name"
                   type="text"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-500': form.errors.name }"
                   required
                 />
@@ -47,7 +47,7 @@
                 <select
                   id="type"
                   v-model="form.type"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-500': form.errors.type }"
                   required
                 >
@@ -68,7 +68,7 @@
                 <select
                   id="status"
                   v-model="form.status"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-500': form.errors.status }"
                   required
                 >
@@ -94,7 +94,7 @@
                     type="number"
                     step="0.01"
                     min="0"
-                    class="w-full border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.budget }"
                   />
                 </div>
@@ -116,7 +116,7 @@
                     type="number"
                     step="0.01"
                     min="0"
-                    class="w-full border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.spent }"
                   />
                 </div>
@@ -134,7 +134,7 @@
                   id="start_date"
                   v-model="form.start_date"
                   type="date"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-500': form.errors.start_date }"
                 />
                 <p v-if="form.errors.start_date" class="mt-1 text-sm text-red-600">
@@ -151,7 +151,7 @@
                   id="end_date"
                   v-model="form.end_date"
                   type="date"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-500': form.errors.end_date }"
                   :min="form.start_date"
                 />
@@ -170,7 +170,7 @@
                 id="description"
                 v-model="form.description"
                 rows="3"
-                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 :class="{ 'border-red-500': form.errors.description }"
               />
               <p v-if="form.errors.description" class="mt-1 text-sm text-red-600">
@@ -189,7 +189,7 @@
                   v-model="form.impressions"
                   type="number"
                   min="0"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
 
@@ -202,7 +202,7 @@
                   v-model="form.clicks"
                   type="number"
                   min="0"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
 
@@ -215,7 +215,7 @@
                   v-model="form.conversions"
                   type="number"
                   min="0"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
 
@@ -240,7 +240,7 @@
               <button
                 type="submit"
                 :disabled="form.processing"
-                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
               >
                 {{ form.processing ? 'Guardando...' : 'Guardar Cambios' }}
               </button>

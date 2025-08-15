@@ -64,7 +64,7 @@
                     
                     <Link
                         :href="route('email-templates.edit', template.id)"
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2.828 2.828 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -160,7 +160,7 @@
                                     :class="[
                                         'px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
                                         viewMode === 'preview' 
-                                            ? 'bg-blue-100 text-blue-700' 
+                                            ? 'bg-green-100 text-green-700' 
                                             : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
                                     ]"
                                     @click="viewMode = 'preview'"
@@ -171,7 +171,7 @@
                                     :class="[
                                         'px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
                                         viewMode === 'html' 
-                                            ? 'bg-blue-100 text-blue-700' 
+                                            ? 'bg-green-100 text-green-700' 
                                             : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
                                     ]"
                                     @click="viewMode = 'html'"
@@ -183,7 +183,7 @@
                                     :class="[
                                         'px-3 py-1.5 text-sm font-medium rounded-lg transition-colors',
                                         viewMode === 'text' 
-                                            ? 'bg-blue-100 text-blue-700' 
+                                            ? 'bg-green-100 text-green-700' 
                                             : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
                                     ]"
                                     @click="viewMode = 'text'"
@@ -250,7 +250,7 @@
                                 
                                 <Link
                                     :href="route('email-campaigns.show', campaign.id)"
-                                    class="inline-flex items-center gap-1 px-3 py-1.5 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                                    class="inline-flex items-center gap-1 px-3 py-1.5 text-sm text-green-600 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors"
                                 >
                                     Ver campaña
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -272,12 +272,12 @@
                             <div
                                 v-for="variable in detectedVariables"
                                 :key="variable"
-                                class="flex items-center gap-2 p-2 bg-blue-50 rounded-lg"
+                                class="flex items-center gap-2 p-2 bg-green-50 rounded-lg"
                             >
-                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a.997.997 0 01-1.414 0l-7-7A1.997 1.997 0 013 12V7a4 4 0 014-4z" />
                                 </svg>
-                                <span class="text-sm font-mono text-blue-700">{{ getVariableDisplay(variable) }}</span>
+                                <span class="text-sm font-mono text-green-700">{{ getVariableDisplay(variable) }}</span>
                             </div>
                         </div>
                         
@@ -303,7 +303,7 @@
                             
                             <button
                                 @click="testTemplate"
-                                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
                             >
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />

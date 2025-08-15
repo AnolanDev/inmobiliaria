@@ -32,7 +32,7 @@
                   <select
                     id="type"
                     v-model="form.type"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.type }"
                     required
                   >
@@ -54,7 +54,7 @@
                   <select
                     id="priority"
                     v-model="form.priority"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.priority }"
                     required
                   >
@@ -77,7 +77,7 @@
                   id="subject"
                   v-model="form.subject"
                   type="text"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-500': form.errors.subject }"
                   placeholder="Describe brevemente la actividad"
                   required
@@ -96,7 +96,7 @@
                   id="description"
                   v-model="form.description"
                   rows="3"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-500': form.errors.description }"
                   placeholder="Detalles adicionales de la actividad..."
                 />
@@ -119,7 +119,7 @@
                   <select
                     id="status"
                     v-model="form.status"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.status }"
                     required
                   >
@@ -143,7 +143,7 @@
                     type="number"
                     min="1"
                     step="1"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.duration }"
                     placeholder="30"
                   />
@@ -161,7 +161,7 @@
                     id="scheduled_at"
                     v-model="form.scheduled_at"
                     type="datetime-local"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.scheduled_at }"
                   />
                   <p v-if="form.errors.scheduled_at" class="mt-1 text-sm text-red-600">
@@ -177,7 +177,7 @@
                   <select
                     id="assigned_to"
                     v-model="form.assigned_to"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.assigned_to }"
                   >
                     <option v-for="user in users" :key="user.id" :value="user.id">
@@ -200,7 +200,7 @@
                   id="has_reminder"
                   v-model="form.has_reminder"
                   type="checkbox"
-                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                  class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                 />
                 <label for="has_reminder" class="text-sm font-medium text-gray-700">
                   Configurar recordatorio
@@ -216,7 +216,7 @@
                     id="reminder_at"
                     v-model="form.reminder_at"
                     type="datetime-local"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.reminder_at }"
                   />
                   <p v-if="form.errors.reminder_at" class="mt-1 text-sm text-red-600">
@@ -240,7 +240,7 @@
                     id="related_type"
                     v-model="selectedRelatedType"
                     @change="onRelatedTypeChange"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   >
                     <option value="">Seleccionar tipo</option>
                     <option value="lead">Lead</option>
@@ -257,7 +257,7 @@
                   <select
                     id="related_id"
                     v-model="form.related_id"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.related_id }"
                   >
                     <option value="">Seleccionar {{ getRelatedTypeLabel().toLowerCase() }}</option>
@@ -272,13 +272,13 @@
               </div>
 
               <!-- Pre-selected Lead (if coming from lead view) -->
-              <div v-if="relatedData && relatedData.type.includes('Lead')" class="mt-4 p-4 bg-blue-50 rounded-lg">
+              <div v-if="relatedData && relatedData.type.includes('Lead')" class="mt-4 p-4 bg-green-50 rounded-lg">
                 <div class="flex items-center">
-                  <svg class="h-5 w-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                   <div class="ml-3">
-                    <p class="text-sm text-blue-700">
+                    <p class="text-sm text-green-700">
                       Esta actividad será asociada con el lead: <strong>{{ relatedData.name }}</strong>
                     </p>
                   </div>
@@ -297,7 +297,7 @@
               <button
                 type="submit"
                 :disabled="form.processing"
-                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
               >
                 <svg v-if="form.processing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

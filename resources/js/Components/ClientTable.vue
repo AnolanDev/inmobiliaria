@@ -40,9 +40,9 @@
                 />
                 <div
                   v-else
-                  class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center"
+                  class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center"
                 >
-                  <span class="text-sm font-medium text-blue-600">
+                  <span class="text-sm font-medium text-green-600">
                     {{ getInitials(client.name) }}
                   </span>
                 </div>
@@ -125,7 +125,7 @@
               <a
                 v-if="client.email"
                 :href="`mailto:${client.email}`"
-                class="text-blue-600 hover:text-blue-800 p-1 rounded-full hover:bg-blue-100"
+                class="text-green-600 hover:text-green-800 p-1 rounded-full hover:bg-green-100"
                 title="Enviar email"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,7 +151,7 @@
               <!-- CRUD Actions -->
               <button
                 @click="$emit('view', client)"
-                class="text-blue-600 hover:text-blue-800 p-1 rounded-full hover:bg-blue-100"
+                class="text-green-600 hover:text-green-800 p-1 rounded-full hover:bg-green-100"
                 title="Ver detalles"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

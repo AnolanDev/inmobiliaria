@@ -14,7 +14,7 @@
         </div>
         <Link
           :href="route('agents.create')"
-          class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150"
+          class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:outline-none focus:border-green-900 focus:ring focus:ring-green-300 disabled:opacity-25 transition ease-in-out duration-150"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -43,7 +43,7 @@
                     @input="debouncedFilter"
                     type="text"
                     placeholder="Buscar agentes..."
-                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -53,7 +53,7 @@
                 <select
                   v-model="filters.type"
                   @change="applyFilters"
-                  class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
                 >
                   <option value="">Todos los tipos</option>
                   <option value="Interno">Interno</option>
@@ -66,7 +66,7 @@
                 <select
                   v-model="filters.is_active"
                   @change="applyFilters"
-                  class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
                 >
                   <option value="">Todos los estados</option>
                   <option value="1">Activos</option>
@@ -79,9 +79,9 @@
                 <button
                   @click="viewMode = 'grid'"
                   :class="[
-                    'relative inline-flex items-center px-4 py-2 rounded-l-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500',
+                    'relative inline-flex items-center px-4 py-2 rounded-l-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500',
                     viewMode === 'grid'
-                      ? 'bg-blue-600 border-blue-600 text-white'
+                      ? 'bg-green-600 border-green-600 text-white'
                       : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                   ]"
                 >
@@ -92,9 +92,9 @@
                 <button
                   @click="viewMode = 'table'"
                   :class="[
-                    'relative -ml-px inline-flex items-center px-4 py-2 rounded-r-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500',
+                    'relative -ml-px inline-flex items-center px-4 py-2 rounded-r-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500',
                     viewMode === 'table'
-                      ? 'bg-blue-600 border-blue-600 text-white'
+                      ? 'bg-green-600 border-green-600 text-white'
                       : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
                   ]"
                 >
@@ -148,7 +148,7 @@
                 <span :class="[
                   'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
                   agent.type === 'Interno' 
-                    ? 'bg-blue-100 text-blue-800' 
+                    ? 'bg-green-100 text-green-800' 
                     : 'bg-purple-100 text-purple-800'
                 ]">
                   {{ agent.type }}
@@ -193,7 +193,7 @@
               <div class="mt-4">
                 <button
                   @click.stop="goToAgent(agent.id)"
-                  class="w-full inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  class="w-full inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 >
                   Ver detalles
                 </button>
@@ -260,7 +260,7 @@
                   <span :class="[
                     'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
                     agent.type === 'Interno' 
-                      ? 'bg-blue-100 text-blue-800' 
+                      ? 'bg-green-100 text-green-800' 
                       : 'bg-purple-100 text-purple-800'
                   ]">
                     {{ agent.type }}
@@ -286,7 +286,7 @@
                   <div class="flex items-center justify-end space-x-2">
                     <Link
                       :href="route('agents.show', agent.id)"
-                      class="text-blue-600 hover:text-blue-900"
+                      class="text-green-600 hover:text-green-900"
                     >
                       Ver
                     </Link>
@@ -313,7 +313,7 @@
           <div class="mt-6">
             <Link
               :href="route('agents.create')"
-              class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>

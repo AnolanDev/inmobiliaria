@@ -13,7 +13,7 @@
             :class="[
               'px-3 py-2 text-sm font-medium rounded-md transition-colors',
               activeTab === tab.key
-                ? 'bg-blue-100 text-blue-700'
+                ? 'bg-green-100 text-green-700'
                 : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
             ]"
           >
@@ -79,7 +79,7 @@
             @click="$emit('view-client', client)"
           >
             <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+              <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
@@ -178,7 +178,7 @@ const getTabCount = (tabKey) => {
 // Visit related methods
 const getVisitStatusColor = (status) => {
   const colors = {
-    scheduled: 'bg-blue-500',
+    scheduled: 'bg-green-500',
     completed: 'bg-green-500',
     cancelled: 'bg-red-500',
     no_show: 'bg-gray-500'
@@ -188,7 +188,7 @@ const getVisitStatusColor = (status) => {
 
 const getVisitStatusBadge = (status) => {
   const badges = {
-    scheduled: 'bg-blue-100 text-blue-800',
+    scheduled: 'bg-green-100 text-green-800',
     completed: 'bg-green-100 text-green-800',
     cancelled: 'bg-red-100 text-red-800',
     no_show: 'bg-gray-100 text-gray-800'
@@ -211,7 +211,7 @@ const getClientStatusBadge = (status) => {
   const badges = {
     active: 'bg-green-100 text-green-800',
     potential: 'bg-yellow-100 text-yellow-800',
-    client: 'bg-blue-100 text-blue-800'
+    client: 'bg-green-100 text-green-800'
   }
   return badges[status] || 'bg-gray-100 text-gray-800'
 }
@@ -229,7 +229,7 @@ const getClientStatusLabel = (status) => {
 const getPropertyStatusBadge = (status) => {
   const badges = {
     available: 'bg-green-100 text-green-800',
-    sold: 'bg-blue-100 text-blue-800',
+    sold: 'bg-green-100 text-green-800',
     rented: 'bg-yellow-100 text-yellow-800',
     reserved: 'bg-purple-100 text-purple-800'
   }

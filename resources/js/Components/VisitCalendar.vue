@@ -17,7 +17,7 @@
           </button>
           <button
             @click="goToToday"
-            class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
+            class="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition-colors"
           >
             Hoy
           </button>
@@ -65,7 +65,7 @@
               :class="[
                 'text-sm font-medium',
                 day.isCurrentMonth ? 'text-gray-900' : 'text-gray-400',
-                day.isToday ? 'text-blue-600 font-bold' : ''
+                day.isToday ? 'text-green-600 font-bold' : ''
               ]"
             >
               {{ day.date.getDate() }}
@@ -75,7 +75,7 @@
             <button
               v-if="day.isCurrentMonth"
               @click.stop="addVisit(day.date)"
-              class="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-blue-600 transition-all"
+              class="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-green-600 transition-all"
               title="Nueva visita"
             >
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,7 +180,7 @@
         <div class="flex justify-end gap-2 mt-4">
           <button
             @click="addVisit(selectedDate)"
-            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
           >
             Nueva Visita
           </button>
@@ -297,8 +297,8 @@ const getVisitClasses = (visit, isModal = false) => {
   switch (visit.status) {
     case 'scheduled':
       return isModal 
-        ? `${baseClasses} border-blue-500 hover:bg-blue-50`
-        : `${baseClasses} bg-blue-500 hover:bg-blue-600`
+        ? `${baseClasses} border-green-500 hover:bg-green-50`
+        : `${baseClasses} bg-green-500 hover:bg-green-600`
     case 'completed':
       return isModal 
         ? `${baseClasses} border-green-500 hover:bg-green-50`
@@ -320,7 +320,7 @@ const getVisitClasses = (visit, isModal = false) => {
 
 const getVisitDotColor = (visit) => {
   switch (visit.status) {
-    case 'scheduled': return 'bg-blue-500'
+    case 'scheduled': return 'bg-green-500'
     case 'completed': return 'bg-green-500'
     case 'cancelled': return 'bg-red-500'
     case 'no_show': return 'bg-gray-500'

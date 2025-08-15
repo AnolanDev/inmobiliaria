@@ -4,17 +4,21 @@
         :class="[
             'group flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-r-xl transition-all duration-200 relative',
             active
-                ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-600 pl-2'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-600 border-l-4 border-transparent hover:border-blue-200'
+                ? 'text-white font-semibold border-l-4 shadow-sm pl-2'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-green-600 border-l-4 border-transparent hover:border-green-200'
         ]"
+        :style="active ? { 
+            background: 'linear-gradient(135deg, #00bf63, #009951)', 
+            borderLeftColor: '#00bf63' 
+        } : {}"
         @click="$emit('click')"
     >
         <div 
             :class="[
                 'flex items-center justify-center w-5 h-5 transition-all duration-200',
                 active 
-                    ? 'text-blue-600 animate-pulse' 
-                    : 'text-gray-500 group-hover:text-blue-600 group-hover:scale-105'
+                    ? 'text-white animate-pulse' 
+                    : 'text-gray-500 group-hover:text-green-600 group-hover:scale-105'
             ]"
         >
             <!-- Dashboard Icon -->
@@ -124,9 +128,7 @@
         
         <!-- Active Indicator -->
         <div v-if="active" class="ml-auto">
-            <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
+            <div class="w-2 h-2 rounded-full animate-ping" style="background-color: #00bf63;"></div>
         </div>
     </Link>
 </template>

@@ -25,7 +25,7 @@
         <div class="flex space-x-2">
           <Link
             :href="route('agents.show', agent.id)"
-            class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -56,7 +56,7 @@
                     v-model="form.name"
                     type="text"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.name }"
                     placeholder="Ej: Juan Carlos Rodríguez"
                   />
@@ -73,7 +73,7 @@
                     v-model="form.email"
                     type="email"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.email }"
                     placeholder="Ej: juan.rodriguez@inmobiliaria.com"
                   />
@@ -90,7 +90,7 @@
                     v-model="form.phone"
                     type="tel"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.phone }"
                     placeholder="Ej: +57 300 123 4567"
                   />
@@ -106,7 +106,7 @@
                     id="type"
                     v-model="form.type"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.type }"
                   >
                     <option value="">Selecciona el tipo</option>
@@ -124,7 +124,7 @@
                   <select
                     id="is_active"
                     v-model="form.is_active"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.is_active }"
                   >
                     <option :value="true">Activo</option>
@@ -149,7 +149,7 @@
                   id="bio"
                   v-model="form.bio"
                   rows="4"
-                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-300': form.errors.bio }"
                   placeholder="Describe la experiencia y especialidades del agente..."
                 />
@@ -173,7 +173,7 @@
                     id="facebook"
                     v-model="form.facebook"
                     type="url"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.facebook }"
                     placeholder="https://facebook.com/usuario"
                   />
@@ -189,7 +189,7 @@
                     id="instagram"
                     v-model="form.instagram"
                     type="url"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.instagram }"
                     placeholder="https://instagram.com/usuario"
                   />
@@ -205,7 +205,7 @@
                     id="linkedin"
                     v-model="form.linkedin"
                     type="url"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.linkedin }"
                     placeholder="https://linkedin.com/in/usuario"
                   />
@@ -276,14 +276,14 @@
           <div class="flex justify-end space-x-3">
             <Link
               :href="route('agents.show', agent.id)"
-              class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Cancelar
             </Link>
             <button
               type="submit"
               :disabled="form.processing"
-              class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
             >
               <svg v-if="form.processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

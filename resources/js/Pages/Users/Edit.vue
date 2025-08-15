@@ -217,7 +217,7 @@
                                         v-for="role in roles"
                                         :key="role.id"
                                         class="relative flex items-start p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                                        :class="{ 'border-blue-500 bg-blue-50': form.roles.includes(role.id) }"
+                                        :class="{ 'border-green-500 bg-green-50': form.roles.includes(role.id) }"
                                     >
                                         <div class="flex items-center h-5">
                                             <input
@@ -225,7 +225,7 @@
                                                 type="checkbox"
                                                 :value="role.id"
                                                 v-model="form.roles"
-                                                class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                                class="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
                                             />
                                         </div>
                                         <div class="ml-3 text-sm">

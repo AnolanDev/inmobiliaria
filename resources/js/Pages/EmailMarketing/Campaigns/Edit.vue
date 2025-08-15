@@ -61,7 +61,7 @@
                                         type="text"
                                         required
                                         :disabled="!canEditBasicInfo"
-                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                         placeholder="Ej: Newsletter Enero 2025"
                                     />
                                     <div v-if="errors.name" class="mt-1 text-sm text-red-600">{{ errors.name }}</div>
@@ -76,7 +76,7 @@
                                         v-model="form.description"
                                         rows="3"
                                         :disabled="!canEditBasicInfo"
-                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                         placeholder="Describe el objetivo de esta campaña..."
                                     ></textarea>
                                     <div v-if="errors.description" class="mt-1 text-sm text-red-600">{{ errors.description }}</div>
@@ -92,7 +92,7 @@
                                             v-model="form.email_template_id"
                                             required
                                             :disabled="!canEditBasicInfo"
-                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                             @change="loadTemplatePreview"
                                         >
                                             <option value="">Selecciona un template</option>
@@ -112,7 +112,7 @@
                                             v-model="form.type"
                                             required
                                             :disabled="!canEditBasicInfo"
-                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                             @change="updateSegmentationOptions"
                                         >
                                             <option v-for="(label, value) in types" :key="value" :value="value">
@@ -140,7 +140,7 @@
                                             v-model="form.segment_criteria.lead_status"
                                             multiple
                                             :disabled="!canEditSegmentation"
-                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                             size="3"
                                         >
                                             <option v-for="status in leadStatuses" :key="status.value" :value="status.value">
@@ -159,7 +159,7 @@
                                             v-model="form.segment_criteria.lead_source"
                                             multiple
                                             :disabled="!canEditSegmentation"
-                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                             size="3"
                                         >
                                             <option v-for="source in leadSources" :key="source.value" :value="source.value">
@@ -179,7 +179,7 @@
                                             v-model="form.segment_criteria.budget_min"
                                             type="number"
                                             :disabled="!canEditSegmentation"
-                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                             placeholder="100000"
                                         />
                                     </div>
@@ -193,7 +193,7 @@
                                             v-model="form.segment_criteria.budget_max"
                                             type="number"
                                             :disabled="!canEditSegmentation"
-                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                            class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                             placeholder="500000"
                                         />
                                     </div>
@@ -208,25 +208,25 @@
                                         v-model="form.segment_criteria.interests"
                                         rows="2"
                                         :disabled="!canEditSegmentation"
-                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                         placeholder="Apartamento, Casa, Centro, Norte..."
                                     ></textarea>
                                     <p class="text-xs text-gray-500 mt-1">Palabras clave separadas por comas</p>
                                 </div>
 
-                                <div class="bg-blue-50 rounded-lg p-4">
+                                <div class="bg-green-50 rounded-lg p-4">
                                     <div class="flex items-center gap-2 mb-2">
-                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <span class="text-sm font-medium text-blue-900">Destinatarios estimados</span>
+                                        <span class="text-sm font-medium text-green-900">Destinatarios estimados</span>
                                     </div>
-                                    <p class="text-lg font-bold text-blue-900">{{ estimatedRecipients || campaign.estimated_recipients || 0 }} leads</p>
+                                    <p class="text-lg font-bold text-green-900">{{ estimatedRecipients || campaign.estimated_recipients || 0 }} leads</p>
                                     <button
                                         v-if="canEditSegmentation"
                                         type="button"
                                         @click="calculateRecipients"
-                                        class="mt-2 text-sm text-blue-600 hover:text-blue-700 underline"
+                                        class="mt-2 text-sm text-green-600 hover:text-green-700 underline"
                                     >
                                         Recalcular
                                     </button>
@@ -243,7 +243,7 @@
                                         type="checkbox"
                                         v-model="form.is_ab_test"
                                         :disabled="!canEditABTest"
-                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 disabled:opacity-50"
+                                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 disabled:opacity-50"
                                     />
                                     <span class="ml-2 text-sm text-gray-700">Habilitar A/B Testing</span>
                                 </label>
@@ -259,7 +259,7 @@
                                         v-model="form.ab_test_subject_b"
                                         type="text"
                                         :disabled="!canEditABTest"
-                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
+                                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                                         placeholder="Asunto alternativo para probar..."
                                     />
                                 </div>
@@ -339,7 +339,7 @@
                                 <button
                                     type="submit"
                                     :disabled="processing || !hasChanges"
-                                    class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                                    class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                                 >
                                     <svg v-if="processing" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -373,7 +373,7 @@
                                             type="radio"
                                             v-model="sendOption"
                                             value="draft"
-                                            class="form-radio text-blue-600"
+                                            class="form-radio text-green-600"
                                         />
                                         <span class="ml-2 text-sm text-gray-700">Mantener como borrador</span>
                                     </label>
@@ -385,7 +385,7 @@
                                             type="radio"
                                             v-model="sendOption"
                                             value="schedule"
-                                            class="form-radio text-blue-600"
+                                            class="form-radio text-green-600"
                                         />
                                         <span class="ml-2 text-sm text-gray-700">Programar para más tarde</span>
                                     </label>
@@ -400,7 +400,7 @@
                                             id="scheduled_at_date"
                                             v-model="scheduledDate"
                                             type="date"
-                                            class="block w-full px-2 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block w-full px-2 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                         />
                                     </div>
                                     <div>
@@ -411,7 +411,7 @@
                                             id="scheduled_at_time"
                                             v-model="scheduledTime"
                                             type="time"
-                                            class="block w-full px-2 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            class="block w-full px-2 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
                                         />
                                     </div>
                                 </div>
@@ -582,7 +582,7 @@ const updateSegmentationOptions = () => {
 
 const calculateRecipients = async () => {
     try {
-        const response = await fetch(route('email-campaigns.estimate-recipients'), {
+        const response = await fetch(route('email-campaigns.calculate-recipients'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -671,7 +671,7 @@ const loadTemplatePreview = async () => {
 const getStatusClass = (status) => {
     const classes = {
         'draft': 'bg-yellow-100 text-yellow-800',
-        'scheduled': 'bg-blue-100 text-blue-800',
+        'scheduled': 'bg-green-100 text-green-800',
         'sending': 'bg-orange-100 text-orange-800',
         'sent': 'bg-green-100 text-green-800',
         'paused': 'bg-gray-100 text-gray-800',

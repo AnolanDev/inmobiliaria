@@ -14,7 +14,7 @@
           <select
             v-model="selectedPeriod"
             @change="changePeriod"
-            class="text-sm border-gray-300 rounded-md focus:border-blue-500 focus:ring-blue-500"
+            class="text-sm border-gray-300 rounded-md focus:border-green-500 focus:ring-green-500"
           >
             <option value="7">Últimos 7 días</option>
             <option value="30">Últimos 30 días</option>

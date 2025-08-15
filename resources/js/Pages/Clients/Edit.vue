@@ -35,7 +35,7 @@
                     v-model="form.name"
                     type="text"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.name }"
                   />
                   <p v-if="form.errors.name" class="mt-1 text-sm text-red-600">{{ form.errors.name }}</p>
@@ -50,7 +50,7 @@
                     id="document_type"
                     v-model="form.document_type"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.document_type }"
                   >
                     <option v-for="(label, value) in documentTypes" :key="value" :value="value">
@@ -69,7 +69,7 @@
                     id="document_number"
                     v-model="form.document_number"
                     type="text"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.document_number }"
                   />
                   <p v-if="form.errors.document_number" class="mt-1 text-sm text-red-600">{{ form.errors.document_number }}</p>
@@ -85,7 +85,7 @@
                     v-model="form.email"
                     type="email"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.email }"
                   />
                   <p v-if="form.errors.email" class="mt-1 text-sm text-red-600">{{ form.errors.email }}</p>
@@ -100,7 +100,7 @@
                     id="phone"
                     v-model="form.phone"
                     type="tel"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.phone }"
                   />
                   <p v-if="form.errors.phone" class="mt-1 text-sm text-red-600">{{ form.errors.phone }}</p>
@@ -115,7 +115,7 @@
                     id="secondary_phone"
                     v-model="form.secondary_phone"
                     type="tel"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.secondary_phone }"
                   />
                   <p v-if="form.errors.secondary_phone" class="mt-1 text-sm text-red-600">{{ form.errors.secondary_phone }}</p>
@@ -130,7 +130,7 @@
                     id="birth_date"
                     v-model="form.birth_date"
                     type="date"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.birth_date }"
                   />
                   <p v-if="form.errors.birth_date" class="mt-1 text-sm text-red-600">{{ form.errors.birth_date }}</p>
@@ -145,7 +145,7 @@
                     id="occupation"
                     v-model="form.occupation"
                     type="text"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.occupation }"
                   />
                   <p v-if="form.errors.occupation" class="mt-1 text-sm text-red-600">{{ form.errors.occupation }}</p>
@@ -160,7 +160,7 @@
                     id="address"
                     v-model="form.address"
                     rows="3"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.address }"
                   ></textarea>
                   <p v-if="form.errors.address" class="mt-1 text-sm text-red-600">{{ form.errors.address }}</p>
@@ -184,7 +184,7 @@
                     id="status"
                     v-model="form.status"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.status }"
                   >
                     <option v-for="(label, value) in statuses" :key="value" :value="value">
@@ -203,7 +203,7 @@
                     id="interest_level"
                     v-model="form.interest_level"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.interest_level }"
                   >
                     <option v-for="(label, value) in interestLevels" :key="value" :value="value">
@@ -222,7 +222,7 @@
                     id="preferred_contact_method"
                     v-model="form.preferred_contact_method"
                     required
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-300': form.errors.preferred_contact_method }"
                   >
                     <option v-for="(label, value) in contactMethods" :key="value" :value="value">
@@ -287,7 +287,7 @@
                       <a
                         :href="`/storage/${attachment.path}`"
                         target="_blank"
-                        class="text-blue-600 hover:text-blue-800 p-1 rounded"
+                        class="text-green-600 hover:text-green-800 p-1 rounded"
                         title="Descargar"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -336,7 +336,7 @@
                   id="notes"
                   v-model="form.notes"
                   rows="4"
-                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-300': form.errors.notes }"
                   placeholder="Información adicional sobre el cliente, preferencias, historial de contacto..."
                 ></textarea>
@@ -349,14 +349,14 @@
           <div class="flex justify-end gap-4">
             <Link
               :href="route('clients.show', client.id)"
-              class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Cancelar
             </Link>
             <button
               type="submit"
               :disabled="form.processing"
-              class="bg-blue-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              class="bg-green-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
             >
               <span v-if="form.processing" class="flex items-center">
                 <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">

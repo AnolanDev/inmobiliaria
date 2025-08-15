@@ -48,7 +48,7 @@
             </svg>
             Proyecto
           </span>
-          <span v-else-if="visit.is_property_visit" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+          <span v-else-if="visit.is_property_visit" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
@@ -92,7 +92,7 @@
           <span 
             :class="[
               'font-medium',
-              visit.is_overdue ? 'text-red-600' : visit.is_today ? 'text-blue-600' : 'text-gray-900'
+              visit.is_overdue ? 'text-red-600' : visit.is_today ? 'text-green-600' : 'text-gray-900'
             ]"
           >
             {{ formatDateTime(visit.scheduled_at) }}
@@ -145,7 +145,7 @@
         <div class="flex items-center gap-2">
           <button
             @click.stop="$emit('view', visit)"
-            class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            class="text-green-600 hover:text-green-800 text-sm font-medium"
             title="Ver detalles"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -277,7 +277,7 @@ const getOutcomeColor = (outcome) => {
     interested: 'bg-green-100 text-green-800',
     not_interested: 'bg-red-100 text-red-800',
     needs_follow_up: 'bg-yellow-100 text-yellow-800',
-    offer_made: 'bg-blue-100 text-blue-800',
+    offer_made: 'bg-green-100 text-green-800',
     deal_closed: 'bg-purple-100 text-purple-800'
   }
   return colors[outcome] || 'bg-gray-100 text-gray-800'

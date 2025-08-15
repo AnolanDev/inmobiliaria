@@ -9,7 +9,7 @@
         </h2>
         <Link
           :href="route('projects.create')"
-          class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150"
+          class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring focus:ring-green-300 disabled:opacity-25 transition ease-in-out duration-150"
         >
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -32,7 +32,7 @@
                     v-model="search"
                     type="text"
                     placeholder="Buscar proyectos..."
-                    class="w-full md:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full md:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                     @input="performSearch"
                   />
                   <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@
                 <select
                   v-model="selectedType"
                   @change="applyFilters"
-                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="">Todos los tipos</option>
                   <option v-for="(label, value) in types" :key="value" :value="value">
@@ -56,7 +56,7 @@
                 <select
                   v-model="selectedStatus"
                   @change="applyFilters"
-                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="">Todos los estados</option>
                   <option v-for="(label, value) in statuses" :key="value" :value="value">
@@ -141,7 +141,7 @@
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                     <Link
                       :href="route('projects.show', project.id)"
-                      class="text-blue-600 hover:text-blue-900"
+                      class="text-green-600 hover:text-green-900"
                     >
                       Ver
                     </Link>
@@ -210,13 +210,13 @@
 
                   <!-- Actions -->
                   <div class="flex space-x-2">
-                    <span class="flex-1 inline-flex justify-center items-center px-3 py-2 text-sm font-medium text-gray-600 group-hover:text-blue-600 transition-colors">
+                    <span class="flex-1 inline-flex justify-center items-center px-3 py-2 text-sm font-medium text-gray-600 group-hover:text-green-600 transition-colors">
                       Ver detalles
                     </span>
                     <Link
                       :href="route('projects.edit', project.id)"
                       @click.stop
-                      class="inline-flex items-center p-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      class="inline-flex items-center p-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -246,7 +246,7 @@
             <div class="mt-6">
               <Link
                 :href="route('projects.create')"
-                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
                 <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
@@ -269,7 +269,7 @@
               :class="[
                 'px-3 py-2 text-sm font-medium rounded-md',
                 link.active
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-green-600 text-white'
                   : link.url
                   ? 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
@@ -299,7 +299,7 @@
         <div class="mt-6 flex justify-end space-x-3">
           <button
             @click="showDeleteModal = false"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
             Cancelar
           </button>
@@ -369,7 +369,7 @@ const clearFilters = () => {
 const getTypeColor = (type) => {
   const colors = {
     'Campestres': 'bg-green-100 text-green-800',
-    'Urbanos': 'bg-blue-100 text-blue-800',
+    'Urbanos': 'bg-green-100 text-green-800',
     'Turísticos': 'bg-purple-100 text-purple-800'
   }
   return colors[type] || 'bg-gray-100 text-gray-800'

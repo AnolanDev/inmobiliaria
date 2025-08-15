@@ -12,7 +12,7 @@
         @dragenter.prevent
         :class="[
           'border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-200',
-          isDragging ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
+          isDragging ? 'border-green-400 bg-green-50' : 'border-gray-300 hover:border-gray-400'
         ]"
         @dragenter="isDragging = true"
         @dragleave="isDragging = false"
@@ -40,7 +40,7 @@
           <button
             type="button"
             @click="$refs.fileInput.click()"
-            class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
             Seleccionar archivos
           </button>

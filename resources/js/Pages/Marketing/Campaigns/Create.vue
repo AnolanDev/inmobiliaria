@@ -33,7 +33,7 @@
                     id="name"
                     v-model="form.name"
                     type="text"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.name }"
                     required
                   />
@@ -50,7 +50,7 @@
                   <select
                     id="type"
                     v-model="form.type"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.type }"
                     required
                   >
@@ -72,7 +72,7 @@
                   <select
                     id="status"
                     v-model="form.status"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.status }"
                     required
                   >
@@ -98,7 +98,7 @@
                       type="number"
                       step="0.01"
                       min="0"
-                      class="w-full border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                      class="w-full border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:ring-green-500 focus:border-green-500"
                       :class="{ 'border-red-500': form.errors.budget }"
                     />
                   </div>
@@ -117,7 +117,7 @@
                   id="description"
                   v-model="form.description"
                   rows="3"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-500': form.errors.description }"
                   placeholder="Describe los objetivos y detalles de la campaña..."
                 />
@@ -141,7 +141,7 @@
                     id="start_date"
                     v-model="form.start_date"
                     type="date"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.start_date }"
                   />
                   <p v-if="form.errors.start_date" class="mt-1 text-sm text-red-600">
@@ -158,7 +158,7 @@
                     id="end_date"
                     v-model="form.end_date"
                     type="date"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.end_date }"
                     :min="form.start_date"
                   />
@@ -185,7 +185,7 @@
                       type="number"
                       min="18"
                       max="100"
-                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     />
                   </div>
                   <div>
@@ -197,7 +197,7 @@
                       type="number"
                       min="18"
                       max="100"
-                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     />
                   </div>
                 </div>
@@ -210,7 +210,7 @@
                   <input
                     v-model="targetAudience.location"
                     type="text"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="Ciudades, departamentos o regiones objetivo"
                   />
                 </div>
@@ -226,7 +226,7 @@
                         v-model="targetAudience.interests"
                         :value="interest"
                         type="checkbox"
-                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                        class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                       />
                       <span class="ml-2 text-sm text-gray-700">{{ interest }}</span>
                     </label>
@@ -248,7 +248,7 @@
                   <input
                     v-model="content.subject"
                     type="text"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="Asunto atractivo para el email"
                   />
                 </div>
@@ -261,7 +261,7 @@
                   <textarea
                     v-model="content.message"
                     :rows="form.type === 'email' ? 6 : 3"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :placeholder="form.type === 'email' ? 'Contenido HTML del email...' : 'Mensaje de texto (máximo 160 caracteres)'"
                     :maxlength="form.type === 'sms' ? 160 : null"
                   />
@@ -278,7 +278,7 @@
                   <input
                     v-model="content.cta_text"
                     type="text"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="Texto del botón o enlace"
                   />
                 </div>
@@ -290,7 +290,7 @@
                   <input
                     v-model="content.cta_url"
                     type="url"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     placeholder="https://ejemplo.com/landing-page"
                   />
                 </div>
@@ -301,14 +301,14 @@
             <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
               <Link
                 :href="route('campaigns.index')"
-                class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >
                 Cancelar
               </Link>
               <button
                 type="submit"
                 :disabled="form.processing"
-                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
               >
                 <svg v-if="form.processing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

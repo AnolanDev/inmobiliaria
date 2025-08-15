@@ -20,7 +20,7 @@
         <div class="flex items-center space-x-3">
           <Link
             :href="route('campaigns.edit', campaign.id)"
-            class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
+            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700"
           >
             Editar
           </Link>
@@ -75,7 +75,7 @@
                     ${{ formatCurrency(campaign.spent) }} / ${{ formatCurrency(campaign.budget) }}
                     <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
                       <div 
-                        class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                        class="bg-green-600 h-2 rounded-full transition-all duration-300"
                         :style="{ width: getBudgetPercentage() + '%' }"
                       ></div>
                     </div>
@@ -96,9 +96,9 @@
               <h3 class="text-lg font-medium text-gray-900 mb-4">Métricas</h3>
               
               <div class="space-y-4">
-                <div class="text-center p-4 bg-blue-50 rounded-lg">
-                  <div class="text-2xl font-bold text-blue-600">{{ metrics.total_leads }}</div>
-                  <div class="text-sm text-blue-900">Total Leads</div>
+                <div class="text-center p-4 bg-green-50 rounded-lg">
+                  <div class="text-2xl font-bold text-green-600">{{ metrics.total_leads }}</div>
+                  <div class="text-sm text-green-900">Total Leads</div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -139,7 +139,7 @@
               <h3 class="text-lg font-medium text-gray-900">Leads de la Campaña</h3>
               <Link
                 :href="route('leads.create', { campaign_id: campaign.id })"
-                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200"
+                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200"
               >
                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -181,7 +181,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <Link
                         :href="route('leads.show', lead.id)"
-                        class="text-blue-600 hover:text-blue-900"
+                        class="text-green-600 hover:text-green-900"
                       >
                         Ver
                       </Link>
@@ -219,14 +219,14 @@ const getStatusColor = (status) => {
     'draft': 'bg-gray-100 text-gray-800',
     'active': 'bg-green-100 text-green-800',
     'paused': 'bg-yellow-100 text-yellow-800',
-    'completed': 'bg-blue-100 text-blue-800'
+    'completed': 'bg-green-100 text-green-800'
   }
   return colors[status] || 'bg-gray-100 text-gray-800'
 }
 
 const getLeadStatusColor = (status) => {
   const colors = {
-    'new': 'bg-blue-100 text-blue-800',
+    'new': 'bg-green-100 text-green-800',
     'contacted': 'bg-yellow-100 text-yellow-800',
     'qualified': 'bg-green-100 text-green-800',
     'converted': 'bg-purple-100 text-purple-800',

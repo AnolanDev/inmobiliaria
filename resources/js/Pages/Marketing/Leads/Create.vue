@@ -33,7 +33,7 @@
                     id="first_name"
                     v-model="form.first_name"
                     type="text"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.first_name }"
                     required
                   />
@@ -51,7 +51,7 @@
                     id="last_name"
                     v-model="form.last_name"
                     type="text"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.last_name }"
                     required
                   />
@@ -69,7 +69,7 @@
                     id="email"
                     v-model="form.email"
                     type="email"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.email }"
                     required
                   />
@@ -87,7 +87,7 @@
                     id="phone"
                     v-model="form.phone"
                     type="tel"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.phone }"
                   />
                   <p v-if="form.errors.phone" class="mt-1 text-sm text-red-600">
@@ -110,7 +110,7 @@
                   <select
                     id="status"
                     v-model="form.status"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.status }"
                     required
                   >
@@ -131,7 +131,7 @@
                   <select
                     id="source"
                     v-model="form.source"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.source }"
                     required
                   >
@@ -153,7 +153,7 @@
                   <select
                     id="priority"
                     v-model="form.priority"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.priority }"
                     required
                   >
@@ -174,7 +174,7 @@
                   <select
                     id="campaign_id"
                     v-model="form.campaign_id"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.campaign_id }"
                   >
                     <option value="">Sin campaña</option>
@@ -195,7 +195,7 @@
                   <select
                     id="assigned_agent_id"
                     v-model="form.assigned_agent_id"
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                     :class="{ 'border-red-500': form.errors.assigned_agent_id }"
                   >
                     <option value="">Sin asignar</option>
@@ -221,7 +221,7 @@
                       type="number"
                       step="1000000"
                       min="0"
-                      class="w-full border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                      class="w-full border border-gray-300 rounded-md pl-8 pr-3 py-2 focus:ring-green-500 focus:border-green-500"
                       :class="{ 'border-red-500': form.errors.budget_min }"
                     />
                   </div>
@@ -240,7 +240,7 @@
                   id="notes"
                   v-model="form.notes"
                   rows="3"
-                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
                   :class="{ 'border-red-500': form.errors.notes }"
                   placeholder="Información adicional sobre el lead..."
                 />
@@ -260,7 +260,7 @@
                     v-model="selectedInterests"
                     :value="interest"
                     type="checkbox"
-                    class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"
                   />
                   <span class="ml-2 text-sm text-gray-700">{{ interest }}</span>
                 </label>
@@ -278,7 +278,7 @@
               <button
                 type="submit"
                 :disabled="form.processing"
-                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
               >
                 <svg v-if="form.processing" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

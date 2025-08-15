@@ -2,7 +2,7 @@
   <div class="relative">
     <button
       @click="showDropdown = !showDropdown"
-      class="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+      class="relative p-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded-md"
     >
       <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.07 14C9.07 14 8.33 13.26 8.33 12.26V7.74C8.33 6.74 9.07 6 10.07 6h7.86c1 0 1.74.74 1.74 1.74v4.52c0 1-.74 1.74-1.74 1.74h-7.86zM15 12H7M15 9H7"/>
@@ -27,7 +27,7 @@
         <div class="px-4 py-2 border-b border-gray-200">
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-medium text-gray-900">Actividades</h3>
-            <Link :href="route('activities.index')" class="text-xs text-blue-600 hover:text-blue-900">
+            <Link :href="route('activities.index')" class="text-xs text-green-600 hover:text-green-900">
               Ver todas
             </Link>
           </div>
@@ -62,7 +62,7 @@
               :key="activity.id"
               class="text-xs"
             >
-              <Link :href="route('activities.show', activity.id)" class="text-gray-900 hover:text-blue-600 font-medium">
+              <Link :href="route('activities.show', activity.id)" class="text-gray-900 hover:text-green-600 font-medium">
                 {{ activity.subject }}
               </Link>
               <div class="text-gray-600">{{ formatTime(activity.scheduled_at) }}</div>
@@ -82,7 +82,7 @@
               :key="activity.id"
               class="text-xs"
             >
-              <Link :href="route('activities.show', activity.id)" class="text-gray-900 hover:text-blue-600 font-medium">
+              <Link :href="route('activities.show', activity.id)" class="text-gray-900 hover:text-green-600 font-medium">
                 {{ activity.subject }}
               </Link>
               <div class="text-gray-600">{{ formatDate(activity.scheduled_at) }}</div>
@@ -105,7 +105,7 @@
         <div class="px-4 py-2 bg-gray-50 border-t border-gray-200">
           <Link 
             :href="route('activities.create')"
-            class="inline-flex items-center w-full px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200"
+            class="inline-flex items-center w-full px-3 py-2 text-xs font-medium text-green-700 bg-green-100 rounded-md hover:bg-green-200"
           >
             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>

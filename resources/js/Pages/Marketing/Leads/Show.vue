@@ -19,7 +19,7 @@
         </div>
         <div class="flex items-center space-x-3">
           <button
-            v-if="lead.status !== 'converted' && can('leads.convert')"
+            v-if="lead.status !== 'converted' && can && can['leads.convert']"
             @click="showConvertModal = true"
             class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700"
           >
@@ -27,7 +27,7 @@
           </button>
           <Link
             :href="route('leads.edit', lead.id)"
-            class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
+            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700"
           >
             Editar
           </Link>
@@ -59,7 +59,7 @@
                   <div>
                     <dt class="text-sm font-medium text-gray-500">Email</dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      <a :href="`mailto:${lead.email}`" class="text-blue-600 hover:text-blue-900">
+                      <a :href="`mailto:${lead.email}`" class="text-green-600 hover:text-green-900">
                         {{ lead.email }}
                       </a>
                     </dd>
@@ -67,7 +67,7 @@
                   <div v-if="lead.phone">
                     <dt class="text-sm font-medium text-gray-500">Teléfono</dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      <a :href="`tel:${lead.phone}`" class="text-blue-600 hover:text-blue-900">
+                      <a :href="`tel:${lead.phone}`" class="text-green-600 hover:text-green-900">
                         {{ lead.phone }}
                       </a>
                     </dd>
@@ -95,7 +95,7 @@
                   <div v-if="lead.campaign">
                     <dt class="text-sm font-medium text-gray-500">Campaña</dt>
                     <dd class="mt-1 text-sm text-gray-900">
-                      <Link :href="route('campaigns.show', lead.campaign.id)" class="text-blue-600 hover:text-blue-900">
+                      <Link :href="route('campaigns.show', lead.campaign.id)" class="text-green-600 hover:text-green-900">
                         {{ lead.campaign.name }}
                       </Link>
                     </dd>
@@ -183,7 +183,7 @@
 
                   <Link
                     :href="route('activities.create', { related_type: 'App\\Models\\Lead', related_id: lead.id })"
-                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-green-300 text-sm font-medium rounded-md text-green-700 bg-green-50 hover:bg-green-100"
                   >
                     Nueva Actividad
                   </Link>
@@ -198,7 +198,7 @@
                   <h3 class="text-lg font-medium text-gray-900">Actividades & Timeline</h3>
                   <Link
                     :href="route('activities.create', { related_type: 'App\\Models\\Lead', related_id: lead.id })"
-                    class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200"
+                    class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200"
                   >
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
@@ -231,7 +231,7 @@
                         <div class="min-w-0 flex-1">
                           <div class="flex items-center justify-between">
                             <div>
-                              <Link :href="route('activities.show', activity.id)" class="text-sm font-medium text-gray-900 hover:text-blue-600">
+                              <Link :href="route('activities.show', activity.id)" class="text-sm font-medium text-gray-900 hover:text-green-600">
                                 {{ activity.subject }}
                               </Link>
                               <div class="flex items-center space-x-2 mt-1">
@@ -252,7 +252,7 @@
                                 <div v-else>{{ formatDate(activity.created_at) }}</div>
                               </div>
                               <div class="flex space-x-1">
-                                <Link :href="route('activities.show', activity.id)" class="text-blue-600 hover:text-blue-900">
+                                <Link :href="route('activities.show', activity.id)" class="text-green-600 hover:text-green-900">
                                   <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -278,7 +278,7 @@
                       <div class="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></div>
                       <div class="relative flex space-x-3">
                         <div>
-                          <span class="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
+                          <span class="h-10 w-10 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
                             <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
@@ -382,7 +382,7 @@ const showConvertModal = ref(false)
 // Methods
 const getStatusColor = (status) => {
   const colors = {
-    'new': 'bg-blue-100 text-blue-800',
+    'new': 'bg-green-100 text-green-800',
     'contacted': 'bg-yellow-100 text-yellow-800',
     'qualified': 'bg-green-100 text-green-800',
     'converted': 'bg-purple-100 text-purple-800',
@@ -393,7 +393,7 @@ const getStatusColor = (status) => {
 
 const getSourceColor = (source) => {
   const colors = {
-    'website': 'bg-blue-100 text-blue-800',
+    'website': 'bg-green-100 text-green-800',
     'social': 'bg-purple-100 text-purple-800',
     'campaign': 'bg-green-100 text-green-800',
     'referral': 'bg-yellow-100 text-yellow-800',
@@ -460,7 +460,7 @@ const getActivityIcon = (type) => {
 
 const getActivityIconColor = (type) => {
   const colors = {
-    call: 'bg-blue-100 text-blue-600',
+    call: 'bg-green-100 text-green-600',
     email: 'bg-green-100 text-green-600',
     meeting: 'bg-purple-100 text-purple-600',
     note: 'bg-yellow-100 text-yellow-600',
@@ -474,7 +474,7 @@ const getActivityIconColor = (type) => {
 
 const getActivityTypeColor = (type) => {
   const colors = {
-    call: 'bg-blue-100 text-blue-800',
+    call: 'bg-green-100 text-green-800',
     email: 'bg-green-100 text-green-800',
     meeting: 'bg-purple-100 text-purple-800',
     note: 'bg-yellow-100 text-yellow-800',
