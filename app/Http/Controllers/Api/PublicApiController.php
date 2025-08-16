@@ -24,7 +24,9 @@ class PublicApiController extends Controller
                   ->orWhere('status', 'reserved');
         }])
         ->where('status', 'Disponible')
-        ->where('is_public', true);
+        ->where('is_public', true)
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('created_at', 'desc');
 
         // Apply filters
         if ($request->filled('type')) {

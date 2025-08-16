@@ -63,7 +63,7 @@
           </div>
 
           <!-- Property Count -->
-          <div class="sm:col-span-2">
+          <div>
             <label for="property_count" class="block text-sm font-medium text-gray-700">
               Número de propiedades (opcional)
             </label>
@@ -77,6 +77,29 @@
             />
             <p v-if="form.errors.property_count" class="mt-1 text-sm text-red-600">{{ form.errors.property_count }}</p>
           </div>
+
+          <!-- Public Visibility -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Visibilidad
+            </label>
+            <div class="flex items-center">
+              <input
+                id="is_public"
+                v-model="form.is_public"
+                type="checkbox"
+                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+              />
+              <label for="is_public" class="ml-2 block text-sm text-gray-700">
+                Mostrar en sitio web público
+              </label>
+            </div>
+            <p class="mt-1 text-xs text-gray-500">
+              Si está activado, el proyecto será visible en el sitio web público para los visitantes
+            </p>
+            <p v-if="form.errors.is_public" class="mt-1 text-sm text-red-600">{{ form.errors.is_public }}</p>
+          </div>
+
 
           <!-- Description -->
           <div class="sm:col-span-2">
@@ -242,6 +265,7 @@ const form = useForm({
   type: props.project?.type || '',
   status: props.project?.status || 'Disponible',
   property_count: props.project?.property_count || 0,
+  is_public: props.project?.is_public === 1 || props.project?.is_public === true || false,
   cover_image: null,
   gallery: [],
   videos: [],
@@ -277,10 +301,10 @@ const handleVideosRemove = (paths) => {
 
 const submit = () => {
   if (isEdit.value) {
-    // Usar POST con _method: PUT para formularios con archivos
+    // Usar POST con _method: PATCH para formularios con archivos
     form.transform(data => ({
       ...data,
-      _method: 'PUT'
+      _method: 'PATCH'
     })).post(route('projects.update', props.project.id), {
       preserveScroll: true
     })

@@ -24,7 +24,8 @@ class ProjectController extends Controller
     {
         $query = Project::query()
             ->withCount('properties')
-            ->latest();
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('created_at', 'desc');
 
         // Apply filters
         if ($request->filled('search')) {
@@ -75,6 +76,7 @@ class ProjectController extends Controller
             'type' => $validated['type'],
             'status' => $validated['status'],
             'property_count' => $validated['property_count'] ?? 0,
+            'is_public' => $validated['is_public'] ?? false,
             'cover_image' => '', // Will be updated after file upload
         ]);
 
@@ -153,6 +155,7 @@ class ProjectController extends Controller
             'type' => $validated['type'],
             'status' => $validated['status'],
             'property_count' => $validated['property_count'] ?? $project->property_count,
+            'is_public' => $validated['is_public'] ?? false,
         ]);
 
         // Handle cover image update
@@ -257,5 +260,36 @@ class ProjectController extends Controller
             'project' => $project,
             'message' => 'Proyecto creado exitosamente.'
         ]);
+    }
+
+    /**
+     * Update projects sort order in bulk
+     */
+    public function updateOrder(Request $request)
+    {
+        $request->validate([
+            'projects' => 'required|array',
+            'projects.*.id' => 'required|exists:projects,id',
+            'projects.*.sort_order' => 'required|integer|min:0'
+        ]);
+
+        foreach ($request->projects as $projectData) {
+            Project::where('id', $projectData['id'])
+                ->update(['sort_order' => $projectData['sort_order']]);
+        }
+
+        return back()->with('success', 'Orden de proyectos actualizado exitosamente.');
+    }
+
+    /**
+     * Toggle project visibility
+     */
+    public function toggleVisibility(Project $project)
+    {
+        $project->update([
+            'is_public' => !$project->is_public
+        ]);
+
+        return back()->with('success', 'Visibilidad del proyecto actualizada exitosamente.');
     }
 }

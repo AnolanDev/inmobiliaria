@@ -17,6 +17,8 @@ class Project extends Model
         'type',
         'status',
         'property_count',
+        'is_public',
+        'sort_order',
         'cover_image',
         'gallery',
         'videos',
@@ -26,6 +28,8 @@ class Project extends Model
         'gallery' => 'array',
         'videos' => 'array',
         'property_count' => 'integer',
+        'is_public' => 'boolean',
+        'sort_order' => 'integer',
     ];
 
     protected $appends = [

@@ -27,6 +27,8 @@ class StoreProjectRequest extends FormRequest
             'type' => 'required|in:Campestres,Urbanos,Turísticos',
             'status' => 'required|in:Vendido,Disponible,Reservado',
             'property_count' => 'nullable|integer|min:0',
+            'is_public' => 'nullable|boolean',
+            'sort_order' => 'nullable|integer|min:0',
             'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'gallery' => 'nullable|array',
             'gallery.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',

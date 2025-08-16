@@ -86,6 +86,8 @@ Route::middleware('auth')->group(function () {
         Route::middleware('permission:projects:edit')->group(function () {
             Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
             Route::patch('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
+            Route::post('/projects/update-order', [ProjectController::class, 'updateOrder'])->name('projects.updateOrder');
+            Route::patch('/projects/{project}/toggle-visibility', [ProjectController::class, 'toggleVisibility'])->name('projects.toggleVisibility');
         });
         
         Route::middleware('permission:projects:delete')->group(function () {

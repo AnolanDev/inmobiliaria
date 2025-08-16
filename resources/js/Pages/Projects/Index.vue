@@ -75,13 +75,55 @@
               </div>
 
               <!-- View Toggle -->
-              <ToggleView v-model="currentView" />
+              <div class="flex items-center space-x-2">
+                <button
+                  @click="currentView = 'cards'"
+                  :class="[
+                    'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                    currentView === 'cards'
+                      ? 'bg-green-600 text-white'
+                      : 'text-gray-500 hover:text-gray-700'
+                  ]"
+                >
+                  Tarjetas
+                </button>
+                <button
+                  @click="currentView = 'table'"
+                  :class="[
+                    'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                    currentView === 'table'
+                      ? 'bg-green-600 text-white'
+                      : 'text-gray-500 hover:text-gray-700'
+                  ]"
+                >
+                  Tabla
+                </button>
+                <button
+                  @click="currentView = 'sort'"
+                  :class="[
+                    'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                    currentView === 'sort'
+                      ? 'bg-green-600 text-white'
+                      : 'text-gray-500 hover:text-gray-700'
+                  ]"
+                >
+                  Ordenar
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Projects Display -->
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+          <!-- Sort View (Drag & Drop) -->
+          <div v-if="currentView === 'sort'">
+            <DraggableProjectTable 
+              :projects="projects.data" 
+              @order-updated="handleOrderUpdated"
+            />
+          </div>
+
           <!-- Table View -->
           <div v-if="currentView === 'table'" class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -321,6 +363,7 @@ import { Head, Link, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import ToggleView from '@/Components/ToggleView.vue'
 import Modal from '@/Components/Modal.vue'
+import DraggableProjectTable from '@/Components/Projects/DraggableProjectTable.vue'
 import { debounce } from 'lodash'
 
 const props = defineProps({
@@ -403,5 +446,10 @@ const deleteProject = () => {
       }
     })
   }
+}
+
+const handleOrderUpdated = () => {
+  // Refresh the page to show updated order
+  router.reload({ only: ['projects'] })
 }
 </script>
