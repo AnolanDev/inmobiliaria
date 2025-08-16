@@ -6,14 +6,14 @@
         <div>
           <h3 class="text-lg font-medium text-gray-900">Ordenar Proyectos</h3>
           <p class="text-sm text-gray-500 mt-1">
-            Arrastra y suelta las filas para cambiar el orden. Usa el toggle para cambiar la visibilidad pública.
+            Arrastra y suelta las filas para cambiar el orden automáticamente. Usa el toggle para cambiar la visibilidad pública.
           </p>
         </div>
         <div class="text-sm text-gray-500">
           <svg class="w-5 h-5 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
           </svg>
-          Drag & Drop
+          Auto-guardado
         </div>
       </div>
     </div>
@@ -137,31 +137,16 @@
       </table>
     </div>
 
-    <!-- Save Button -->
-    <div v-if="hasChanges" class="px-6 py-4 bg-gray-50 border-t border-gray-200">
-      <div class="flex items-center justify-between">
-        <p class="text-sm text-gray-600">
-          Has modificado el orden. Guarda los cambios para aplicarlos.
+    <!-- Auto-save Status -->
+    <div v-if="saving" class="px-6 py-3 bg-blue-50 border-t border-blue-200">
+      <div class="flex items-center">
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="text-sm text-blue-700">
+          Guardando orden automáticamente...
         </p>
-        <div class="flex space-x-3">
-          <button
-            @click="resetOrder"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          >
-            Cancelar
-          </button>
-          <button
-            @click="saveOrder"
-            :disabled="saving"
-            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
-          >
-            <svg v-if="saving" class="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            {{ saving ? 'Guardando...' : 'Guardar Orden' }}
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -183,16 +168,9 @@ const emit = defineEmits(['orderUpdated'])
 
 // State
 const localProjects = ref([...props.projects])
-const originalOrder = ref([...props.projects])
 const dragging = ref(false)
 const saving = ref(false)
 const updatingVisibility = ref(new Set())
-
-// Computed
-const hasChanges = computed(() => {
-  return JSON.stringify(localProjects.value.map(p => p.id)) !== 
-         JSON.stringify(originalOrder.value.map(p => p.id))
-})
 
 const dragOptions = computed(() => ({
   animation: 200,
@@ -206,7 +184,6 @@ watch(
   () => props.projects,
   (newProjects) => {
     localProjects.value = [...newProjects]
-    originalOrder.value = [...newProjects]
   },
   { deep: true }
 )
@@ -218,10 +195,9 @@ const onDragStart = () => {
 
 const onDragEnd = () => {
   dragging.value = false
-}
-
-const resetOrder = () => {
-  localProjects.value = [...originalOrder.value]
+  
+  // Auto-save the new order
+  saveOrder()
 }
 
 const saveOrder = async () => {
@@ -239,7 +215,6 @@ const saveOrder = async () => {
       preserveState: true,
       preserveScroll: true,
       onSuccess: () => {
-        originalOrder.value = [...localProjects.value]
         emit('orderUpdated')
       }
     })
