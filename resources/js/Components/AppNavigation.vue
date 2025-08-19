@@ -18,16 +18,10 @@
         <div class="flex h-full flex-col">
             <!-- Mobile Header -->
             <div class="flex h-16 items-center justify-between px-6 border-b border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: #00bf63;">
-                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M10.3 8.2l-0.9 0.9c-0.1 0.1-0.1 0.4 0 0.5l5.1 5.1c0.1 0.1 0.4 0.1 0.5 0l0.9-0.9c0.1-0.1 0.1-0.4 0-0.5l-5.1-5.1c-0.1-0.1-0.4-0.1-0.5 0z"/>
-                            <path d="M8.7 8.7l0.9-0.9c0.1-0.1 0.4-0.1 0.5 0l5.1 5.1c0.1 0.1 0.1 0.4 0 0.5l-0.9 0.9c-0.1 0.1-0.4 0.1-0.5 0l-5.1-5.1c-0.1-0.1-0.1-0.4 0-0.5z"/>
-                            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"/>
-                        </svg>
-                    </div>
-                    <h2 class="text-lg font-bold text-gray-900">InmoApp</h2>
-                </div>
+                <Link :href="route('dashboard')" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="/ts/logo.png" alt="Tierra Soñada" class="h-6 w-auto" />
+                    <h2 class="text-lg font-bold text-gray-900">Tierra Soñada</h2>
+                </Link>
                 <button
                     @click="closeMobileMenu"
                     class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
@@ -245,16 +239,10 @@
         <div class="flex flex-col flex-1 bg-white border-r border-gray-200">
             <!-- Desktop Header -->
             <div class="flex h-16 items-center px-6 border-b border-gray-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: #00bf63;">
-                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M10.3 8.2l-0.9 0.9c-0.1 0.1-0.1 0.4 0 0.5l5.1 5.1c0.1 0.1 0.4 0.1 0.5 0l0.9-0.9c0.1-0.1 0.1-0.4 0-0.5l-5.1-5.1c-0.1-0.1-0.4-0.1-0.5 0z"/>
-                            <path d="M8.7 8.7l0.9-0.9c0.1-0.1 0.4-0.1 0.5 0l5.1 5.1c0.1 0.1 0.1 0.4 0 0.5l-0.9 0.9c-0.1 0.1-0.4 0.1-0.5 0l-5.1-5.1c-0.1-0.1-0.1-0.4 0-0.5z"/>
-                            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"/>
-                        </svg>
-                    </div>
-                    <h1 class="text-lg font-bold text-gray-900">InmoApp</h1>
-                </div>
+                <Link :href="route('dashboard')" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src="/ts/logo.png" alt="Tierra Soñada" class="h-8 w-auto" />
+                    <h1 class="text-lg font-bold text-gray-900">Tierra Soñada</h1>
+                </Link>
             </div>
 
             <!-- Desktop Navigation -->
