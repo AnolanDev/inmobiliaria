@@ -226,6 +226,32 @@ Route::middleware('auth')->group(function () {
         Route::post('/leads/{lead}/schedule-follow-up', [LeadController::class, 'scheduleFollowUp'])->name('leads.schedule-follow-up')->middleware('permission:leads:edit');
     });
 
+    // Blog Routes
+    Route::middleware('permission:blogs:view')->group(function () {
+        Route::get('/blogs', [App\Http\Controllers\BlogController::class, 'index'])->name('blogs.index');
+        
+        Route::middleware('permission:blogs:create')->group(function () {
+            Route::get('/blogs/create', [App\Http\Controllers\BlogController::class, 'create'])->name('blogs.create');
+            Route::post('/blogs', [App\Http\Controllers\BlogController::class, 'store'])->name('blogs.store');
+            Route::post('/blogs/{blog}/duplicate', [App\Http\Controllers\BlogController::class, 'duplicate'])->name('blogs.duplicate');
+        });
+        
+        Route::get('/blogs/{blog}', [App\Http\Controllers\BlogController::class, 'show'])->name('blogs.show');
+        Route::get('/blogs/{blog}/analytics', [App\Http\Controllers\BlogController::class, 'analytics'])->name('blogs.analytics');
+        
+        Route::middleware('permission:blogs:edit')->group(function () {
+            Route::get('/blogs/{blog}/edit', [App\Http\Controllers\BlogController::class, 'edit'])->name('blogs.edit');
+            Route::patch('/blogs/{blog}', [App\Http\Controllers\BlogController::class, 'update'])->name('blogs.update');
+            Route::post('/blogs/update-order', [App\Http\Controllers\BlogController::class, 'updateOrder'])->name('blogs.updateOrder');
+            Route::patch('/blogs/{blog}/toggle-visibility', [App\Http\Controllers\BlogController::class, 'toggleVisibility'])->name('blogs.toggleVisibility');
+            Route::patch('/blogs/{blog}/toggle-status', [App\Http\Controllers\BlogController::class, 'toggleStatus'])->name('blogs.toggleStatus');
+        });
+        
+        Route::middleware('permission:blogs:delete')->group(function () {
+            Route::delete('/blogs/{blog}', [App\Http\Controllers\BlogController::class, 'destroy'])->name('blogs.destroy');
+        });
+    });
+
     // Activities Routes
     Route::middleware('permission:activities:view')->group(function () {
         Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');

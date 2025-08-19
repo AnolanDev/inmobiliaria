@@ -8,6 +8,7 @@ use App\Models\Property;
 use App\Models\Agent;
 use App\Models\Visit;
 use App\Models\Lead;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Carbon\Carbon;
@@ -401,5 +402,210 @@ class PublicApiController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * Get all published blogs with filters
+     */
+    public function getBlogs(Request $request): JsonResponse
+    {
+        $query = Blog::published()
+            ->orderedForPublic();
+
+        // Apply filters
+        if ($request->filled('category')) {
+            $query->byCategory($request->category);
+        }
+
+        if ($request->filled('tag')) {
+            $query->byTag($request->tag);
+        }
+
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('excerpt', 'like', '%' . $request->search . '%')
+                  ->orWhere('content', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $blogs = $query->paginate(12);
+
+        return response()->json([
+            'data' => $blogs->items(),
+            'meta' => [
+                'current_page' => $blogs->currentPage(),
+                'last_page' => $blogs->lastPage(),
+                'per_page' => $blogs->perPage(),
+                'total' => $blogs->total(),
+            ]
+        ]);
+    }
+
+    /**
+     * Get blog details by ID or slug
+     */
+    public function getBlog($identifier): JsonResponse
+    {
+        $blog = Blog::published()
+            ->where(function($query) use ($identifier) {
+                $query->where('id', $identifier)
+                      ->orWhere('slug', $identifier);
+            })
+            ->first();
+
+        if (!$blog) {
+            return response()->json(['message' => 'Blog no encontrado'], 404);
+        }
+
+        // Increment view count
+        $blog->incrementViews();
+
+        return response()->json($blog);
+    }
+
+    /**
+     * Get featured/latest blogs for homepage
+     */
+    public function getFeaturedBlogs(Request $request): JsonResponse
+    {
+        $limit = $request->get('limit', 6);
+        
+        $blogs = Blog::published()
+            ->orderedForPublic()
+            ->limit($limit)
+            ->get();
+
+        return response()->json($blogs);
+    }
+
+    /**
+     * Get blogs by category
+     */
+    public function getBlogsByCategory($category, Request $request): JsonResponse
+    {
+        $query = Blog::published()
+            ->byCategory($category)
+            ->orderedForPublic();
+
+        $blogs = $query->paginate(12);
+
+        return response()->json([
+            'data' => $blogs->items(),
+            'category' => $category,
+            'category_name' => Blog::CATEGORIES[$category] ?? $category,
+            'meta' => [
+                'current_page' => $blogs->currentPage(),
+                'last_page' => $blogs->lastPage(),
+                'per_page' => $blogs->perPage(),
+                'total' => $blogs->total(),
+            ]
+        ]);
+    }
+
+    /**
+     * Get blogs by tag
+     */
+    public function getBlogsByTag($tag, Request $request): JsonResponse
+    {
+        $query = Blog::published()
+            ->byTag($tag)
+            ->orderedForPublic();
+
+        $blogs = $query->paginate(12);
+
+        return response()->json([
+            'data' => $blogs->items(),
+            'tag' => $tag,
+            'meta' => [
+                'current_page' => $blogs->currentPage(),
+                'last_page' => $blogs->lastPage(),
+                'per_page' => $blogs->perPage(),
+                'total' => $blogs->total(),
+            ]
+        ]);
+    }
+
+    /**
+     * Get related blogs based on category and tags
+     */
+    public function getRelatedBlogs($blogId, Request $request): JsonResponse
+    {
+        $blog = Blog::published()->findOrFail($blogId);
+        $limit = $request->get('limit', 4);
+
+        $relatedBlogs = Blog::published()
+            ->where('id', '!=', $blog->id)
+            ->where(function($query) use ($blog) {
+                $query->where('category', $blog->category);
+                
+                // If blog has tags, also search by tags
+                if ($blog->tags && count($blog->tags) > 0) {
+                    foreach ($blog->tags as $tag) {
+                        $query->orWhereJsonContains('tags', $tag);
+                    }
+                }
+            })
+            ->orderedForPublic()
+            ->limit($limit)
+            ->get();
+
+        return response()->json($relatedBlogs);
+    }
+
+    /**
+     * Get blog categories with post counts
+     */
+    public function getBlogCategories(): JsonResponse
+    {
+        $categories = [];
+        
+        foreach (Blog::CATEGORIES as $key => $name) {
+            $count = Blog::published()->byCategory($key)->count();
+            if ($count > 0) {
+                $categories[] = [
+                    'key' => $key,
+                    'name' => $name,
+                    'count' => $count
+                ];
+            }
+        }
+
+        return response()->json($categories);
+    }
+
+    /**
+     * Get popular blog tags
+     */
+    public function getBlogTags(): JsonResponse
+    {
+        $blogs = Blog::published()
+            ->whereNotNull('tags')
+            ->select('tags')
+            ->get();
+
+        $tagCounts = [];
+        
+        foreach ($blogs as $blog) {
+            if ($blog->tags && is_array($blog->tags)) {
+                foreach ($blog->tags as $tag) {
+                    $tagCounts[$tag] = ($tagCounts[$tag] ?? 0) + 1;
+                }
+            }
+        }
+
+        // Sort by count and get top tags
+        arsort($tagCounts);
+        $topTags = array_slice($tagCounts, 0, 20, true);
+
+        $tags = [];
+        foreach ($topTags as $tag => $count) {
+            $tags[] = [
+                'name' => $tag,
+                'count' => $count
+            ];
+        }
+
+        return response()->json($tags);
     }
 }

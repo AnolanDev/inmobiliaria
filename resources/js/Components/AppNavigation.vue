@@ -154,6 +154,15 @@
                         @click="closeMobileMenu"
                     />
                     
+                    <NavLink 
+                        v-if="hasBlogsPermission"
+                        name="Blogs"
+                        :href="route('blogs.index')"
+                        :active="currentRoute.startsWith('/blogs')"
+                        icon="blogs"
+                        @click="closeMobileMenu"
+                    />
+                    
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
                 
@@ -355,6 +364,14 @@
                         icon="email-campaigns"
                     />
                     
+                    <NavLink 
+                        v-if="hasBlogsPermission"
+                        name="Blogs"
+                        :href="route('blogs.index')"
+                        :active="currentRoute.startsWith('/blogs')"
+                        icon="blogs"
+                    />
+                    
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
                 
@@ -467,13 +484,14 @@ const hasLeadsPermission = computed(() => user.value?.permissions?.some(p => p.s
 const hasActivitiesPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'activities-view') || user.value?.is_super_admin)
 const hasEmailMarketingPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'email-marketing-view') || user.value?.is_super_admin)
 const hasEmailMarketingConfigPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'email-marketing-config') || user.value?.is_super_admin)
+const hasBlogsPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'blogs-view') || user.value?.is_super_admin)
 const hasUsersPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'users-view') || user.value?.is_super_admin)
 const hasRolesPermission = computed(() => user.value?.permissions?.some(p => p.slug === 'roles-view') || user.value?.is_super_admin)
 
 // Section visibility
 const hasAnyPropertyPermission = computed(() => hasProjectsPermission.value || hasPropertiesPermission.value)
 const hasAnyPeoplePermission = computed(() => hasClientsPermission.value || hasAgentsPermission.value)
-const hasAnyMarketingPermission = computed(() => hasCampaignsPermission.value || hasLeadsPermission.value || hasEmailMarketingPermission.value)
+const hasAnyMarketingPermission = computed(() => hasCampaignsPermission.value || hasLeadsPermission.value || hasEmailMarketingPermission.value || hasBlogsPermission.value)
 const hasAnyAdminPermission = computed(() => hasUsersPermission.value || hasRolesPermission.value || hasEmailMarketingConfigPermission.value)
 
 // Mobile menu functions

@@ -51,6 +51,16 @@ Route::prefix('public')->group(function () {
     // Filter Options
     Route::get('/filter-options', [PublicApiController::class, 'getFilterOptions']);
     
+    // Blogs
+    Route::get('/blogs', [PublicApiController::class, 'getBlogs']);
+    Route::get('/blogs/featured', [PublicApiController::class, 'getFeaturedBlogs']);
+    Route::get('/blogs/categories', [PublicApiController::class, 'getBlogCategories']);
+    Route::get('/blogs/tags', [PublicApiController::class, 'getBlogTags']);
+    Route::get('/blogs/category/{category}', [PublicApiController::class, 'getBlogsByCategory']);
+    Route::get('/blogs/tag/{tag}', [PublicApiController::class, 'getBlogsByTag']);
+    Route::get('/blogs/{identifier}', [PublicApiController::class, 'getBlog']);
+    Route::get('/blogs/{id}/related', [PublicApiController::class, 'getRelatedBlogs']);
+    
 });
 
 /*

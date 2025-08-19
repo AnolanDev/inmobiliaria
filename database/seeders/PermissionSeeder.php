@@ -490,6 +490,36 @@ class PermissionSeeder extends Seeder
                 'description' => 'Permite gestión completa del sistema de actividades',
                 'sort_order' => 5,
             ],
+
+            // Blogs permissions
+            [
+                'name' => 'Ver Blogs',
+                'module' => 'blogs',
+                'action' => 'view',
+                'description' => 'Permite ver la lista de blogs y artículos',
+                'sort_order' => 1,
+            ],
+            [
+                'name' => 'Crear Blogs',
+                'module' => 'blogs',
+                'action' => 'create',
+                'description' => 'Permite crear nuevos blogs y artículos',
+                'sort_order' => 2,
+            ],
+            [
+                'name' => 'Editar Blogs',
+                'module' => 'blogs',
+                'action' => 'edit',
+                'description' => 'Permite editar blogs existentes y cambiar su estado',
+                'sort_order' => 3,
+            ],
+            [
+                'name' => 'Eliminar Blogs',
+                'module' => 'blogs',
+                'action' => 'delete',
+                'description' => 'Permite eliminar blogs y artículos',
+                'sort_order' => 4,
+            ],
         ];
 
         foreach ($permissions as $permission) {
