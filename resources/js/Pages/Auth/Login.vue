@@ -6,6 +6,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 defineProps({
@@ -38,8 +39,7 @@ const submit = () => {
 
         <!-- Header -->
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-900">Bienvenido a Tierra Soñada</h2>
-            <p class="mt-2 text-gray-600">Ingresa a tu cuenta para encontrar tu hogar perfecto</p>
+            <ApplicationLogo class="h-16 w-auto mx-auto" />
         </div>
 
         <!-- Status Message -->
@@ -130,7 +130,7 @@ const submit = () => {
             <!-- Submit Button -->
             <div>
                 <PrimaryButton
-                    class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200"
+                    class="w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-lg hover:shadow-xl text-base font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-[1.02]"
                     :class="{ 'opacity-50': form.processing }"
                     :disabled="form.processing"
                 >

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
             PropertySeeder::class,
             ClientSeeder::class,
+            BlogSeeder::class,
         ]);
     }
 }
