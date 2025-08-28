@@ -33,8 +33,9 @@
             </div>
 
             <!-- Mobile Navigation -->
-            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-                <!-- Dashboard -->
+            <div class="flex-1 flex flex-col min-h-0">
+                <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                    <!-- Dashboard -->
                 <NavLink 
                     name="Dashboard"
                     :href="route('dashboard')"
@@ -225,11 +226,12 @@
                         @click="closeMobileMenu"
                     />
                 </div>
-            </nav>
+                </nav>
 
-            <!-- Mobile User Section -->
-            <div class="border-t border-gray-100 p-4">
-                <UserDropdown :user="user" :is-mobile="true" />
+                <!-- Mobile User Section -->
+                <div class="flex-shrink-0 border-t border-gray-100 p-4">
+                    <UserDropdown :user="user" :is-mobile="true" />
+                </div>
             </div>
         </div>
     </div>
@@ -246,8 +248,9 @@
             </div>
 
             <!-- Desktop Navigation -->
-            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-                <!-- Dashboard -->
+            <div class="flex-1 flex flex-col min-h-0">
+                <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+                    <!-- Dashboard -->
                 <NavLink 
                     name="Dashboard"
                     :href="route('dashboard')"
@@ -423,11 +426,12 @@
                         icon="email-config"
                     />
                 </div>
-            </nav>
+                </nav>
 
-            <!-- Desktop User Section -->
-            <div class="border-t border-gray-100 p-4">
-                <UserDropdown :user="user" />
+                <!-- Desktop User Section -->
+                <div class="flex-shrink-0 border-t border-gray-100 p-4">
+                    <UserDropdown :user="user" />
+                </div>
             </div>
         </div>
     </div>
