@@ -49,143 +49,191 @@
                 
                 <!-- Inmobiliaria Section -->
                 <div v-if="hasAnyPropertyPermission" class="space-y-1">
-                    <div class="px-3 py-1">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Gestión Inmobiliaria
-                        </h3>
+                    <button 
+                        @click="toggleSection('inmobiliaria')"
+                        class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                        <span>Gestión Inmobiliaria</span>
+                        <svg 
+                            :class="[
+                                'w-4 h-4 transition-transform duration-200',
+                                collapsedSections.inmobiliaria ? 'rotate-0' : 'rotate-90'
+                            ]" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    
+                    <div v-show="!collapsedSections.inmobiliaria" class="pl-3 space-y-1">
+                        <NavLink 
+                            v-if="hasProjectsPermission"
+                            name="Proyectos"
+                            :href="route('projects.index')"
+                            :active="currentRoute.startsWith('/projects')"
+                            icon="projects"
+                            @click="closeMobileMenu"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasPropertiesPermission"
+                            name="Propiedades"
+                            :href="route('properties.index')"
+                            :active="currentRoute.startsWith('/properties')"
+                            icon="properties"
+                            @click="closeMobileMenu"
+                        />
                     </div>
-                    
-                    <NavLink 
-                        v-if="hasProjectsPermission"
-                        name="Proyectos"
-                        :href="route('projects.index')"
-                        :active="currentRoute.startsWith('/projects')"
-                        icon="projects"
-                        @click="closeMobileMenu"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasPropertiesPermission"
-                        name="Propiedades"
-                        :href="route('properties.index')"
-                        :active="currentRoute.startsWith('/properties')"
-                        icon="properties"
-                        @click="closeMobileMenu"
-                    />
                     
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
                 
                 <!-- People Section -->
                 <div v-if="hasAnyPeoplePermission" class="space-y-1">
-                    <div class="px-3 py-1">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Gestión de Personas
-                        </h3>
+                    <button 
+                        @click="toggleSection('personas')"
+                        class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                        <span>Gestión de Personas</span>
+                        <svg 
+                            :class="[
+                                'w-4 h-4 transition-transform duration-200',
+                                collapsedSections.personas ? 'rotate-0' : 'rotate-90'
+                            ]" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    
+                    <div v-show="!collapsedSections.personas" class="pl-3 space-y-1">
+                        <NavLink 
+                            v-if="hasClientsPermission"
+                            name="Clientes"
+                            :href="route('clients.index')"
+                            :active="currentRoute.startsWith('/clients')"
+                            icon="clients"
+                            @click="closeMobileMenu"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasAgentsPermission"
+                            name="Agentes"
+                            :href="route('agents.index')"
+                            :active="currentRoute.startsWith('/agents')"
+                            icon="agents"
+                            @click="closeMobileMenu"
+                        />
                     </div>
-                    
-                    <NavLink 
-                        v-if="hasClientsPermission"
-                        name="Clientes"
-                        :href="route('clients.index')"
-                        :active="currentRoute.startsWith('/clients')"
-                        icon="clients"
-                        @click="closeMobileMenu"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasAgentsPermission"
-                        name="Agentes"
-                        :href="route('agents.index')"
-                        :active="currentRoute.startsWith('/agents')"
-                        icon="agents"
-                        @click="closeMobileMenu"
-                    />
                     
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
                 
                 <!-- Marketing Section -->
                 <div v-if="hasAnyMarketingPermission" class="space-y-1">
-                    <div class="px-3 py-1">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Marketing
-                        </h3>
+                    <button 
+                        @click="toggleSection('marketing')"
+                        class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                        <span>Marketing</span>
+                        <svg 
+                            :class="[
+                                'w-4 h-4 transition-transform duration-200',
+                                collapsedSections.marketing ? 'rotate-0' : 'rotate-90'
+                            ]" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    
+                    <div v-show="!collapsedSections.marketing" class="pl-3 space-y-1">
+                        <NavLink 
+                            v-if="hasCampaignsPermission"
+                            name="Campañas"
+                            :href="route('campaigns.index')"
+                            :active="currentRoute.startsWith('/campaigns')"
+                            icon="campaigns"
+                            @click="closeMobileMenu"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasLeadsPermission"
+                            name="Leads"
+                            :href="route('leads.index')"
+                            :active="currentRoute.startsWith('/leads')"
+                            icon="leads"
+                            @click="closeMobileMenu"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasEmailMarketingPermission"
+                            name="Email Templates"
+                            :href="route('email-templates.index')"
+                            :active="currentRoute.startsWith('/email-templates')"
+                            icon="email-templates"
+                            @click="closeMobileMenu"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasEmailMarketingPermission"
+                            name="Email Campaigns"
+                            :href="route('email-campaigns.index')"
+                            :active="currentRoute.startsWith('/email-campaigns')"
+                            icon="email-campaigns"
+                            @click="closeMobileMenu"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasBlogsPermission"
+                            name="Blogs"
+                            :href="route('blogs.index')"
+                            :active="currentRoute.startsWith('/blogs')"
+                            icon="blogs"
+                            @click="closeMobileMenu"
+                        />
                     </div>
-                    
-                    <NavLink 
-                        v-if="hasCampaignsPermission"
-                        name="Campañas"
-                        :href="route('campaigns.index')"
-                        :active="currentRoute.startsWith('/campaigns')"
-                        icon="campaigns"
-                        @click="closeMobileMenu"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasLeadsPermission"
-                        name="Leads"
-                        :href="route('leads.index')"
-                        :active="currentRoute.startsWith('/leads')"
-                        icon="leads"
-                        @click="closeMobileMenu"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasEmailMarketingPermission"
-                        name="Email Templates"
-                        :href="route('email-templates.index')"
-                        :active="currentRoute.startsWith('/email-templates')"
-                        icon="email-templates"
-                        @click="closeMobileMenu"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasEmailMarketingPermission"
-                        name="Email Campaigns"
-                        :href="route('email-campaigns.index')"
-                        :active="currentRoute.startsWith('/email-campaigns')"
-                        icon="email-campaigns"
-                        @click="closeMobileMenu"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasBlogsPermission"
-                        name="Blogs"
-                        :href="route('blogs.index')"
-                        :active="currentRoute.startsWith('/blogs')"
-                        icon="blogs"
-                        @click="closeMobileMenu"
-                    />
                     
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
                 
                 <!-- Activities Section -->
-                <div v-if="hasActivitiesPermission" class="space-y-1">
-                    <div class="px-3 py-1">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Actividades
-                        </h3>
+                <div v-if="hasActivitiesPermission || hasVisitsPermission" class="space-y-1">
+                    <button 
+                        @click="toggleSection('actividades')"
+                        class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                        <span>Actividades</span>
+                        <svg 
+                            :class="[
+                                'w-4 h-4 transition-transform duration-200',
+                                collapsedSections.actividades ? 'rotate-0' : 'rotate-90'
+                            ]" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    
+                    <div v-show="!collapsedSections.actividades" class="pl-3 space-y-1">
+                        <NavLink 
+                            v-if="hasActivitiesPermission"
+                            name="Actividades"
+                            :href="route('activities.index')"
+                            :active="currentRoute.startsWith('/activities')"
+                            icon="activities"
+                            @click="closeMobileMenu"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasVisitsPermission"
+                            name="Visitas"
+                            :href="route('visits.index')"
+                            :active="currentRoute.startsWith('/visits')"
+                            icon="visits"
+                            @click="closeMobileMenu"
+                        />
                     </div>
-                    
-                    <NavLink 
-                        v-if="hasActivitiesPermission"
-                        name="Actividades"
-                        :href="route('activities.index')"
-                        :active="currentRoute.startsWith('/activities')"
-                        icon="activities"
-                        @click="closeMobileMenu"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasVisitsPermission"
-                        name="Visitas"
-                        :href="route('visits.index')"
-                        :active="currentRoute.startsWith('/visits')"
-                        icon="visits"
-                        @click="closeMobileMenu"
-                    />
                     
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
@@ -193,38 +241,50 @@
                 <!-- Admin Section -->
                 <div v-if="hasAnyAdminPermission" class="space-y-1">
                     <div class="border-t border-gray-200 my-3"></div>
-                    <div class="px-3 py-1">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Administración
-                        </h3>
+                    <button 
+                        @click="toggleSection('administracion')"
+                        class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                        <span>Administración</span>
+                        <svg 
+                            :class="[
+                                'w-4 h-4 transition-transform duration-200',
+                                collapsedSections.administracion ? 'rotate-0' : 'rotate-90'
+                            ]" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    
+                    <div v-show="!collapsedSections.administracion" class="pl-3 space-y-1">
+                        <NavLink 
+                            v-if="hasUsersPermission"
+                            name="Usuarios"
+                            :href="route('users.index')"
+                            :active="currentRoute.startsWith('/users')"
+                            icon="users"
+                            @click="closeMobileMenu"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasRolesPermission"
+                            name="Roles y Permisos"
+                            :href="route('roles.index')"
+                            :active="currentRoute.startsWith('/roles')"
+                            icon="roles"
+                            @click="closeMobileMenu"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasEmailMarketingConfigPermission"
+                            name="Configuración Email"
+                            :href="route('email-marketing.config')"
+                            :active="currentRoute.startsWith('/email-marketing/config')"
+                            icon="email-config"
+                            @click="closeMobileMenu"
+                        />
                     </div>
-                    
-                    <NavLink 
-                        v-if="hasUsersPermission"
-                        name="Usuarios"
-                        :href="route('users.index')"
-                        :active="currentRoute.startsWith('/users')"
-                        icon="users"
-                        @click="closeMobileMenu"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasRolesPermission"
-                        name="Roles y Permisos"
-                        :href="route('roles.index')"
-                        :active="currentRoute.startsWith('/roles')"
-                        icon="roles"
-                        @click="closeMobileMenu"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasEmailMarketingConfigPermission"
-                        name="Configuración Email"
-                        :href="route('email-marketing.config')"
-                        :active="currentRoute.startsWith('/email-marketing/config')"
-                        icon="email-config"
-                        @click="closeMobileMenu"
-                    />
                 </div>
                 </nav>
 
@@ -263,54 +323,78 @@
                 
                 <!-- Inmobiliaria Section -->
                 <div v-if="hasAnyPropertyPermission" class="space-y-1">
-                    <div class="px-3 py-1">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Gestión Inmobiliaria
-                        </h3>
+                    <button 
+                        @click="toggleSection('inmobiliaria')"
+                        class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                        <span>Gestión Inmobiliaria</span>
+                        <svg 
+                            :class="[
+                                'w-4 h-4 transition-transform duration-200',
+                                collapsedSections.inmobiliaria ? 'rotate-0' : 'rotate-90'
+                            ]" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    
+                    <div v-show="!collapsedSections.inmobiliaria" class="pl-3 space-y-1">
+                        <NavLink 
+                            v-if="hasProjectsPermission"
+                            name="Proyectos"
+                            :href="route('projects.index')"
+                            :active="currentRoute.startsWith('/projects')"
+                            icon="projects"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasPropertiesPermission"
+                            name="Propiedades"
+                            :href="route('properties.index')"
+                            :active="currentRoute.startsWith('/properties')"
+                            icon="properties"
+                        />
                     </div>
-                    
-                    <NavLink 
-                        v-if="hasProjectsPermission"
-                        name="Proyectos"
-                        :href="route('projects.index')"
-                        :active="currentRoute.startsWith('/projects')"
-                        icon="projects"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasPropertiesPermission"
-                        name="Propiedades"
-                        :href="route('properties.index')"
-                        :active="currentRoute.startsWith('/properties')"
-                        icon="properties"
-                    />
                     
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
                 
                 <!-- People Section -->
                 <div v-if="hasAnyPeoplePermission" class="space-y-1">
-                    <div class="px-3 py-1">
-                        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Gestión de Personas
-                        </h3>
+                    <button 
+                        @click="toggleSection('personas')"
+                        class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                        <span>Gestión de Personas</span>
+                        <svg 
+                            :class="[
+                                'w-4 h-4 transition-transform duration-200',
+                                collapsedSections.personas ? 'rotate-0' : 'rotate-90'
+                            ]" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    
+                    <div v-show="!collapsedSections.personas" class="pl-3 space-y-1">
+                        <NavLink 
+                            v-if="hasClientsPermission"
+                            name="Clientes"
+                            :href="route('clients.index')"
+                            :active="currentRoute.startsWith('/clients')"
+                            icon="clients"
+                        />
+                        
+                        <NavLink 
+                            v-if="hasAgentsPermission"
+                            name="Agentes"
+                            :href="route('agents.index')"
+                            :active="currentRoute.startsWith('/agents')"
+                            icon="agents"
+                        />
                     </div>
-                    
-                    <NavLink 
-                        v-if="hasClientsPermission"
-                        name="Clientes"
-                        :href="route('clients.index')"
-                        :active="currentRoute.startsWith('/clients')"
-                        icon="clients"
-                    />
-                    
-                    <NavLink 
-                        v-if="hasAgentsPermission"
-                        name="Agentes"
-                        :href="route('agents.index')"
-                        :active="currentRoute.startsWith('/agents')"
-                        icon="agents"
-                    />
                     
                     <div class="border-t border-gray-200 my-3"></div>
                 </div>
@@ -458,6 +542,15 @@ import UserDropdown from './Navigation/UserDropdown.vue'
 // Mobile menu state
 const isMobileMenuOpen = ref(false)
 
+// Accordion state for navigation sections
+const collapsedSections = ref({
+    inmobiliaria: false,
+    personas: false,
+    marketing: false,
+    actividades: false,
+    administracion: false
+})
+
 // Get current user from Inertia
 const page = usePage()
 const user = computed(() => page.props.auth?.user)
@@ -493,6 +586,11 @@ const openMobileMenu = () => {
 
 const closeMobileMenu = () => {
     isMobileMenuOpen.value = false
+}
+
+// Toggle accordion sections
+const toggleSection = (section) => {
+    collapsedSections.value[section] = !collapsedSections.value[section]
 }
 </script>
 
