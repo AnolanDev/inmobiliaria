@@ -23,7 +23,7 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
-        'canRegister' => auth()->check() && Route::has('register'),
+        'canRegister' => auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin')) && Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
