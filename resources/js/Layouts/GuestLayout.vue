@@ -106,9 +106,7 @@ import { Link } from '@inertiajs/vue3';
             <div class="w-full max-w-md">
                 <!-- Mobile Logo -->
                 <div class="lg:hidden text-center mb-6">
-                    <Link href="/">
-                        <ApplicationLogo class="h-12 w-auto mx-auto" />
-                    </Link>
+                    <ApplicationLogo class="h-12 w-auto mx-auto" />
                 </div>
 
                 <!-- Login Form Container -->
