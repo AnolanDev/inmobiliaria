@@ -34,20 +34,10 @@ Route::middleware('auth')->group(function () {
     // User registration - Only for admin users
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register')
-        ->middleware(function ($request, $next) {
-            if (!auth()->user()->hasRole('admin') && !auth()->user()->hasRole('super-admin')) {
-                abort(403);
-            }
-            return $next($request);
-        });
+        ->middleware('role:admin,super-admin');
 
     Route::post('register', [RegisteredUserController::class, 'store'])
-        ->middleware(function ($request, $next) {
-            if (!auth()->user()->hasRole('admin') && !auth()->user()->hasRole('super-admin')) {
-                abort(403);
-            }
-            return $next($request);
-        });
+        ->middleware('role:admin,super-admin');
 
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
