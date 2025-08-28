@@ -33,12 +33,19 @@
             </svg>
         </button>
 
+        <!-- Backdrop (invisible overlay) -->
+        <div 
+            v-if="isOpen" 
+            @click="closeDropdown"
+            class="fixed inset-0 z-[60]"
+        ></div>
+
         <!-- Dropdown Menu -->
         <div 
             v-if="isOpen"
             :class="[
-                'absolute bottom-full left-0 right-0 mb-2 bg-white border border-gray-200 rounded-xl shadow-lg z-[60]',
-                isMobile ? 'relative bottom-auto mb-0 mt-2' : ''
+                'absolute top-full right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-xl z-[70]',
+                isMobile ? 'relative top-auto right-auto mt-2 w-full' : ''
             ]"
         >
             <div class="py-2">
@@ -130,20 +137,11 @@ const handleEscape = (e) => {
     }
 }
 
-// Close dropdown when clicking outside
-const handleClickOutside = (e) => {
-    if (dropdownRef.value && !dropdownRef.value.contains(e.target) && isOpen.value) {
-        closeDropdown()
-    }
-}
-
 onMounted(() => {
     document.addEventListener('keydown', handleEscape)
-    document.addEventListener('click', handleClickOutside)
 })
 
 onUnmounted(() => {
     document.removeEventListener('keydown', handleEscape)
-    document.removeEventListener('click', handleClickOutside)
 })
 </script>
