@@ -1,5 +1,5 @@
 <template>
-    <div class="relative">
+    <div ref="dropdownRef" class="relative">
         <!-- User Button -->
         <button
             @click="toggleDropdown"
@@ -37,7 +37,7 @@
         <div 
             v-if="isOpen"
             :class="[
-                'absolute bottom-full left-0 right-0 mb-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50',
+                'absolute bottom-full left-0 right-0 mb-2 bg-white border border-gray-200 rounded-xl shadow-lg z-[60]',
                 isMobile ? 'relative bottom-auto mb-0 mt-2' : ''
             ]"
         >
@@ -106,9 +106,12 @@ const props = defineProps({
 })
 
 const isOpen = ref(false)
+const dropdownRef = ref(null)
 
 const toggleDropdown = () => {
+    console.log('Toggle dropdown clicked, current state:', isOpen.value)
     isOpen.value = !isOpen.value
+    console.log('New state:', isOpen.value)
 }
 
 const closeDropdown = () => {
@@ -127,11 +130,20 @@ const handleEscape = (e) => {
     }
 }
 
+// Close dropdown when clicking outside
+const handleClickOutside = (e) => {
+    if (dropdownRef.value && !dropdownRef.value.contains(e.target) && isOpen.value) {
+        closeDropdown()
+    }
+}
+
 onMounted(() => {
     document.addEventListener('keydown', handleEscape)
+    document.addEventListener('click', handleClickOutside)
 })
 
 onUnmounted(() => {
     document.removeEventListener('keydown', handleEscape)
+    document.removeEventListener('click', handleClickOutside)
 })
 </script>
