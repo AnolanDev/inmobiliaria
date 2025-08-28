@@ -33,8 +33,7 @@
             </div>
 
             <!-- Mobile Navigation -->
-            <div class="flex-1 flex flex-col min-h-0">
-                <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
                     <!-- Dashboard -->
                 <NavLink 
                     name="Dashboard"
@@ -286,13 +285,7 @@
                         />
                     </div>
                 </div>
-                </nav>
-
-                <!-- Mobile User Section -->
-                <div class="flex-shrink-0 border-t border-gray-100 p-4">
-                    <UserDropdown :user="user" :is-mobile="true" />
-                </div>
-            </div>
+            </nav>
         </div>
     </div>
 
@@ -308,8 +301,7 @@
             </div>
 
             <!-- Desktop Navigation -->
-            <div class="flex-1 flex flex-col min-h-0">
-                <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
                     <!-- Dashboard -->
                 <NavLink 
                     name="Dashboard"
@@ -546,13 +538,7 @@
                         />
                     </div>
                 </div>
-                </nav>
-
-                <!-- Desktop User Section -->
-                <div class="flex-shrink-0 border-t border-gray-100 p-4">
-                    <UserDropdown :user="user" />
-                </div>
-            </div>
+            </nav>
         </div>
     </div>
 
@@ -573,7 +559,6 @@
 import { ref, computed } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import NavLink from './Navigation/NavLink.vue'
-import UserDropdown from './Navigation/UserDropdown.vue'
 
 // Mobile menu state
 const isMobileMenuOpen = ref(false)
