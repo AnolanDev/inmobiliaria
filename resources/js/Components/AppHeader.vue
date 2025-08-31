@@ -1,14 +1,45 @@
 <template>
   <header class="fixed top-0 right-0 left-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-    <div class="flex h-16 items-center px-4 sm:px-6 lg:px-8">
-      <!-- Logo (always visible on the left) -->
-      <div class="flex items-center gap-3 flex-shrink-0">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform duration-200" style="background: linear-gradient(135deg, #00bf63, #009951);">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-          </svg>
+    <!-- Top Info Bar -->
+    <div class="bg-gradient-to-r from-green-600 to-green-700 px-4 sm:px-6 lg:px-8 py-1.5">
+      <div class="flex items-center justify-between text-white text-xs">
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-1">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>{{ currentDateTime }}</span>
+          </div>
+          <div class="hidden sm:flex items-center space-x-1">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span>GMT-5 (COT)</span>
+          </div>
         </div>
-        <h1 class="text-xl font-bold text-gray-900 hidden sm:block">InmoApp</h1>
+        <div class="flex items-center space-x-4">
+          <div class="hidden md:flex items-center space-x-1">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+            </svg>
+            <span v-if="exchangeRate.loading">Cargando...</span>
+            <span v-else-if="exchangeRate.rate">USD: ${{ exchangeRate.rate }} COP</span>
+            <span v-else>USD: No disponible</span>
+          </div>
+          <div class="flex items-center space-x-1">
+            <div class="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+            <span class="hidden sm:inline">Sistema Activo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Header -->
+    <div class="flex h-14 items-center px-4 sm:px-6 lg:px-8">
+      <!-- Logo -->
+      <div class="flex items-center flex-shrink-0">
+        <img src="/ts/logo.png" alt="Tierra Soñada" class="h-12 w-auto" />
       </div>
 
       <!-- Mobile menu button -->
@@ -44,7 +75,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import ActivityNotifications from '@/Components/Activities/ActivityNotifications.vue'
 import UserDropdown from '@/Components/Navigation/UserDropdown.vue'
@@ -61,4 +92,62 @@ const props = defineProps({
 // Get current user from Inertia
 const page = usePage()
 const user = computed(() => page.props.auth?.user)
+
+// Date and Time
+const currentDateTime = ref('')
+const exchangeRate = ref({
+  rate: null,
+  loading: true
+})
+
+const updateDateTime = () => {
+  const now = new Date()
+  const options = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'America/Bogota'
+  }
+  currentDateTime.value = now.toLocaleDateString('es-CO', options)
+}
+
+const fetchExchangeRate = async () => {
+  try {
+    exchangeRate.value.loading = true
+    // Using a free API for USD to COP exchange rate
+    const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD')
+    const data = await response.json()
+    
+    if (data.rates && data.rates.COP) {
+      exchangeRate.value.rate = Math.round(data.rates.COP)
+    }
+  } catch (error) {
+    console.log('No se pudo obtener el tipo de cambio:', error)
+  } finally {
+    exchangeRate.value.loading = false
+  }
+}
+
+let timeInterval
+
+onMounted(() => {
+  updateDateTime()
+  fetchExchangeRate()
+  
+  // Update time every minute
+  timeInterval = setInterval(updateDateTime, 60000)
+  
+  // Update exchange rate every 30 minutes
+  setInterval(fetchExchangeRate, 1800000)
+})
+
+onUnmounted(() => {
+  if (timeInterval) {
+    clearInterval(timeInterval)
+  }
+})
 </script>

@@ -17,10 +17,11 @@
                     {{ user?.name?.charAt(0)?.toUpperCase() || 'U' }}
                 </span>
             </div>
-            <div class="flex-1 min-w-0">
+            <div v-if="!isMobile" class="flex-1 min-w-0">
                 <p class="font-semibold text-gray-900 truncate">{{ user?.name || 'Usuario' }}</p>
                 <p class="text-xs text-gray-500 truncate">{{ user?.email || 'usuario@email.com' }}</p>
             </div>
+            <span v-else class="ml-2 font-semibold text-gray-900">{{ user?.name || 'Usuario' }}</span>
             <svg 
                 :class="[
                     'w-4 h-4 transition-all duration-200', 
@@ -43,10 +44,10 @@
         <!-- Dropdown Menu -->
         <div 
             v-if="isOpen"
-            :class="[
-                'absolute top-full right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-xl z-[70]',
-                isMobile ? 'relative top-auto right-auto mt-2 w-full' : ''
-            ]"
+            :class="isMobile ? 
+                'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 max-w-[90vw] bg-white border border-gray-200 rounded-xl shadow-2xl z-[70]' : 
+                'absolute top-full right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-xl z-[70]'
+            "
         >
             <div class="py-2">
                 <!-- Profile Link -->

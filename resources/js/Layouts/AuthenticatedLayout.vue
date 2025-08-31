@@ -7,7 +7,7 @@
         <AppHeader @toggleMobileMenu="handleToggleMobileMenu" :activities="activities" />
 
         <!-- Main Content -->
-        <div class="lg:pl-64 pt-16">
+        <div class="lg:pl-64 pt-20">
             <!-- Page Header -->
             <header v-if="$slots.header" class="bg-white border-b border-gray-200">
                 <div class="px-4 sm:px-6 lg:px-8 py-6">

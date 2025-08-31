@@ -33,7 +33,7 @@
             </div>
 
             <!-- Mobile Navigation -->
-            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            <nav class="flex-1 px-3 py-6 space-y-0.5 overflow-y-auto">
                     <!-- Dashboard -->
                 <NavLink 
                     name="Dashboard"
@@ -44,7 +44,7 @@
                 />
                 
                 <!-- Separator -->
-                <div class="border-t border-gray-200 my-3"></div>
+                <div class="border-t border-gray-200 my-1"></div>
                 
                 <!-- Inmobiliaria Section -->
                 <div v-if="hasAnyPropertyPermission" class="space-y-1">
@@ -64,7 +64,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.inmobiliaria" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.inmobiliaria" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasProjectsPermission"
                             name="Proyectos"
@@ -84,7 +84,7 @@
                         />
                     </div>
                     
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                 </div>
                 
                 <!-- People Section -->
@@ -105,7 +105,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.personas" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.personas" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasClientsPermission"
                             name="Clientes"
@@ -125,7 +125,7 @@
                         />
                     </div>
                     
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                 </div>
                 
                 <!-- Marketing Section -->
@@ -146,7 +146,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.marketing" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.marketing" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasCampaignsPermission"
                             name="Campañas"
@@ -193,7 +193,7 @@
                         />
                     </div>
                     
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                 </div>
                 
                 <!-- Activities Section -->
@@ -214,7 +214,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.actividades" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.actividades" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasActivitiesPermission"
                             name="Actividades"
@@ -234,12 +234,12 @@
                         />
                     </div>
                     
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                 </div>
                 
                 <!-- Admin Section -->
                 <div v-if="hasAnyAdminPermission" class="space-y-1">
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                     <button 
                         @click="toggleSection('administracion')"
                         class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
@@ -256,7 +256,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.administracion" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.administracion" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasUsersPermission"
                             name="Usuarios"
@@ -286,22 +286,19 @@
                     </div>
                 </div>
             </nav>
+            
+            <!-- Mobile User Section -->
+            <div class="border-t border-gray-100 p-4">
+                <UserDropdown :user="user" :is-mobile="true" />
+            </div>
         </div>
     </div>
 
     <!-- Desktop Sidebar -->
-    <div class="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:w-64 lg:flex lg:flex-col">
+    <div class="hidden lg:fixed lg:top-[5rem] lg:bottom-0 lg:left-0 lg:z-40 lg:w-64 lg:flex lg:flex-col">
         <div class="flex flex-col flex-1 bg-white border-r border-gray-200">
-            <!-- Desktop Header -->
-            <div class="flex h-16 items-center px-6 border-b border-gray-100">
-                <Link :href="route('dashboard')" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                    <img src="/ts/logo.png" alt="Tierra Soñada" class="h-8 w-auto" />
-                    <h1 class="text-lg font-bold text-gray-900">Tierra Soñada</h1>
-                </Link>
-            </div>
-
             <!-- Desktop Navigation -->
-            <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            <nav class="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
                     <!-- Dashboard -->
                 <NavLink 
                     name="Dashboard"
@@ -311,7 +308,7 @@
                 />
                 
                 <!-- Separator -->
-                <div class="border-t border-gray-200 my-3"></div>
+                <div class="border-t border-gray-200 my-1"></div>
                 
                 <!-- Inmobiliaria Section -->
                 <div v-if="hasAnyPropertyPermission" class="space-y-1">
@@ -331,7 +328,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.inmobiliaria" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.inmobiliaria" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasProjectsPermission"
                             name="Proyectos"
@@ -349,7 +346,7 @@
                         />
                     </div>
                     
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                 </div>
                 
                 <!-- People Section -->
@@ -370,7 +367,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.personas" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.personas" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasClientsPermission"
                             name="Clientes"
@@ -388,7 +385,7 @@
                         />
                     </div>
                     
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                 </div>
                 
                 <!-- Marketing Section -->
@@ -409,7 +406,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.marketing" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.marketing" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasCampaignsPermission"
                             name="Campañas"
@@ -451,7 +448,7 @@
                         />
                     </div>
                     
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                 </div>
                 
                 <!-- Activities Section -->
@@ -472,7 +469,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.actividades" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.actividades" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasActivitiesPermission"
                             name="Actividades"
@@ -490,12 +487,12 @@
                         />
                     </div>
                     
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                 </div>
                 
                 <!-- Admin Section -->
                 <div v-if="hasAnyAdminPermission" class="space-y-1">
-                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="border-t border-gray-200 my-1"></div>
                     <button 
                         @click="toggleSection('administracion')"
                         class="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
@@ -512,7 +509,7 @@
                         </svg>
                     </button>
                     
-                    <div v-show="!collapsedSections.administracion" class="pl-3 space-y-1">
+                    <div v-show="!collapsedSections.administracion" class="pl-3 space-y-0.5">
                         <NavLink 
                             v-if="hasUsersPermission"
                             name="Usuarios"
@@ -557,19 +554,20 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { usePage } from '@inertiajs/vue3'
+import { usePage, Link } from '@inertiajs/vue3'
 import NavLink from './Navigation/NavLink.vue'
+import UserDropdown from './Navigation/UserDropdown.vue'
 
 // Mobile menu state
 const isMobileMenuOpen = ref(false)
 
 // Accordion state for navigation sections
 const collapsedSections = ref({
-    inmobiliaria: false,
-    personas: false,
-    marketing: false,
-    actividades: false,
-    administracion: false
+    inmobiliaria: true,
+    personas: true,
+    marketing: true,
+    actividades: true,
+    administracion: true
 })
 
 // Get current user from Inertia
@@ -613,6 +611,12 @@ const closeMobileMenu = () => {
 const toggleSection = (section) => {
     collapsedSections.value[section] = !collapsedSections.value[section]
 }
+
+// Expose methods to parent components
+defineExpose({
+    openMobileMenu,
+    closeMobileMenu
+})
 </script>
 
 <style scoped>
