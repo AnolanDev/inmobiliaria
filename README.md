@@ -1,6 +1,11 @@
-# Sistema de Gestión Inmobiliaria
+# 🏠 Tierra Soñada - Sistema Inmobiliario
 
-Un sistema completo para la gestión de propiedades inmobiliarias desarrollado con Laravel 11, Inertia.js y Vue 3.
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](CHANGELOG.md)
+[![Laravel](https://img.shields.io/badge/Laravel-12.0-red.svg)](https://laravel.com)
+[![Vue.js](https://img.shields.io/badge/Vue.js-3.4-green.svg)](https://vuejs.org)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+Sistema profesional completo para la gestión inmobiliaria, desarrollado con tecnologías modernas para **Tierra Soñada** - "Transformamos sueños en realidad inmobiliaria".
 
 ## Características
 

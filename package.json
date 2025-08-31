@@ -1,5 +1,8 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
+    "name": "tierra-sonada-inmobiliaria",
+    "version": "1.0.0",
+    "description": "Sistema inmobiliario profesional para gestión integral de propiedades",
     "private": true,
     "type": "module",
     "scripts": {

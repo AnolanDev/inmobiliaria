@@ -1,9 +1,10 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "tierra-sonada/inmobiliaria",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Sistema inmobiliario profesional Tierra Soñada - Gestión integral de propiedades, clientes y agentes",
+    "keywords": ["laravel", "inmobiliaria", "real-estate", "crm", "property-management"],
+    "version": "1.0.0",
     "license": "MIT",
     "require": {
         "php": "^8.2",
