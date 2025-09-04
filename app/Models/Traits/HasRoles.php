@@ -203,7 +203,7 @@ trait HasRoles
      */
     public function isSuperAdmin(): bool
     {
-        return $this->hasRole('super-admin');
+        return $this->is_super_admin || $this->hasRole('super-admin');
     }
 
     /**

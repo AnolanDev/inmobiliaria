@@ -25,6 +25,7 @@ class RolePermissionMiddleware
 
         // Super admins have access to everything
         if ($user->isSuperAdmin()) {
+            \Log::info('Super admin access granted', ['user' => $user->email, 'route' => $request->path()]);
             return $next($request);
         }
 
@@ -49,6 +50,14 @@ class RolePermissionMiddleware
         }
 
         if (!$hasPermission) {
+            \Log::warning('Permission denied', [
+                'user' => $user->email,
+                'route' => $request->path(),
+                'required_permissions' => $permissions,
+                'user_is_super_admin' => $user->isSuperAdmin(),
+                'user_permissions' => $user->permissions()->pluck('slug')->toArray()
+            ]);
+            
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'No tiene permisos suficientes para realizar esta acción.',
