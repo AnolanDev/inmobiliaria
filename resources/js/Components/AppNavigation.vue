@@ -553,7 +553,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { usePage, Link } from '@inertiajs/vue3'
 import NavLink from './Navigation/NavLink.vue'
 import UserDropdown from './Navigation/UserDropdown.vue'
@@ -561,10 +561,33 @@ import UserDropdown from './Navigation/UserDropdown.vue'
 // Mobile menu state
 const isMobileMenuOpen = ref(false)
 
-// Accordion state for navigation sections
+// Get the current active section based on route
+const getActiveSection = (route) => {
+    if (route.startsWith('/projects') || route.startsWith('/properties')) {
+        return 'inmobiliaria'
+    }
+    if (route.startsWith('/clients') || route.startsWith('/agents')) {
+        return 'personas'
+    }
+    if (route.startsWith('/campaigns') || route.startsWith('/leads') || 
+        route.startsWith('/email-templates') || route.startsWith('/email-campaigns') || 
+        route.startsWith('/blogs')) {
+        return 'marketing'
+    }
+    if (route.startsWith('/activities') || route.startsWith('/visits')) {
+        return 'actividades'
+    }
+    if (route.startsWith('/users') || route.startsWith('/roles') || 
+        route.startsWith('/email-marketing/config')) {
+        return 'administracion'
+    }
+    return null
+}
+
+// Accordion state for navigation sections - initialize with all collapsed
 const collapsedSections = ref({
     inmobiliaria: true,
-    personas: true,
+    personas: true, 
     marketing: true,
     actividades: true,
     administracion: true
@@ -611,6 +634,18 @@ const closeMobileMenu = () => {
 const toggleSection = (section) => {
     collapsedSections.value[section] = !collapsedSections.value[section]
 }
+
+// Watch for route changes and update active section
+watch(currentRoute, (newRoute) => {
+    const activeSection = getActiveSection(newRoute)
+    collapsedSections.value = {
+        inmobiliaria: activeSection !== 'inmobiliaria',
+        personas: activeSection !== 'personas', 
+        marketing: activeSection !== 'marketing',
+        actividades: activeSection !== 'actividades',
+        administracion: activeSection !== 'administracion'
+    }
+}, { immediate: true })
 
 // Expose methods to parent components
 defineExpose({
