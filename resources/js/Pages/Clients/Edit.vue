@@ -412,7 +412,7 @@ const form = useForm({
   document_type: props.client.document_type || 'cedula',
   document_number: props.client.document_number || '',
   address: props.client.address || '',
-  birth_date: props.client.birth_date || '',
+  birth_date: props.client.birth_date ? props.client.birth_date.split('T')[0] : '',
   occupation: props.client.occupation || '',
   notes: props.client.notes || '',
   interest_level: props.client.interest_level || 'medium',
