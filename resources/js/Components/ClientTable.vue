@@ -27,7 +27,12 @@
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
-        <tr v-for="client in clients" :key="client.id" class="hover:bg-gray-50">
+        <tr 
+          v-for="client in clients" 
+          :key="client.id" 
+          class="hover:bg-gray-50 cursor-pointer" 
+          @click="$emit('view', client)"
+        >
           <!-- Cliente (foto + nombre + email) -->
           <td class="px-6 py-4 whitespace-nowrap">
             <div class="flex items-center">
@@ -114,6 +119,7 @@
               <a
                 v-if="client.phone"
                 :href="`tel:${client.phone}`"
+                @click.stop
                 class="text-green-600 hover:text-green-800 p-1 rounded-full hover:bg-green-100"
                 title="Llamar"
               >
@@ -125,6 +131,7 @@
               <a
                 v-if="client.email"
                 :href="`mailto:${client.email}`"
+                @click.stop
                 class="text-green-600 hover:text-green-800 p-1 rounded-full hover:bg-green-100"
                 title="Enviar email"
               >
@@ -136,6 +143,7 @@
               <a
                 v-if="client.phone"
                 :href="`https://wa.me/${client.phone.replace(/[^\d]/g, '')}`"
+                @click.stop
                 target="_blank"
                 class="text-green-500 hover:text-green-700 p-1 rounded-full hover:bg-green-100"
                 title="WhatsApp"
@@ -150,7 +158,7 @@
 
               <!-- CRUD Actions -->
               <button
-                @click="$emit('view', client)"
+                @click.stop="$emit('view', client)"
                 class="text-green-600 hover:text-green-800 p-1 rounded-full hover:bg-green-100"
                 title="Ver detalles"
               >
@@ -161,7 +169,7 @@
               </button>
 
               <button
-                @click="$emit('edit', client)"
+                @click.stop="$emit('edit', client)"
                 class="text-gray-600 hover:text-gray-800 p-1 rounded-full hover:bg-gray-100"
                 title="Editar"
               >
@@ -171,7 +179,7 @@
               </button>
 
               <button
-                @click="$emit('delete', client)"
+                @click.stop="$emit('delete', client)"
                 class="text-red-600 hover:text-red-800 p-1 rounded-full hover:bg-red-100"
                 title="Eliminar"
               >

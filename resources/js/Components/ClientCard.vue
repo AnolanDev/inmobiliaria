@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
+  <div 
+    class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 cursor-pointer" 
+    @click="$emit('view', client)"
+  >
     <div class="p-6">
       <!-- Profile Image and Status -->
       <div class="flex items-center justify-between mb-4">
@@ -90,7 +93,7 @@
       <div class="flex items-center justify-between pt-4 border-t border-gray-100">
         <div class="flex items-center gap-2">
           <button
-            @click="$emit('view', client)"
+            @click.stop="$emit('view', client)"
             class="text-green-600 hover:text-green-800 text-sm font-medium"
             title="Ver detalles"
           >
@@ -101,7 +104,7 @@
           </button>
 
           <button
-            @click="$emit('edit', client)"
+            @click.stop="$emit('edit', client)"
             class="text-gray-600 hover:text-gray-800 text-sm font-medium"
             title="Editar"
           >
@@ -111,7 +114,7 @@
           </button>
 
           <button
-            @click="$emit('delete', client)"
+            @click.stop="$emit('delete', client)"
             class="text-red-600 hover:text-red-800 text-sm font-medium"
             title="Eliminar"
           >
@@ -126,6 +129,7 @@
           <a
             v-if="client.phone"
             :href="`tel:${client.phone}`"
+            @click.stop
             class="text-green-600 hover:text-green-800 p-1 rounded"
             title="Llamar"
           >
@@ -137,6 +141,7 @@
           <a
             v-if="client.email"
             :href="`mailto:${client.email}`"
+            @click.stop
             class="text-green-600 hover:text-green-800 p-1 rounded"
             title="Enviar email"
           >
@@ -148,6 +153,7 @@
           <a
             v-if="client.phone"
             :href="`https://wa.me/${client.phone.replace(/[^\d]/g, '')}`"
+            @click.stop
             target="_blank"
             class="text-green-500 hover:text-green-700 p-1 rounded"
             title="WhatsApp"
