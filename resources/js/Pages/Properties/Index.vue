@@ -209,12 +209,29 @@
                   </svg>
                   {{ property.agent.name }}
                 </div>
-                <button
-                  @click.stop="goToProperty(property.id)"
-                  class="text-green-600 hover:text-green-800 text-sm font-medium"
-                >
-                  Ver detalles →
-                </button>
+                <div class="flex items-center space-x-2">
+                  <button
+                    @click.stop="goToProperty(property.id)"
+                    class="text-green-600 hover:text-green-800 text-sm font-medium"
+                  >
+                    Ver detalles →
+                  </button>
+                  <button
+                    @click.stop="toggleStatus(property)"
+                    :class="[
+                      'inline-flex items-center px-2 py-1 text-xs font-medium rounded-full transition-colors duration-200',
+                      getStatusToggleClass(property.status)
+                    ]"
+                  >
+                    {{ getStatusToggleText(property.status) }}
+                  </button>
+                  <button
+                    @click.stop="confirmDelete(property)"
+                    class="text-red-600 hover:text-red-900 text-sm font-medium"
+                  >
+                    Eliminar
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -346,6 +363,39 @@
         </div>
       </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div v-if="showDeleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+      <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mt-5">Eliminar Propiedad</h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500">
+              ¿Estás seguro de que quieres eliminar la propiedad <strong>{{ propertyToDelete?.title }}</strong>? Esta acción no se puede deshacer.
+            </p>
+          </div>
+          <div class="items-center px-4 py-3">
+            <button
+              @click="deleteProperty"
+              class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-24 mr-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
+            >
+              Eliminar
+            </button>
+            <button
+              @click="cancelDelete"
+              class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </AuthenticatedLayout>
 </template>
 
@@ -372,6 +422,8 @@ const props = defineProps({
 
 // Local state
 const viewMode = ref('grid')
+const showDeleteModal = ref(false)
+const propertyToDelete = ref(null)
 
 const filters = reactive({
   search: props.filters.search || '',
@@ -431,6 +483,89 @@ const applyFilters = () => {
     preserveState: true,
     replace: true
   })
+}
+
+// Property status management
+const getStatusToggleClass = (status) => {
+  const classes = {
+    'available': 'text-red-700 bg-red-100 hover:bg-red-200 border border-red-300',
+    'sold': 'text-green-700 bg-green-100 hover:bg-green-200 border border-green-300',
+    'rented': 'text-green-700 bg-green-100 hover:bg-green-200 border border-green-300',
+    'pending': 'text-green-700 bg-green-100 hover:bg-green-200 border border-green-300',
+    'reserved': 'text-green-700 bg-green-100 hover:bg-green-200 border border-green-300'
+  }
+  return classes[status] || 'text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-300'
+}
+
+const getStatusToggleText = (status) => {
+  const texts = {
+    'available': 'Marcar Vendida',
+    'sold': 'Marcar Disponible',
+    'rented': 'Marcar Disponible',
+    'pending': 'Marcar Disponible',
+    'reserved': 'Marcar Disponible'
+  }
+  return texts[status] || 'Cambiar Estado'
+}
+
+const toggleStatus = (property) => {
+  const newStatus = property.status === 'available' ? 'sold' : 'available'
+  
+  // Enviar todos los datos requeridos con el nuevo status
+  const formData = new FormData()
+  formData.append('_method', 'PATCH')
+  formData.append('title', property.title)
+  formData.append('description', property.description)
+  formData.append('price', property.price)
+  formData.append('type', property.type)
+  formData.append('category', property.category)
+  formData.append('address', property.address)
+  formData.append('city', property.city)
+  formData.append('state', property.state)
+  formData.append('bedrooms', property.bedrooms || 0)
+  formData.append('bathrooms', property.bathrooms || 0)
+  formData.append('area', property.area)
+  formData.append('status', newStatus)
+  
+  if (property.project_id) {
+    formData.append('project_id', property.project_id)
+  }
+  if (property.agent_id) {
+    formData.append('agent_id', property.agent_id)
+  }
+  if (property.zip_code) {
+    formData.append('zip_code', property.zip_code)
+  }
+  
+  router.post(route('properties.update', property.id), formData, {
+    preserveScroll: true,
+    onSuccess: () => {
+      // The page will automatically refresh with updated data
+    },
+    onError: (errors) => {
+      console.log('Error updating status:', errors)
+    }
+  })
+}
+
+const confirmDelete = (property) => {
+  propertyToDelete.value = property
+  showDeleteModal.value = true
+}
+
+const cancelDelete = () => {
+  propertyToDelete.value = null
+  showDeleteModal.value = false
+}
+
+const deleteProperty = () => {
+  if (propertyToDelete.value) {
+    router.delete(route('properties.destroy', propertyToDelete.value.id), {
+      onSuccess: () => {
+        cancelDelete()
+      }
+    })
+  }
 }
 
 // Debounced search

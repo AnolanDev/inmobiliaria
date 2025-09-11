@@ -51,6 +51,8 @@ class AgentController extends Controller
         $agents = $query->with(['properties' => function ($query) {
                 $query->select('id', 'agent_id', 'title', 'status');
             }])
+            ->orderBy('is_active', 'desc')  // Active agents first
+            ->orderBy('name', 'asc')        // Then by name alphabetically
             ->paginate(12)
             ->withQueryString();
 

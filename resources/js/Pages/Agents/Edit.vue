@@ -389,10 +389,10 @@ const handleVideosRemove = (paths) => {
 }
 
 const submit = () => {
-  // Use POST with _method: PUT for file uploads
+  // Use POST with _method: PATCH for file uploads
   form.transform(data => ({
     ...data,
-    _method: 'PUT'
+    _method: 'PATCH'
   })).post(route('agents.update', props.agent.id), {
     preserveScroll: true
   })

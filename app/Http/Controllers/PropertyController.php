@@ -213,6 +213,19 @@ class PropertyController extends Controller
     }
 
     /**
+     * Toggle property status between available and sold
+     */
+    public function toggleStatus(Property $property): RedirectResponse
+    {
+        $newStatus = $property->status === 'available' ? 'sold' : 'available';
+        
+        $property->update(['status' => $newStatus]);
+
+        return redirect()->back()
+            ->with('success', 'Estado de la propiedad actualizado exitosamente.');
+    }
+
+    /**
      * API endpoint for quick project creation in property forms
      */
     public function quickCreateProject(Request $request)

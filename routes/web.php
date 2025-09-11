@@ -108,6 +108,7 @@ Route::middleware('auth')->group(function () {
         Route::middleware('permission:properties:edit')->group(function () {
             Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
             Route::patch('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
+            Route::patch('/properties/{property}/toggle-status', [PropertyController::class, 'toggleStatus'])->name('properties.toggle-status');
         });
         
         Route::middleware('permission:properties:delete')->group(function () {

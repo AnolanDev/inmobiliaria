@@ -148,7 +148,7 @@
                 <span :class="[
                   'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
                   agent.type === 'Interno' 
-                    ? 'bg-green-100 text-green-800' 
+                    ? 'bg-blue-100 text-blue-800' 
                     : 'bg-purple-100 text-purple-800'
                 ]">
                   {{ agent.type }}
@@ -260,7 +260,7 @@
                   <span :class="[
                     'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
                     agent.type === 'Interno' 
-                      ? 'bg-green-100 text-green-800' 
+                      ? 'bg-blue-100 text-blue-800' 
                       : 'bg-purple-100 text-purple-800'
                   ]">
                     {{ agent.type }}
@@ -296,6 +296,23 @@
                     >
                       Editar
                     </Link>
+                    <button
+                      @click="toggleStatus(agent)"
+                      :class="[
+                        'inline-flex items-center px-2 py-1 text-xs font-medium rounded-full transition-colors duration-200',
+                        agent.is_active
+                          ? 'text-red-700 bg-red-100 hover:bg-red-200 border border-red-300'
+                          : 'text-green-700 bg-green-100 hover:bg-green-200 border border-green-300'
+                      ]"
+                    >
+                      {{ agent.is_active ? 'Desactivar' : 'Activar' }}
+                    </button>
+                    <button
+                      @click="confirmDelete(agent)"
+                      class="text-red-600 hover:text-red-900"
+                    >
+                      Eliminar
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -359,6 +376,39 @@
         </div>
       </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div v-if="showDeleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+      <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mt-5">Eliminar Agente</h3>
+          <div class="mt-2 px-7 py-3">
+            <p class="text-sm text-gray-500">
+              ¿Estás seguro de que quieres eliminar al agente <strong>{{ agentToDelete?.name }}</strong>? Esta acción no se puede deshacer.
+            </p>
+          </div>
+          <div class="items-center px-4 py-3">
+            <button
+              @click="deleteAgent"
+              class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-24 mr-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
+            >
+              Eliminar
+            </button>
+            <button
+              @click="cancelDelete"
+              class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </AuthenticatedLayout>
 </template>
 
@@ -381,6 +431,8 @@ const props = defineProps({
 
 // Local state
 const viewMode = ref('grid')
+const showDeleteModal = ref(false)
+const agentToDelete = ref(null)
 
 const filters = reactive({
   search: props.filters.search || '',
@@ -398,6 +450,35 @@ const applyFilters = () => {
     preserveState: true,
     replace: true
   })
+}
+
+const toggleStatus = (agent) => {
+  router.patch(route('agents.toggle-status', agent.id), {}, {
+    preserveScroll: true,
+    onSuccess: () => {
+      // The page will automatically refresh with updated data
+    }
+  })
+}
+
+const confirmDelete = (agent) => {
+  agentToDelete.value = agent
+  showDeleteModal.value = true
+}
+
+const cancelDelete = () => {
+  agentToDelete.value = null
+  showDeleteModal.value = false
+}
+
+const deleteAgent = () => {
+  if (agentToDelete.value) {
+    router.delete(route('agents.destroy', agentToDelete.value.id), {
+      onSuccess: () => {
+        cancelDelete()
+      }
+    })
+  }
 }
 
 // Debounced search

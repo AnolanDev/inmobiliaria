@@ -60,7 +60,7 @@
                 <!-- Badges Overlay -->
                 <div class="absolute top-4 left-4 space-y-2">
                   <span :class="['inline-block px-3 py-1 rounded-full text-sm font-medium',
-                    agent.type === 'Interno' ? 'bg-green-600 text-white' : 'bg-purple-600 text-white']">
+                    agent.type === 'Interno' ? 'bg-blue-600 text-white' : 'bg-purple-600 text-white']">
                     {{ agent.type }}
                   </span>
                 </div>
@@ -196,7 +196,7 @@
                     <dt class="text-sm font-medium text-gray-500">Tipo de agente</dt>
                     <dd class="mt-1">
                       <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                        agent.type === 'Interno' ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800']">
+                        agent.type === 'Interno' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800']">
                         {{ agent.type }}
                       </span>
                     </dd>
@@ -302,6 +302,34 @@
                     </svg>
                     Ver propiedades
                   </Link>
+                  
+                  <button
+                    @click="toggleStatus"
+                    :class="[
+                      'w-full inline-flex justify-center items-center px-4 py-2 border shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2',
+                      agent.is_active
+                        ? 'border-red-300 text-red-700 bg-red-50 hover:bg-red-100 focus:ring-red-500'
+                        : 'border-green-300 text-green-700 bg-green-50 hover:bg-green-100 focus:ring-green-500'
+                    ]"
+                  >
+                    <svg v-if="agent.is_active" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"/>
+                    </svg>
+                    <svg v-else class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    {{ agent.is_active ? 'Desactivar agente' : 'Activar agente' }}
+                  </button>
+                  
+                  <button
+                    @click="confirmDelete"
+                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    Eliminar agente
+                  </button>
                 </div>
               </div>
             </div>
@@ -378,6 +406,45 @@
         </div>
       </div>
     </Modal>
+
+    <!-- Delete Confirmation Modal -->
+    <Modal :show="showDeleteModal" @close="cancelDelete">
+      <div class="p-6">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+              <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-4">
+            <h3 class="text-lg font-medium text-gray-900">Eliminar Agente</h3>
+            <div class="mt-2">
+              <p class="text-sm text-gray-500">
+                ¿Estás seguro de que quieres eliminar al agente <strong>{{ agent.name }}</strong>? Esta acción no se puede deshacer.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end space-x-3">
+          <button
+            @click="cancelDelete"
+            type="button"
+            class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Cancelar
+          </button>
+          <button
+            @click="deleteAgent"
+            type="button"
+            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </Modal>
   </AuthenticatedLayout>
 </template>
 
@@ -397,6 +464,9 @@ const props = defineProps({
 // Lightbox state
 const showLightbox = ref(false)
 const currentImageIndex = ref(null)
+
+// Delete confirmation state
+const showDeleteModal = ref(false)
 
 // Computed properties
 const hasSocialMedia = computed(() => {
@@ -477,6 +547,33 @@ const handleKeyPress = (event) => {
       }
       break
   }
+}
+
+// Agent management methods
+const toggleStatus = () => {
+  router.patch(route('agents.toggle-status', props.agent.id), {}, {
+    preserveScroll: true,
+    onSuccess: () => {
+      // The page will automatically refresh with updated data
+    }
+  })
+}
+
+const confirmDelete = () => {
+  showDeleteModal.value = true
+}
+
+const cancelDelete = () => {
+  showDeleteModal.value = false
+}
+
+const deleteAgent = () => {
+  router.delete(route('agents.destroy', props.agent.id), {
+    onSuccess: () => {
+      // Redirect to agents index after successful deletion
+      router.visit(route('agents.index'))
+    }
+  })
 }
 
 // Lifecycle hooks
