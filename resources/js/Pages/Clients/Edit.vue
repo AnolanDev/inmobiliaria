@@ -448,6 +448,12 @@ const formatFileSize = (bytes) => {
 }
 
 const submit = () => {
-  form.put(route('clients.update', props.client.id))
+  // Use POST with _method: PATCH for file uploads
+  form.transform(data => ({
+    ...data,
+    _method: 'PATCH'
+  })).post(route('clients.update', props.client.id), {
+    preserveScroll: true
+  })
 }
 </script>
