@@ -32,6 +32,13 @@ class Client extends Model
         'last_contact_date' => 'datetime',
     ];
 
+    protected $appends = [
+        'profile_image_url',
+        'status_color',
+        'interest_level_color',
+        'full_contact',
+    ];
+
     const DOCUMENT_TYPES = [
         'cedula' => 'Cédula de Ciudadanía',
         'cedula_extranjeria' => 'Cédula de Extranjería',

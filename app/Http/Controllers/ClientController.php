@@ -131,6 +131,9 @@ class ClientController extends Controller
                 Storage::disk('public')->delete($client->profile_image);
             }
             $data['profile_image'] = $request->file('profile_image')->store('clients/profiles', 'public');
+        } else {
+            // Remove profile_image from data if no new file uploaded to preserve existing value
+            unset($data['profile_image']);
         }
 
         // Handle attachments upload
