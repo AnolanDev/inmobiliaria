@@ -26,39 +26,43 @@ class AgentController extends Controller
      */
     public function index(Request $request): Response
     {
-        $query = Agent::query();
+        $query = Agent::query()
+            ->withCount('properties')
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('created_at', 'desc');
 
-        // Search filter
+        // Apply filters
         if ($request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
-            });
+            $query->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%')
+                  ->orWhere('bio', 'like', '%' . $request->search . '%');
         }
 
-        // Type filter
         if ($request->filled('type')) {
-            $query->where('type', $request->get('type'));
+            $query->where('type', $request->type);
         }
 
-        // Status filter
-        if ($request->filled('is_active')) {
-            $query->where('is_active', $request->boolean('is_active'));
+        if ($request->filled('status')) {
+            if ($request->status === 'Activo') {
+                $query->where('is_active', true);
+            } elseif ($request->status === 'Inactivo') {
+                $query->where('is_active', false);
+            }
         }
 
-        $agents = $query->with(['properties' => function ($query) {
-                $query->select('id', 'agent_id', 'title', 'status');
-            }])
-            ->orderBy('is_active', 'desc')  // Active agents first
-            ->orderBy('name', 'asc')        // Then by name alphabetically
-            ->paginate(12)
-            ->withQueryString();
+        $agents = $query->paginate(12);
 
         return Inertia::render('Agents/Index', [
             'agents' => $agents,
-            'filters' => $request->only(['search', 'type', 'is_active']),
+            'filters' => $request->only(['search', 'type', 'status']),
+            'types' => [
+                'Interno' => 'Interno',
+                'Externo' => 'Externo'
+            ],
+            'statuses' => [
+                'Activo' => 'Activo',
+                'Inactivo' => 'Inactivo'
+            ],
         ]);
     }
 
@@ -322,5 +326,36 @@ class AgentController extends Controller
                 'error' => 'Error al cambiar el estado del agente: ' . $e->getMessage()
             ]);
         }
+    }
+
+    /**
+     * Update agents sort order in bulk
+     */
+    public function updateOrder(Request $request)
+    {
+        $request->validate([
+            'agents' => 'required|array',
+            'agents.*.id' => 'required|exists:agents,id',
+            'agents.*.sort_order' => 'required|integer|min:0'
+        ]);
+
+        foreach ($request->agents as $agentData) {
+            Agent::where('id', $agentData['id'])
+                ->update(['sort_order' => $agentData['sort_order']]);
+        }
+
+        return back()->with('success', 'Orden de agentes actualizado exitosamente.');
+    }
+
+    /**
+     * Toggle agent visibility
+     */
+    public function toggleVisibility(Agent $agent)
+    {
+        $agent->update([
+            'is_public' => !$agent->is_public
+        ]);
+
+        return back()->with('success', 'Visibilidad del agente actualizada exitosamente.');
     }
 }

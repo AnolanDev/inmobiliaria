@@ -26,85 +26,276 @@
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- Filters -->
-        <div class="bg-white shadow-sm rounded-lg overflow-hidden mb-6">
-          <div class="px-4 py-3 border-b border-gray-200">
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+        <!-- Filters and Search -->
+        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-6">
+          <div class="p-6 border-b border-gray-200">
+            <!-- Primera fila: Búsqueda y botones de vista -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
               <!-- Search -->
-              <div class="flex-1 min-w-0">
-                <div class="relative">
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                  </div>
-                  <input
-                    v-model="filters.search"
-                    @input="debouncedFilter"
-                    type="text"
-                    placeholder="Buscar propiedades..."
-                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                  />
-                </div>
+              <div class="relative flex-1 max-w-md">
+                <input
+                  v-model="search"
+                  type="text"
+                  placeholder="Buscar propiedades..."
+                  class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                  @input="performSearch"
+                />
+                <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
               </div>
 
-              <!-- Project Filter -->
-              <div class="w-full sm:w-48">
-                <select
-                  v-model="filters.project_id"
-                  @change="applyFilters"
-                  class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
+              <!-- View Toggle -->
+              <div class="flex items-center space-x-2 flex-shrink-0">
+                <button
+                  @click="currentView = 'cards'"
+                  :class="[
+                    'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                    currentView === 'cards'
+                      ? 'bg-green-600 text-white'
+                      : 'text-gray-500 hover:text-gray-700'
+                  ]"
                 >
-                  <option value="">Todos los proyectos</option>
+                  Tarjetas
+                </button>
+                <button
+                  @click="currentView = 'table'"
+                  :class="[
+                    'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                    currentView === 'table'
+                      ? 'bg-green-600 text-white'
+                      : 'text-gray-500 hover:text-gray-700'
+                  ]"
+                >
+                  Tabla
+                </button>
+                <button
+                  @click="currentView = 'sort'"
+                  :class="[
+                    'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                    currentView === 'sort'
+                      ? 'bg-green-600 text-white'
+                      : 'text-gray-500 hover:text-gray-700'
+                  ]"
+                >
+                  Ordenar
+                </button>
+              </div>
+            </div>
+
+            <!-- Segunda fila: Filtros -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-3">
+              <!-- Project Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Proyecto</label>
+                <select
+                  v-model="selectedProjectId"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Todos</option>
                   <option v-for="project in projects" :key="project.id" :value="project.id">
                     {{ project.name }}
                   </option>
                 </select>
               </div>
 
-              <!-- View Toggle -->
-              <div class="flex rounded-md shadow-sm">
-                <button
-                  @click="viewMode = 'grid'"
-                  :class="[
-                    'relative inline-flex items-center px-4 py-2 rounded-l-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500',
-                    viewMode === 'grid'
-                      ? 'bg-green-600 border-green-600 text-white'
-                      : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
-                  ]"
+              <!-- Type Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Transacción</label>
+                <select
+                  v-model="selectedType"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
                 >
-                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-                  </svg>
-                </button>
-                <button
-                  @click="viewMode = 'list'"
-                  :class="[
-                    'relative -ml-px inline-flex items-center px-4 py-2 rounded-r-md border text-sm font-medium focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500',
-                    viewMode === 'list'
-                      ? 'bg-green-600 border-green-600 text-white'
-                      : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
-                  ]"
+                  <option value="">Todos</option>
+                  <option v-for="(label, value) in types" :key="value" :value="value">
+                    {{ label }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Category Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Categoría</label>
+                <select
+                  v-model="selectedCategory"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
                 >
-                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                  </svg>
+                  <option value="">Todas</option>
+                  <option v-for="(label, value) in categories" :key="value" :value="value">
+                    {{ label }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Status Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Estado</label>
+                <select
+                  v-model="selectedStatus"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Todos</option>
+                  <option v-for="(label, value) in statuses" :key="value" :value="value">
+                    {{ label }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- State Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Departamento</label>
+                <select
+                  v-model="selectedState"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Todos</option>
+                  <option v-for="state in states" :key="state" :value="state">
+                    {{ state }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- City Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Ciudad</label>
+                <select
+                  v-model="selectedCity"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Todas</option>
+                  <option v-for="city in cities" :key="city" :value="city">
+                    {{ city }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Clear Filters -->
+              <div class="flex items-end">
+                <button
+                  v-if="hasFilters"
+                  @click="clearFilters"
+                  class="w-full px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-md transition-colors"
+                >
+                  Limpiar filtros
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Results Summary -->
-        <div class="mb-6">
-          <p class="text-sm text-gray-600">
-            <span class="font-medium">{{ properties.total }}</span> 
-            {{ properties.total === 1 ? 'propiedad encontrada' : 'propiedades encontradas' }}
-          </p>
-        </div>
+        <!-- Properties Display -->
+        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+          <!-- Sort View (Drag & Drop) -->
+          <div v-if="currentView === 'sort'">
+            <DraggablePropertyTable 
+              :properties="properties.data" 
+              @order-updated="handleOrderUpdated"
+            />
+          </div>
 
-        <!-- Properties Grid View -->
-        <div v-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Table View -->
+          <div v-else-if="currentView === 'table'" class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Propiedad
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Tipo
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Estado
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Precio
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Proyecto
+                  </th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr 
+                  v-for="property in properties.data" 
+                  :key="property.id"
+                  class="hover:bg-gray-50 cursor-pointer"
+                  @click="goToProperty(property.id)"
+                >
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10">
+                        <img 
+                          class="h-10 w-10 rounded object-cover" 
+                          :src="property.cover_image_url" 
+                          :alt="property.title"
+                        >
+                      </div>
+                      <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">{{ property.title }}</div>
+                        <div class="text-sm text-gray-500">{{ property.address }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                      {{ property.type }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span 
+                      class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                      :class="getStatusColor(property.status)"
+                      :style="getStatusStyle(property.status)"
+                    >
+                      {{ getStatusName(property.status) }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    ${{ Number(property.price).toLocaleString() }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{ property.project ? property.project.name : '-' }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <Link
+                      :href="route('properties.show', property.id)"
+                      class="text-green-600 hover:text-green-900 mr-3"
+                      @click.stop
+                    >
+                      Ver
+                    </Link>
+                    <Link
+                      :href="route('properties.edit', property.id)"
+                      class="text-blue-600 hover:text-blue-900 mr-3"
+                      @click.stop
+                    >
+                      Editar
+                    </Link>
+                    <button
+                      @click.stop="confirmDelete(property)"
+                      class="text-red-600 hover:text-red-900"
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Cards View -->
+          <div v-else class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
             v-for="property in properties.data"
             :key="property.id"
@@ -234,97 +425,37 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+            </div>
+            </div>
 
-        <!-- Properties List View -->
-        <div v-else class="bg-white shadow-sm rounded-lg overflow-hidden">
-          <div class="min-w-full divide-y divide-gray-200">
-            <div
-              v-for="property in properties.data"
-              :key="property.id"
-              class="flex items-center p-6 hover:bg-gray-50 cursor-pointer transition-colors duration-200"
-              @click="goToProperty(property.id)"
-            >
-              <!-- Property Image -->
-              <div class="flex-shrink-0 w-24 h-16 mr-6">
-                <img
-                  :src="property.cover_image_url"
-                  :alt="property.title"
-                  class="w-full h-full object-cover rounded-md"
-                />
-              </div>
-
-              <!-- Property Info -->
-              <div class="flex-1 min-w-0">
-                <div class="flex items-start justify-between">
-                  <div class="flex-1">
-                    <h3 class="text-lg font-semibold text-gray-900 truncate">
-                      {{ property.title }}
-                    </h3>
-                    <p class="text-sm text-gray-500 mt-1">
-                      {{ getCategoryName(property.category) }} • {{ property.city }}, {{ property.state }}
-                    </p>
-                    <p class="text-sm text-gray-600 mt-2 line-clamp-1">
-                      {{ property.description }}
-                    </p>
-                    
-                    <!-- Features -->
-                    <div class="flex items-center space-x-4 text-sm text-gray-500 mt-3">
-                      <div v-if="property.bedrooms > 0">{{ property.bedrooms }} hab.</div>
-                      <div v-if="property.bathrooms > 0">{{ property.bathrooms }} baños</div>
-                      <div>{{ property.area }} m²</div>
-                      <div v-if="property.project" class="text-green-600">{{ property.project.name }}</div>
-                    </div>
-                  </div>
-
-                  <!-- Price and Status -->
-                  <div class="text-right ml-6">
-                    <div class="text-xl font-bold text-gray-900 mb-2">
-                      ${{ Number(property.price).toLocaleString() }}
-                      <span v-if="property.type === 'rent'" class="text-sm font-normal text-gray-600">/mes</span>
-                    </div>
-                    
-                    <div class="flex items-center space-x-2 mb-2">
-                      <span class="inline-block bg-green-600 text-white px-2 py-1 rounded-full text-xs font-medium">
-                        {{ property.type === 'sale' ? 'Venta' : 'Alquiler' }}
-                      </span>
-                      <span 
-                        :class="['px-2 py-1 rounded-full text-xs font-medium', getStatusColor(property.status)]"
-                        :style="getStatusStyle(property.status)"
-                      >
-                        {{ getStatusName(property.status) }}
-                      </span>
-                    </div>
-
-                    <div v-if="property.agent" class="text-sm text-gray-600">
-                      {{ property.agent.name }}
-                    </div>
-                  </div>
-                </div>
+            <!-- Empty State for Cards -->
+            <div v-if="properties.data.length === 0" class="text-center py-12">
+              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
+              </svg>
+              <h3 class="mt-2 text-sm font-medium text-gray-900">No hay propiedades</h3>
+              <p class="mt-1 text-sm text-gray-500">Comienza agregando una nueva propiedad.</p>
+              <div class="mt-6">
+                <Link
+                  :href="route('properties.create')"
+                  class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                >
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                  </svg>
+                  Nueva Propiedad
+                </Link>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Empty State -->
-        <div v-if="properties.data.length === 0" class="text-center py-12">
-          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
-          </svg>
-          <h3 class="mt-2 text-sm font-medium text-gray-900">No hay propiedades</h3>
-          <p class="mt-1 text-sm text-gray-500">Comienza agregando una nueva propiedad.</p>
-          <div class="mt-6">
-            <Link
-              :href="route('properties.create')"
-              class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-              </svg>
-              Nueva Propiedad
-            </Link>
-          </div>
+        <!-- Results Summary -->
+        <div v-if="currentView !== 'sort'" class="mb-6">
+          <p class="text-sm text-gray-600">
+            <span class="font-medium">{{ properties.total }}</span> 
+            {{ properties.total === 1 ? 'propiedad encontrada' : 'propiedades encontradas' }}
+          </p>
         </div>
 
         <!-- Pagination -->
@@ -400,9 +531,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import DraggablePropertyTable from '@/Components/Properties/DraggablePropertyTable.vue'
 import { debounce } from 'lodash'
 
 const props = defineProps({
@@ -417,17 +549,45 @@ const props = defineProps({
   filters: {
     type: Object,
     default: () => ({})
+  },
+  types: {
+    type: Object,
+    default: () => ({})
+  },
+  categories: {
+    type: Object,
+    default: () => ({})
+  },
+  statuses: {
+    type: Object,
+    default: () => ({})
+  },
+  states: {
+    type: Array,
+    default: () => []
+  },
+  cities: {
+    type: Array,
+    default: () => []
   }
 })
 
 // Local state
-const viewMode = ref('grid')
+const currentView = ref('cards')
 const showDeleteModal = ref(false)
 const propertyToDelete = ref(null)
 
-const filters = reactive({
-  search: props.filters.search || '',
-  project_id: props.filters.project_id || ''
+// Filters
+const search = ref(props.filters.search || '')
+const selectedProjectId = ref(props.filters.project_id || '')
+const selectedType = ref(props.filters.type || '')
+const selectedCategory = ref(props.filters.category || '')
+const selectedStatus = ref(props.filters.status || '')
+const selectedState = ref(props.filters.state || '')
+const selectedCity = ref(props.filters.city || '')
+
+const hasFilters = computed(() => {
+  return search.value || selectedProjectId.value || selectedType.value || selectedCategory.value || selectedStatus.value || selectedState.value || selectedCity.value
 })
 
 // Methods
@@ -479,10 +639,40 @@ const goToProperty = (propertyId) => {
 }
 
 const applyFilters = () => {
+  const filters = {
+    search: search.value,
+    project_id: selectedProjectId.value,
+    type: selectedType.value,
+    category: selectedCategory.value,
+    status: selectedStatus.value,
+    state: selectedState.value,
+    city: selectedCity.value
+  }
+  
   router.get(route('properties.index'), filters, {
     preserveState: true,
     replace: true
   })
+}
+
+const performSearch = debounce(() => {
+  applyFilters()
+}, 300)
+
+const clearFilters = () => {
+  search.value = ''
+  selectedProjectId.value = ''
+  selectedType.value = ''
+  selectedCategory.value = ''
+  selectedStatus.value = ''
+  selectedState.value = ''
+  selectedCity.value = ''
+  applyFilters()
+}
+
+const handleOrderUpdated = () => {
+  // Refresh the page to show updated order
+  router.reload()
 }
 
 // Property status management
@@ -568,16 +758,13 @@ const deleteProperty = () => {
   }
 }
 
-// Debounced search
-const debouncedFilter = debounce(applyFilters, 300)
-
 // Watch for view mode preference persistence
-watch(viewMode, (newMode) => {
+watch(currentView, (newMode) => {
   localStorage.setItem('properties-view-mode', newMode)
 })
 
 // Initialize view mode from localStorage
 if (localStorage.getItem('properties-view-mode')) {
-  viewMode.value = localStorage.getItem('properties-view-mode')
+  currentView.value = localStorage.getItem('properties-view-mode')
 }
 </script>

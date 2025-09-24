@@ -111,6 +111,7 @@ class PublicApiController extends Controller
             ->withCount(['properties' => function ($query) {
                 $query->where('status', 'available');
             }])
+            ->orderedForPublic()
             ->get();
 
         return response()->json($agents);
@@ -146,9 +147,11 @@ class PublicApiController extends Controller
     {
         $query = Property::with(['project', 'agent', 'images'])
             ->whereIn('status', ['available', 'reserved'])
+            ->where('is_public', true)
             ->whereHas('project', function ($q) {
                 $q->where('status', 'Disponible')->where('is_public', true);
-            });
+            })
+            ->orderedForPublic();
 
         // Apply filters
         if ($request->filled('project_id')) {
@@ -211,6 +214,7 @@ class PublicApiController extends Controller
             }
         ])
         ->whereIn('status', ['available', 'reserved'])
+        ->where('is_public', true)
         ->whereHas('project', function ($q) {
             $q->where('status', 'Disponible')->where('is_public', true);
         })
@@ -242,6 +246,7 @@ class PublicApiController extends Controller
 
         // Check if property is available
         $property = Property::whereIn('status', ['available', 'reserved'])
+            ->where('is_public', true)
             ->whereHas('project', function ($q) {
                 $q->where('status', 'Disponible')->where('is_public', true);
             })

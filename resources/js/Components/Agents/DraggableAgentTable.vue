@@ -4,7 +4,7 @@
     <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-lg font-medium text-gray-900">Ordenar Proyectos</h3>
+          <h3 class="text-lg font-medium text-gray-900">Ordenar Agentes</h3>
           <p class="text-sm text-gray-500 mt-1">
             Arrastra y suelta las filas para cambiar el orden automáticamente. Usa el toggle para cambiar la visibilidad pública.
           </p>
@@ -27,7 +27,7 @@
               #
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Proyecto
+              Agente
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Tipo
@@ -44,7 +44,7 @@
           </tr>
         </thead>
         <draggable
-          v-model="localProjects"
+          v-model="localAgents"
           tag="tbody"
           v-bind="dragOptions"
           @start="onDragStart"
@@ -52,14 +52,14 @@
           item-key="id"
           class="bg-white divide-y divide-gray-200"
         >
-          <template #item="{ element: project, index }">
-            <tr 
-              :class="[
-                'transition-all duration-200',
-                dragging ? 'cursor-grabbing' : 'cursor-grab hover:bg-gray-50',
-                !project.is_public ? 'opacity-60' : ''
-              ]"
-            >
+            <template #item="{ element: agent, index }">
+              <tr 
+                :class="[
+                  'transition-all duration-200',
+                  dragging ? 'cursor-grabbing' : 'cursor-grab hover:bg-gray-50',
+                  !agent.is_public ? 'opacity-60' : ''
+                ]"
+              >
                 <!-- Drag Handle -->
                 <td class="px-6 py-4 whitespace-nowrap text-center">
                   <div class="flex items-center justify-center">
@@ -69,19 +69,19 @@
                   </div>
                 </td>
 
-                <!-- Project Name -->
+                <!-- Agent Name -->
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
                     <div class="flex-shrink-0 h-10 w-10">
                       <img 
-                        class="h-10 w-10 rounded-lg object-cover" 
-                        :src="project.cover_image_url" 
-                        :alt="project.name"
+                        class="h-10 w-10 rounded-full object-cover" 
+                        :src="agent.profile_picture_url" 
+                        :alt="agent.name"
                       >
                     </div>
                     <div class="ml-4">
-                      <div class="text-sm font-medium text-gray-900">{{ project.name }}</div>
-                      <div class="text-sm text-gray-500">{{ project.properties_count || 0 }} propiedades</div>
+                      <div class="text-sm font-medium text-gray-900">{{ agent.name }}</div>
+                      <div class="text-sm text-gray-500">{{ agent.email }}</div>
                     </div>
                   </div>
                 </td>
@@ -90,9 +90,9 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span 
                     class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
-                    :class="getTypeColor(project.type)"
+                    :class="getTypeColor(agent.type)"
                   >
-                    {{ project.type }}
+                    {{ agent.type }}
                   </span>
                 </td>
 
@@ -100,9 +100,9 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span 
                     class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
-                    :class="getStatusColor(project.status)"
+                    :class="getStatusColor(agent.is_active)"
                   >
-                    {{ project.status }}
+                    {{ agent.is_active ? 'Activo' : 'Inactivo' }}
                   </span>
                 </td>
 
@@ -110,18 +110,18 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
                     <button
-                      @click="togglePublicStatus(project)"
-                      :disabled="updatingVisibility.has(project.id)"
+                      @click="togglePublicStatus(agent)"
+                      :disabled="updatingVisibility.has(agent.id)"
                       class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                      :class="project.is_public ? 'bg-green-600' : 'bg-gray-200'"
+                      :class="agent.is_public ? 'bg-green-600' : 'bg-gray-200'"
                     >
                       <span
                         class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                        :class="project.is_public ? 'translate-x-5' : 'translate-x-0'"
+                        :class="agent.is_public ? 'translate-x-5' : 'translate-x-0'"
                       ></span>
                     </button>
                     <span class="ml-2 text-sm text-gray-500">
-                      {{ project.is_public ? 'Público' : 'Privado' }}
+                      {{ agent.is_public ? 'Público' : 'Privado' }}
                     </span>
                   </div>
                 </td>
@@ -130,7 +130,7 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {{ index + 1 }}
                 </td>
-            </tr>
+              </tr>
           </template>
         </draggable>
       </table>
@@ -157,7 +157,7 @@ import { router } from '@inertiajs/vue3'
 import draggable from 'vuedraggable'
 
 const props = defineProps({
-  projects: {
+  agents: {
     type: Array,
     required: true
   }
@@ -166,23 +166,23 @@ const props = defineProps({
 const emit = defineEmits(['orderUpdated'])
 
 // State
-const localProjects = ref([...props.projects])
+const localAgents = ref([...props.agents])
 const dragging = ref(false)
 const saving = ref(false)
 const updatingVisibility = ref(new Set())
 
 const dragOptions = computed(() => ({
   animation: 200,
-  group: 'projects',
+  group: 'agents',
   disabled: false,
   ghostClass: 'ghost'
 }))
 
 // Watch for props changes
 watch(
-  () => props.projects,
-  (newProjects) => {
-    localProjects.value = [...newProjects]
+  () => props.agents,
+  (newAgents) => {
+    localAgents.value = [...newAgents]
   },
   { deep: true }
 )
@@ -203,13 +203,13 @@ const saveOrder = async () => {
   saving.value = true
   
   try {
-    const projectsData = localProjects.value.map((project, index) => ({
-      id: project.id,
+    const agentsData = localAgents.value.map((agent, index) => ({
+      id: agent.id,
       sort_order: index
     }))
 
-    await router.post(route('projects.updateOrder'), {
-      projects: projectsData
+    await router.post(route('agents.updateOrder'), {
+      agents: agentsData
     }, {
       preserveState: true,
       preserveScroll: true,
@@ -218,7 +218,7 @@ const saveOrder = async () => {
       }
     })
   } catch (error) {
-    console.error('Error updating project order:', error)
+    console.error('Error updating agent order:', error)
   } finally {
     saving.value = false
   }
@@ -226,49 +226,45 @@ const saveOrder = async () => {
 
 const getTypeColor = (type) => {
   const colors = {
-    'Campestres': 'bg-green-100 text-green-800',
-    'Urbanos': 'bg-blue-100 text-blue-800', 
-    'Turísticos': 'bg-purple-100 text-purple-800'
+    'Interno': 'bg-blue-100 text-blue-800',
+    'Externo': 'bg-purple-100 text-purple-800'
   }
   return colors[type] || 'bg-gray-100 text-gray-800'
 }
 
-const getStatusColor = (status) => {
-  const colors = {
-    'Vendido': 'bg-red-100 text-red-800',
-    'Disponible': 'bg-green-100 text-green-800',
-    'Reservado': 'bg-yellow-100 text-yellow-800'
-  }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+const getStatusColor = (isActive) => {
+  return isActive 
+    ? 'bg-green-100 text-green-800'
+    : 'bg-red-100 text-red-800'
 }
 
-const togglePublicStatus = async (project) => {
-  const originalStatus = project.is_public
+const togglePublicStatus = async (agent) => {
+  const originalStatus = agent.is_public
   
   // Add to updating set
-  updatingVisibility.value.add(project.id)
+  updatingVisibility.value.add(agent.id)
   
   try {
     // Optimistic update
-    project.is_public = !project.is_public
+    agent.is_public = !agent.is_public
     
-    await router.patch(route('projects.toggleVisibility', project.id), {}, {
+    await router.patch(route('agents.toggleVisibility', agent.id), {}, {
       preserveState: true,
       preserveScroll: true,
       onError: () => {
         // Revert on error
-        project.is_public = originalStatus
+        agent.is_public = originalStatus
       },
       onFinish: () => {
         // Remove from updating set
-        updatingVisibility.value.delete(project.id)
+        updatingVisibility.value.delete(agent.id)
       }
     })
   } catch (error) {
     // Revert on error
-    project.is_public = originalStatus
-    updatingVisibility.value.delete(project.id)
-    console.error('Error updating project visibility:', error)
+    agent.is_public = originalStatus
+    updatingVisibility.value.delete(agent.id)
+    console.error('Error updating agent visibility:', error)
   }
 }
 </script>

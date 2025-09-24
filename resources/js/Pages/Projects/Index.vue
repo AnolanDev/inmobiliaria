@@ -24,58 +24,24 @@
         <!-- Filters and Search -->
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-6">
           <div class="p-6 border-b border-gray-200">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-              <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
-                <!-- Search -->
-                <div class="relative">
-                  <input
-                    v-model="search"
-                    type="text"
-                    placeholder="Buscar proyectos..."
-                    class="w-full md:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
-                    @input="performSearch"
-                  />
-                  <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                  </svg>
-                </div>
-
-                <!-- Type Filter -->
-                <select
-                  v-model="selectedType"
-                  @change="applyFilters"
-                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
-                >
-                  <option value="">Todos los tipos</option>
-                  <option v-for="(label, value) in types" :key="value" :value="value">
-                    {{ label }}
-                  </option>
-                </select>
-
-                <!-- Status Filter -->
-                <select
-                  v-model="selectedStatus"
-                  @change="applyFilters"
-                  class="border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500"
-                >
-                  <option value="">Todos los estados</option>
-                  <option v-for="(label, value) in statuses" :key="value" :value="value">
-                    {{ label }}
-                  </option>
-                </select>
-
-                <!-- Clear Filters -->
-                <button
-                  v-if="hasFilters"
-                  @click="clearFilters"
-                  class="text-sm text-gray-500 hover:text-gray-700"
-                >
-                  Limpiar filtros
-                </button>
+            <!-- Primera fila: Búsqueda y botones de vista -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+              <!-- Search -->
+              <div class="relative flex-1 max-w-md">
+                <input
+                  v-model="search"
+                  type="text"
+                  placeholder="Buscar proyectos..."
+                  class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                  @input="performSearch"
+                />
+                <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
               </div>
 
               <!-- View Toggle -->
-              <div class="flex items-center space-x-2">
+              <div class="flex items-center space-x-2 flex-shrink-0">
                 <button
                   @click="currentView = 'cards'"
                   :class="[
@@ -108,6 +74,80 @@
                   ]"
                 >
                   Ordenar
+                </button>
+              </div>
+            </div>
+
+            <!-- Segunda fila: Filtros -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+              <!-- Type Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Tipo</label>
+                <select
+                  v-model="selectedType"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Todos</option>
+                  <option v-for="(label, value) in types" :key="value" :value="value">
+                    {{ label }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Status Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Estado</label>
+                <select
+                  v-model="selectedStatus"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Todos</option>
+                  <option v-for="(label, value) in statuses" :key="value" :value="value">
+                    {{ label }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- State Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Departamento</label>
+                <select
+                  v-model="selectedState"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Todos</option>
+                  <option v-for="state in states" :key="state" :value="state">
+                    {{ state }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- City Filter -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Ciudad</label>
+                <select
+                  v-model="selectedCity"
+                  @change="applyFilters"
+                  class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-green-500 focus:border-green-500"
+                >
+                  <option value="">Todas</option>
+                  <option v-for="city in cities" :key="city" :value="city">
+                    {{ city }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Clear Filters -->
+              <div class="flex items-end">
+                <button
+                  v-if="hasFilters"
+                  @click="clearFilters"
+                  class="w-full px-3 py-2 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-50 border border-gray-300 rounded-md transition-colors"
+                >
+                  Limpiar filtros
                 </button>
               </div>
             </div>
@@ -370,7 +410,15 @@ const props = defineProps({
   projects: Object,
   filters: Object,
   types: Object,
-  statuses: Object
+  statuses: Object,
+  states: {
+    type: Array,
+    default: () => []
+  },
+  cities: {
+    type: Array,
+    default: () => []
+  }
 })
 
 // State
@@ -378,12 +426,14 @@ const currentView = ref('cards')
 const search = ref(props.filters.search || '')
 const selectedType = ref(props.filters.type || '')
 const selectedStatus = ref(props.filters.status || '')
+const selectedState = ref(props.filters.state || '')
+const selectedCity = ref(props.filters.city || '')
 const showDeleteModal = ref(false)
 const projectToDelete = ref(null)
 
 // Computed
 const hasFilters = computed(() => {
-  return search.value || selectedType.value || selectedStatus.value
+  return search.value || selectedType.value || selectedStatus.value || selectedState.value || selectedCity.value
 })
 
 // Methods
@@ -395,7 +445,9 @@ const applyFilters = () => {
   router.get(route('projects.index'), {
     search: search.value,
     type: selectedType.value,
-    status: selectedStatus.value
+    status: selectedStatus.value,
+    state: selectedState.value,
+    city: selectedCity.value
   }, {
     preserveState: true,
     replace: true
@@ -406,6 +458,8 @@ const clearFilters = () => {
   search.value = ''
   selectedType.value = ''
   selectedStatus.value = ''
+  selectedState.value = ''
+  selectedCity.value = ''
   router.get(route('projects.index'))
 }
 

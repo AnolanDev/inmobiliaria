@@ -37,6 +37,8 @@ class UpdateProjectRequest extends FormRequest
             'property_count' => 'nullable|integer|min:0',
             'is_public' => 'nullable|boolean',
             'sort_order' => 'nullable|integer|min:0',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'gallery' => 'nullable|array',
             'gallery.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
@@ -67,6 +69,10 @@ class UpdateProjectRequest extends FormRequest
             'gallery.*.max' => 'Las imágenes de la galería no deben superar los 5MB cada una.',
             'videos.*.mimes' => 'Los videos deben ser de formato MP4, MOV, AVI, WMV o WEBM.',
             'videos.*.max' => 'Los videos no deben superar los 100MB cada uno.',
+            'city.required' => 'La ciudad es obligatoria.',
+            'city.max' => 'La ciudad no debe superar los 255 caracteres.',
+            'state.required' => 'El departamento es obligatorio.',
+            'state.max' => 'El departamento no debe superar los 255 caracteres.',
         ];
     }
 }

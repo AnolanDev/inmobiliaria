@@ -6,19 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->integer('sort_order')->default(0)->after('is_public');
-            $table->index(['sort_order', 'created_at']);
+            $table->string('city')->nullable()->after('description');
+            $table->string('state')->nullable()->after('city');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->dropIndex(['sort_order', 'created_at']);
-            $table->dropColumn('sort_order');
+            $table->dropColumn(['city', 'state']);
         });
     }
 };

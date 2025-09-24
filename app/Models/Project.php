@@ -22,6 +22,8 @@ class Project extends Model
         'cover_image',
         'gallery',
         'videos',
+        'city',
+        'state',
     ];
 
     protected $casts = [
@@ -109,5 +111,47 @@ class Project extends Model
             }
             return null;
         }, $this->gallery));
+    }
+
+    // Scopes for ordering and filtering
+    public function scopeOrderedForPublic($query)
+    {
+        return $query->orderBy('sort_order', 'asc')->orderBy('created_at', 'desc');
+    }
+
+    public function scopePublic($query)
+    {
+        return $query->where('is_public', true);
+    }
+
+    // Location filtering scopes
+    public function scopeByLocation($query, $location)
+    {
+        if (!$location) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($location) {
+            $q->where('city', 'like', '%' . $location . '%')
+              ->orWhere('state', 'like', '%' . $location . '%');
+        });
+    }
+
+    public function scopeByState($query, $state)
+    {
+        if (!$state) {
+            return $query;
+        }
+
+        return $query->where('state', $state);
+    }
+
+    public function scopeByCity($query, $city)
+    {
+        if (!$city) {
+            return $query;
+        }
+
+        return $query->where('city', $city);
     }
 }

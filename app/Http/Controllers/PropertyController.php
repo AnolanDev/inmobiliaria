@@ -25,27 +25,70 @@ class PropertyController extends Controller
     public function index(Request $request): Response
     {
         $query = Property::with(['agent', 'project'])
-            ->latest();
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('created_at', 'desc');
 
-        // Filter by project if provided
+        // Apply filters
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('address', 'like', '%' . $request->search . '%')
+                  ->orWhere('city', 'like', '%' . $request->search . '%');
+        }
+
         if ($request->filled('project_id')) {
             $query->where('project_id', $request->project_id);
         }
 
-        // Search functionality
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('address', 'like', "%{$search}%")
-                  ->orWhere('city', 'like', "%{$search}%");
-            });
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
         }
 
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Location filtering
+        if ($request->filled('location')) {
+            $query->byLocation($request->location);
+        }
+
+        if ($request->filled('state')) {
+            $query->byState($request->state);
+        }
+
+        if ($request->filled('city')) {
+            $query->byCity($request->city);
+        }
+
+        $properties = $query->paginate(12);
+
         return Inertia::render('Properties/Index', [
-            'properties' => $query->paginate(12),
+            'properties' => $properties,
             'projects' => Project::select('id', 'name')->get(),
-            'filters' => $request->only(['project_id', 'search']),
+            'filters' => $request->only(['search', 'project_id', 'type', 'category', 'status', 'location', 'state', 'city']),
+            'types' => [
+                'sale' => 'Venta',
+                'rent' => 'Renta',
+            ],
+            'categories' => [
+                'house' => 'Casa',
+                'apartment' => 'Apartamento',
+                'land' => 'Lote',
+                'office' => 'Oficina',
+                'commercial' => 'Local Comercial',
+            ],
+            'statuses' => [
+                'available' => 'Disponible',
+                'pending' => 'Pendiente',
+                'sold' => 'Vendido',
+                'rented' => 'Rentado',
+            ],
+            'states' => Property::distinct()->whereNotNull('state')->pluck('state')->sort()->values(),
+            'cities' => Property::distinct()->whereNotNull('city')->pluck('city')->sort()->values(),
         ]);
     }
 
@@ -243,5 +286,36 @@ class PropertyController extends Controller
             'project' => $project->only(['id', 'name', 'type', 'status']),
             'message' => 'Proyecto creado exitosamente'
         ]);
+    }
+
+    /**
+     * Update properties sort order in bulk
+     */
+    public function updateOrder(Request $request)
+    {
+        $request->validate([
+            'properties' => 'required|array',
+            'properties.*.id' => 'required|exists:properties,id',
+            'properties.*.sort_order' => 'required|integer|min:0'
+        ]);
+
+        foreach ($request->properties as $propertyData) {
+            Property::where('id', $propertyData['id'])
+                ->update(['sort_order' => $propertyData['sort_order']]);
+        }
+
+        return back()->with('success', 'Orden de propiedades actualizado exitosamente.');
+    }
+
+    /**
+     * Toggle property visibility
+     */
+    public function toggleVisibility(Property $property)
+    {
+        $property->update([
+            'is_public' => !$property->is_public
+        ]);
+
+        return back()->with('success', 'Visibilidad de la propiedad actualizada exitosamente.');
     }
 }

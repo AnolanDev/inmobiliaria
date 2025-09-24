@@ -21,10 +21,13 @@ class Agent extends Model
         'gallery',
         'videos',
         'is_active',
+        'is_public',
+        'sort_order',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_public' => 'boolean',
         'gallery' => 'array',
         'videos' => 'array',
     ];
@@ -134,5 +137,17 @@ class Agent extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    // Scope for public agents
+    public function scopePublic($query)
+    {
+        return $query->where('is_public', true);
+    }
+
+    // Scope for ordering agents for public display
+    public function scopeOrderedForPublic($query)
+    {
+        return $query->orderBy('sort_order', 'asc')->orderBy('created_at', 'desc');
     }
 }

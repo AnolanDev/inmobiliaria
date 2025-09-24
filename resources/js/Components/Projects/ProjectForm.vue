@@ -101,6 +101,40 @@
           </div>
 
 
+          <!-- City -->
+          <div>
+            <label for="city" class="block text-sm font-medium text-gray-700">
+              Ciudad *
+            </label>
+            <input
+              id="city"
+              v-model="form.city"
+              type="text"
+              required
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+              :class="{ 'border-red-300': form.errors.city }"
+              placeholder="Ej: Medellín, Bogotá, Cartagena"
+            />
+            <p v-if="form.errors.city" class="mt-1 text-sm text-red-600">{{ form.errors.city }}</p>
+          </div>
+
+          <!-- State -->
+          <div>
+            <label for="state" class="block text-sm font-medium text-gray-700">
+              Departamento *
+            </label>
+            <input
+              id="state"
+              v-model="form.state"
+              type="text"
+              required
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+              :class="{ 'border-red-300': form.errors.state }"
+              placeholder="Ej: Antioquia, Cundinamarca, Bolívar"
+            />
+            <p v-if="form.errors.state" class="mt-1 text-sm text-red-600">{{ form.errors.state }}</p>
+          </div>
+
           <!-- Description -->
           <div class="sm:col-span-2">
             <label for="description" class="block text-sm font-medium text-gray-700">
@@ -266,6 +300,8 @@ const form = useForm({
   status: props.project?.status || 'Disponible',
   property_count: props.project?.property_count || 0,
   is_public: props.project?.is_public === 1 || props.project?.is_public === true || false,
+  city: props.project?.city || '',
+  state: props.project?.state || '',
   cover_image: null,
   gallery: [],
   videos: [],

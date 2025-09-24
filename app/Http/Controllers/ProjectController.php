@@ -41,13 +41,28 @@ class ProjectController extends Controller
             $query->where('status', $request->status);
         }
 
+        // Location filtering
+        if ($request->filled('location')) {
+            $query->byLocation($request->location);
+        }
+
+        if ($request->filled('state')) {
+            $query->byState($request->state);
+        }
+
+        if ($request->filled('city')) {
+            $query->byCity($request->city);
+        }
+
         $projects = $query->paginate(12);
 
         return Inertia::render('Projects/Index', [
             'projects' => $projects,
-            'filters' => $request->only(['search', 'type', 'status']),
+            'filters' => $request->only(['search', 'type', 'status', 'location', 'state', 'city']),
             'types' => Project::TYPES,
             'statuses' => Project::STATUSES,
+            'states' => Project::distinct()->whereNotNull('state')->pluck('state')->sort()->values(),
+            'cities' => Project::distinct()->whereNotNull('city')->pluck('city')->sort()->values(),
         ]);
     }
 
@@ -77,6 +92,8 @@ class ProjectController extends Controller
             'status' => $validated['status'],
             'property_count' => $validated['property_count'] ?? 0,
             'is_public' => $validated['is_public'] ?? false,
+            'city' => $validated['city'],
+            'state' => $validated['state'],
             'cover_image' => '', // Will be updated after file upload
         ]);
 
@@ -156,6 +173,8 @@ class ProjectController extends Controller
             'status' => $validated['status'],
             'property_count' => $validated['property_count'] ?? $project->property_count,
             'is_public' => $validated['is_public'] ?? false,
+            'city' => $validated['city'],
+            'state' => $validated['state'],
         ]);
 
         // Handle cover image update
@@ -245,6 +264,8 @@ class ProjectController extends Controller
             'type' => $request->type,
             'status' => 'Disponible',
             'property_count' => 0,
+            'city' => $request->city ?? '',
+            'state' => $request->state ?? '',
             'cover_image' => '', // Will be updated after file upload
         ]);
 

@@ -109,6 +109,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
             Route::patch('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
             Route::patch('/properties/{property}/toggle-status', [PropertyController::class, 'toggleStatus'])->name('properties.toggle-status');
+            Route::post('/properties/update-order', [PropertyController::class, 'updateOrder'])->name('properties.updateOrder');
+            Route::patch('/properties/{property}/toggle-visibility', [PropertyController::class, 'toggleVisibility'])->name('properties.toggleVisibility');
         });
         
         Route::middleware('permission:properties:delete')->group(function () {
@@ -132,6 +134,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/agents/{agent}/edit', [AgentController::class, 'edit'])->name('agents.edit');
             Route::patch('/agents/{agent}', [AgentController::class, 'update'])->name('agents.update');
             Route::patch('/agents/{agent}/toggle-status', [AgentController::class, 'toggleStatus'])->name('agents.toggle-status');
+            Route::post('/agents/update-order', [AgentController::class, 'updateOrder'])->name('agents.updateOrder');
+            Route::patch('/agents/{agent}/toggle-visibility', [AgentController::class, 'toggleVisibility'])->name('agents.toggleVisibility');
         });
         
         Route::middleware('permission:agents:delete')->group(function () {

@@ -120,6 +120,28 @@
                   </select>
                   <p v-if="form.errors.is_active" class="mt-1 text-sm text-red-600">{{ form.errors.is_active }}</p>
                 </div>
+
+                <!-- Public Visibility -->
+                <div class="sm:col-span-2">
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Visibilidad
+                  </label>
+                  <div class="flex items-center">
+                    <input
+                      id="is_public"
+                      v-model="form.is_public"
+                      type="checkbox"
+                      class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                    />
+                    <label for="is_public" class="ml-2 block text-sm text-gray-700">
+                      Mostrar en sitio web público
+                    </label>
+                  </div>
+                  <p class="mt-1 text-xs text-gray-500">
+                    Si está activado, el agente será visible en el sitio web público para los visitantes
+                  </p>
+                  <p v-if="form.errors.is_public" class="mt-1 text-sm text-red-600">{{ form.errors.is_public }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -297,6 +319,7 @@ const form = useForm({
   instagram: '',
   linkedin: '',
   is_active: true,
+  is_public: false,
   profile_picture: null,
   gallery: [],
   videos: []
