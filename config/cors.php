@@ -24,8 +24,9 @@ return [
         'http://localhost:5173',
         'http://localhost:8080',
         'https://inmobiliaria-public.vercel.app',
-        // Add your production domain here
-        // 'https://yourdomainhere.com',
+        'https://tierrasonada.com',
+        'https://www.tierrasonada.com',
+        'https://app.tierrasonada.com',
     ],
 
     'allowed_origins_patterns' => [],
