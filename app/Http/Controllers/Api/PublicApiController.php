@@ -76,7 +76,7 @@ class PublicApiController extends Controller
                       ->orWhere('status', 'reserved');
             },
             'properties.images',
-            'agent'
+            'properties.agent'
         ])
         ->where('status', 'Disponible')
         ->where('is_public', true)

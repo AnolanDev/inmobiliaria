@@ -10,7 +10,15 @@ const input = ref(null);
 
 onMounted(() => {
     if (input.value.hasAttribute('autofocus')) {
-        input.value.focus();
+        setTimeout(() => {
+            try {
+                if (document.activeElement !== input.value) {
+                    input.value.focus();
+                }
+            } catch (error) {
+                console.warn('Autofocus blocked:', error);
+            }
+        }, 100);
     }
 });
 
