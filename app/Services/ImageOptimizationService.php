@@ -81,14 +81,16 @@ class ImageOptimizationService
     /**
      * Generate responsive image URLs for API responses
      */
-    public function generateResponsiveUrls(array $imagePaths): array
+    public function generateResponsiveUrls(array $imagePaths, string $type = 'projects', int $id = null): array
     {
         $urls = [];
         
         foreach ($imagePaths as $sizeName => $path) {
             if ($path) {
+                // Use API image routes instead of direct storage access
+                $filename = basename($path);
                 $urls[$sizeName] = [
-                    'url' => asset('storage/' . $path),
+                    'url' => $id ? url("api/images/{$type}/{$id}/{$filename}") : asset('storage/' . $path),
                     'width' => $this->sizes[$sizeName] ?? null
                 ];
             }

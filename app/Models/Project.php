@@ -85,11 +85,13 @@ class Project extends Model
         if ($this->cover_image && is_array($this->cover_image)) {
             // Return medium size for backward compatibility
             if (isset($this->cover_image['medium'])) {
-                return asset('storage/' . $this->cover_image['medium']);
+                $filename = basename($this->cover_image['medium']);
+                return url("api/images/projects/{$this->id}/{$filename}");
             }
             // Fallback to original if medium doesn't exist
             if (isset($this->cover_image['original'])) {
-                return asset('storage/' . $this->cover_image['original']);
+                $filename = basename($this->cover_image['original']);
+                return url("api/images/projects/{$this->id}/{$filename}");
             }
         }
         
@@ -97,7 +99,8 @@ class Project extends Model
         if ($this->cover_image && is_string($this->cover_image)) {
             $imagePath = storage_path('app/public/' . $this->cover_image);
             if (file_exists($imagePath)) {
-                return asset('storage/' . $this->cover_image);
+                $filename = basename($this->cover_image);
+                return url("api/images/projects/{$this->id}/{$filename}");
             }
         }
         
@@ -114,12 +117,13 @@ class Project extends Model
     public function getCoverImageResponsiveAttribute(): array
     {
         if ($this->cover_image && is_array($this->cover_image)) {
-            return app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($this->cover_image);
+            return app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($this->cover_image, 'projects', $this->id);
         }
         
         // Handle legacy string format - create responsive URLs from existing image
         if ($this->cover_image && is_string($this->cover_image)) {
-            $baseUrl = asset('storage/' . $this->cover_image);
+            $filename = basename($this->cover_image);
+            $baseUrl = url("api/images/projects/{$this->id}/{$filename}");
             return [
                 'thumbnail' => ['url' => $baseUrl, 'width' => 400],
                 'medium' => ['url' => $baseUrl, 'width' => 800],
