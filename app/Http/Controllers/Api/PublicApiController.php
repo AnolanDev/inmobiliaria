@@ -326,7 +326,12 @@ class PublicApiController extends Controller
             'budget_range' => 'nullable|string',
         ]);
 
-        // Create lead
+        // Create lead with a system user (find admin or create a system user)
+        $systemUser = \App\Models\User::where('email', 'admin@inmobiliaria.com')->first();
+        if (!$systemUser) {
+            $systemUser = \App\Models\User::first(); // Fallback to first user
+        }
+
         $lead = Lead::create([
             'first_name' => explode(' ', $validated['name'])[0],
             'last_name' => substr($validated['name'], strlen(explode(' ', $validated['name'])[0]) + 1),
@@ -339,6 +344,7 @@ class PublicApiController extends Controller
             'budget_min' => $this->extractBudgetMin($validated['budget_range'] ?? ''),
             'budget_max' => $this->extractBudgetMax($validated['budget_range'] ?? ''),
             'contact_preferences' => [$validated['preferred_contact'] ?? 'email'],
+            'created_by' => $systemUser->id,
         ]);
 
         return response()->json([
