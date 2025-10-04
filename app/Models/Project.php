@@ -117,6 +117,17 @@ class Project extends Model
             return app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($this->cover_image);
         }
         
+        // Handle legacy string format - create responsive URLs from existing image
+        if ($this->cover_image && is_string($this->cover_image)) {
+            $baseUrl = asset('storage/' . $this->cover_image);
+            return [
+                'thumbnail' => ['url' => $baseUrl, 'width' => 400],
+                'medium' => ['url' => $baseUrl, 'width' => 800],
+                'large' => ['url' => $baseUrl, 'width' => 1200],
+                'original' => ['url' => $baseUrl, 'width' => null]
+            ];
+        }
+        
         // Return fallback responsive images
         return app(\App\Services\ImageOptimizationService::class)->getFallbackUrls('project');
     }
