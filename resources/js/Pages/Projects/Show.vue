@@ -486,32 +486,43 @@ const formatDate = (date) => {
 
 // Helper function to get image URL from responsive image object
 const getGalleryImageUrl = (imageData, size = 'medium') => {
+  // Debug logging
+  console.log('getGalleryImageUrl called with:', { imageData, size, type: typeof imageData })
+  
   // Handle legacy string format
   if (typeof imageData === 'string') {
+    console.log('Using string format:', imageData)
     return imageData
   }
   
   // Handle new responsive format
   if (imageData && typeof imageData === 'object') {
+    console.log('Using object format:', imageData)
     // Try to get the requested size, fallback to medium, then any available size
     if (imageData[size]?.url) {
+      console.log(`Using ${size} size:`, imageData[size].url)
       return imageData[size].url
     }
     if (imageData.medium?.url) {
+      console.log('Using medium fallback:', imageData.medium.url)
       return imageData.medium.url
     }
     if (imageData.large?.url) {
+      console.log('Using large fallback:', imageData.large.url)
       return imageData.large.url
     }
     if (imageData.original?.url) {
+      console.log('Using original fallback:', imageData.original.url)
       return imageData.original.url
     }
     if (imageData.thumbnail?.url) {
+      console.log('Using thumbnail fallback:', imageData.thumbnail.url)
       return imageData.thumbnail.url
     }
   }
   
   // Fallback
+  console.log('Using placeholder fallback')
   return '/placeholder-image.jpg'
 }
 
@@ -570,6 +581,11 @@ const handleKeyPress = (event) => {
 // Lifecycle hooks
 onMounted(() => {
   document.addEventListener('keydown', handleKeyPress)
+  
+  // Debug logging
+  console.log('Project data:', props.project)
+  console.log('Gallery URLs:', props.project.gallery_urls)
+  console.log('Cover image URL:', props.project.cover_image_url)
 })
 
 onUnmounted(() => {
