@@ -27,6 +27,7 @@ class Project extends Model
     ];
 
     protected $casts = [
+        'cover_image' => 'array',
         'gallery' => 'array',
         'videos' => 'array',
         'property_count' => 'integer',
@@ -36,6 +37,7 @@ class Project extends Model
 
     protected $appends = [
         'cover_image_url',
+        'cover_image_responsive',
         'gallery_urls',
         'type_color',
         'status_color',
@@ -80,22 +82,38 @@ class Project extends Model
 
     public function getCoverImageUrlAttribute(): string
     {
-        // Si hay imagen de portada, verificar si existe
-        if ($this->cover_image) {
+        // Handle new optimized image structure
+        if ($this->cover_image && is_array($this->cover_image)) {
+            // Return medium size for backward compatibility
+            if (isset($this->cover_image['medium'])) {
+                return asset('storage/' . $this->cover_image['medium']);
+            }
+            // Fallback to original if medium doesn't exist
+            if (isset($this->cover_image['original'])) {
+                return asset('storage/' . $this->cover_image['original']);
+            }
+        }
+        
+        // Handle legacy string format
+        if ($this->cover_image && is_string($this->cover_image)) {
             $imagePath = storage_path('app/public/' . $this->cover_image);
             if (file_exists($imagePath)) {
                 return asset('storage/' . $this->cover_image);
             }
         }
         
-        // Imágenes placeholder según el tipo de proyecto
-        $placeholders = [
-            'Campestres' => 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop',
-            'Urbanos' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop',
-            'Turísticos' => 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop'
-        ];
+        // Fallback to placeholders
+        return app(\App\Services\ImageOptimizationService::class)->getFallbackUrl('project', 800);
+    }
+
+    public function getCoverImageResponsiveAttribute(): array
+    {
+        if ($this->cover_image && is_array($this->cover_image)) {
+            return app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($this->cover_image);
+        }
         
-        return $placeholders[$this->type ?? 'Urbanos'] ?? $placeholders['Urbanos'];
+        // Return fallback responsive images
+        return app(\App\Services\ImageOptimizationService::class)->getFallbackUrls('project');
     }
 
     public function getGalleryUrlsAttribute(): array
@@ -104,13 +122,23 @@ class Project extends Model
             return [];
         }
 
-        return array_filter(array_map(function ($image) {
-            $imagePath = storage_path('app/public/' . $image);
-            if (file_exists($imagePath)) {
-                return asset('storage/' . $image);
+        $urls = [];
+        foreach ($this->gallery as $imageSet) {
+            if (is_array($imageSet)) {
+                // New optimized format
+                $urls[] = app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($imageSet);
+            } else {
+                // Legacy format
+                $imagePath = storage_path('app/public/' . $imageSet);
+                if (file_exists($imagePath)) {
+                    $urls[] = [
+                        'medium' => ['url' => asset('storage/' . $imageSet), 'width' => 800]
+                    ];
+                }
             }
-            return null;
-        }, $this->gallery));
+        }
+        
+        return $urls;
     }
 
     // Scopes for ordering and filtering

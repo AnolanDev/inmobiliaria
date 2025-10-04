@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\PublicApiController;
+use App\Http\Controllers\Api\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,41 @@ Route::prefix('public')->group(function () {
     Route::get('/blogs/tag/{tag}', [PublicApiController::class, 'getBlogsByTag']);
     Route::get('/blogs/{identifier}', [PublicApiController::class, 'getBlog']);
     Route::get('/blogs/{id}/related', [PublicApiController::class, 'getRelatedBlogs']);
+    
+});
+
+/*
+|--------------------------------------------------------------------------
+| Image Serving Routes
+|--------------------------------------------------------------------------
+|
+| These routes handle optimized image serving with caching headers,
+| fallbacks, and responsive image support.
+|
+*/
+
+Route::prefix('images')->group(function () {
+    
+    // Serve images with caching and fallbacks
+    Route::get('/{type}/{id}/{filename}', [ImageController::class, 'serve'])
+        ->where('type', 'projects|properties|agents|blogs')
+        ->where('id', '[0-9]+')
+        ->where('filename', '[a-zA-Z0-9._-]+');
+    
+    // Responsive image serving
+    Route::get('/responsive/{type}/{id}/{filename}', [ImageController::class, 'responsive'])
+        ->where('type', 'projects|properties|agents|blogs')
+        ->where('id', '[0-9]+')
+        ->where('filename', '[a-zA-Z0-9._-]+');
+    
+    // Image information endpoint
+    Route::get('/info/{type}/{id}/{filename}', [ImageController::class, 'info'])
+        ->where('type', 'projects|properties|agents|blogs')
+        ->where('id', '[0-9]+')
+        ->where('filename', '[a-zA-Z0-9._-]+');
+    
+    // Image proxy for external images (development only)
+    Route::get('/proxy', [ImageController::class, 'proxy']);
     
 });
 

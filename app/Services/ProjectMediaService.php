@@ -5,71 +5,62 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\Facades\Image;
 use App\Models\Project;
+use App\Services\ImageOptimizationService;
 
 class ProjectMediaService
 {
     private const PROJECTS_STORAGE_PATH = 'projects';
-
-    /**
-     * Store cover image for a project
-     */
-    public function storeCoverImage(UploadedFile $file, int $projectId): string
+    
+    protected ImageOptimizationService $imageService;
+    
+    public function __construct(ImageOptimizationService $imageService)
     {
-        $filename = 'cover_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $path = self::PROJECTS_STORAGE_PATH . '/' . $projectId . '/' . $filename;
-
-        // Create directory if it doesn't exist
-        $directory = self::PROJECTS_STORAGE_PATH . '/' . $projectId;
-        if (!Storage::disk('public')->exists($directory)) {
-            Storage::disk('public')->makeDirectory($directory);
-        }
-
-        // Optimize and store the image
-        $this->optimizeAndStoreImage($file, $path);
-
-        // Log for debugging
-        Log::info('Cover image stored', [
-            'path' => $path,
-            'full_path' => storage_path('app/public/' . $path),
-            'exists' => file_exists(storage_path('app/public/' . $path))
-        ]);
-
-        return $path;
+        $this->imageService = $imageService;
     }
 
     /**
-     * Store gallery images for a project
+     * Store cover image for a project with optimization
+     */
+    public function storeCoverImage(UploadedFile $file, int $projectId): array
+    {
+        if (!$this->imageService->validateImage($file)) {
+            throw new \InvalidArgumentException('Invalid image file');
+        }
+
+        $path = self::PROJECTS_STORAGE_PATH . '/' . $projectId;
+        $imagePaths = $this->imageService->processImage($file, $path, 'cover');
+
+        Log::info('Cover image stored with optimization', [
+            'project_id' => $projectId,
+            'sizes' => array_keys($imagePaths)
+        ]);
+
+        return $imagePaths;
+    }
+
+    /**
+     * Store gallery images for a project with optimization
      */
     public function storeGalleryImages(array $files, int $projectId): array
     {
-        $paths = [];
+        $allPaths = [];
+        $path = self::PROJECTS_STORAGE_PATH . '/' . $projectId;
 
-        // Create directory if it doesn't exist
-        $directory = self::PROJECTS_STORAGE_PATH . '/' . $projectId;
-        if (!Storage::disk('public')->exists($directory)) {
-            Storage::disk('public')->makeDirectory($directory);
-        }
+        foreach ($files as $index => $file) {
+            if ($file instanceof UploadedFile && $this->imageService->validateImage($file)) {
+                $imagePaths = $this->imageService->processImage($file, $path, 'gallery_' . $index);
+                $allPaths[] = $imagePaths;
 
-        foreach ($files as $file) {
-            if ($file instanceof UploadedFile) {
-                $filename = 'gallery_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $path = self::PROJECTS_STORAGE_PATH . '/' . $projectId . '/' . $filename;
-
-                // Optimize and store the image
-                $this->optimizeAndStoreImage($file, $path);
-                $paths[] = $path;
-
-                // Log for debugging
-                Log::info('Gallery image stored', [
-                    'path' => $path,
-                    'exists' => file_exists(storage_path('app/public/' . $path))
+                Log::info('Gallery image stored with optimization', [
+                    'project_id' => $projectId,
+                    'index' => $index,
+                    'sizes' => array_keys($imagePaths)
                 ]);
             }
         }
 
-        return $paths;
+        return $allPaths;
     }
 
     /**
