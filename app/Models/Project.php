@@ -27,7 +27,6 @@ class Project extends Model
     ];
 
     protected $casts = [
-        'cover_image' => 'array',
         'gallery' => 'array',
         'videos' => 'array',
         'property_count' => 'integer',
@@ -102,8 +101,14 @@ class Project extends Model
             }
         }
         
-        // Fallback to placeholders
-        return app(\App\Services\ImageOptimizationService::class)->getFallbackUrl('project', 800);
+        // Fallback to placeholders based on project type
+        $placeholders = [
+            'Campestres' => 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'Urbanos' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'Turísticos' => 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=entropy&auto=format'
+        ];
+        
+        return $placeholders[$this->type ?? 'Urbanos'] ?? $placeholders['Urbanos'];
     }
 
     public function getCoverImageResponsiveAttribute(): array
