@@ -21,6 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ]);
 
+        // Replace default CSRF middleware with our custom one
+        $middleware->web(replace: [
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class => \App\Http\Middleware\VerifyCsrfToken::class,
+        ]);
+
         $middleware->alias([
             'role' => \App\Http\Middleware\RolePermissionMiddleware::class,
             'permission' => \App\Http\Middleware\RolePermissionMiddleware::class,
