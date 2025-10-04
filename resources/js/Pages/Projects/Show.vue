@@ -75,7 +75,7 @@
                     <!-- Main Image Display -->
                     <div class="aspect-video">
                       <img
-                        :src="project.gallery_urls[currentGalleryIndex]"
+                        :src="getGalleryImageUrl(project.gallery_urls[currentGalleryIndex])"
                         :alt="`Imagen ${currentGalleryIndex + 1}`"
                         class="w-full h-full object-cover cursor-pointer"
                         @click="openLightbox(currentGalleryIndex)"
@@ -152,7 +152,7 @@
                     @click="currentGalleryIndex = index"
                   >
                     <img
-                      :src="image"
+                      :src="getGalleryImageUrl(image, 'thumbnail')"
                       :alt="`Miniatura ${index + 1}`"
                       class="w-full h-full object-cover"
                     />
@@ -349,7 +349,7 @@
           <!-- Main image -->
           <div class="flex items-center justify-center min-h-[60vh] max-h-[80vh] bg-black">
             <img
-              :src="project.gallery_urls[currentImageIndex]"
+              :src="getGalleryImageUrl(project.gallery_urls[currentImageIndex], 'large')"
               :alt="`Imagen ${currentImageIndex + 1}`"
               class="max-w-full max-h-full object-contain"
             />
@@ -410,7 +410,7 @@
                   : 'border-transparent hover:border-gray-400'"
               >
                 <img
-                  :src="image"
+                  :src="getGalleryImageUrl(image, 'thumbnail')"
                   :alt="`Miniatura ${index + Math.max(0, currentImageIndex - 2) + 1}`"
                   class="w-full h-full object-cover"
                 />
@@ -482,6 +482,37 @@ const formatDate = (date) => {
     month: 'long',
     day: 'numeric'
   })
+}
+
+// Helper function to get image URL from responsive image object
+const getGalleryImageUrl = (imageData, size = 'medium') => {
+  // Handle legacy string format
+  if (typeof imageData === 'string') {
+    return imageData
+  }
+  
+  // Handle new responsive format
+  if (imageData && typeof imageData === 'object') {
+    // Try to get the requested size, fallback to medium, then any available size
+    if (imageData[size]?.url) {
+      return imageData[size].url
+    }
+    if (imageData.medium?.url) {
+      return imageData.medium.url
+    }
+    if (imageData.large?.url) {
+      return imageData.large.url
+    }
+    if (imageData.original?.url) {
+      return imageData.original.url
+    }
+    if (imageData.thumbnail?.url) {
+      return imageData.thumbnail.url
+    }
+  }
+  
+  // Fallback
+  return '/placeholder-image.jpg'
 }
 
 // Gallery navigation functions

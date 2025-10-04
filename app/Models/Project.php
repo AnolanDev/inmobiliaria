@@ -144,11 +144,15 @@ class Project extends Model
                 // New optimized format
                 $urls[] = app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($imageSet);
             } else {
-                // Legacy format
+                // Legacy format - create responsive URLs from existing image
                 $imagePath = storage_path('app/public/' . $imageSet);
                 if (file_exists($imagePath)) {
+                    $baseUrl = asset('storage/' . $imageSet);
                     $urls[] = [
-                        'medium' => ['url' => asset('storage/' . $imageSet), 'width' => 800]
+                        'thumbnail' => ['url' => $baseUrl, 'width' => 400],
+                        'medium' => ['url' => $baseUrl, 'width' => 800],
+                        'large' => ['url' => $baseUrl, 'width' => 1200],
+                        'original' => ['url' => $baseUrl, 'width' => null]
                     ];
                 }
             }
