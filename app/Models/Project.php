@@ -36,6 +36,7 @@ class Project extends Model
 
     protected $appends = [
         'cover_image_url',
+        'cover_image_responsive',
         'gallery_urls',
         'type_color',
         'status_color',
