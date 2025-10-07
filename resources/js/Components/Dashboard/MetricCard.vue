@@ -1,5 +1,11 @@
 <template>
-  <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
+  <div 
+    :class="[
+      'bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200',
+      clickable ? 'cursor-pointer hover:shadow-md hover:border-gray-300 transition-all duration-200' : ''
+    ]"
+    @click="handleClick"
+  >
     <div class="p-6">
       <div class="flex items-center">
         <div class="flex-shrink-0">
@@ -16,6 +22,9 @@
               <path v-else-if="icon === 'user'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
               <path v-else-if="icon === 'clock'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               <path v-else-if="icon === 'eye'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              <path v-else-if="icon === 'mail'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              <path v-else-if="icon === 'mail-opened'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5"/>
+              <path v-else-if="icon === 'trending-up'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
               <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
             </svg>
           </div>
@@ -76,14 +85,34 @@ const props = defineProps({
   color: {
     type: String,
     default: 'blue',
-    validator: (value) => ['blue', 'green', 'yellow', 'red', 'purple', 'indigo'].includes(value)
+    validator: (value) => ['blue', 'green', 'yellow', 'red', 'purple', 'indigo', 'orange'].includes(value)
   },
   valueType: {
     type: String,
     default: 'number',
     validator: (value) => ['number', 'currency', 'percentage'].includes(value)
+  },
+  clickable: {
+    type: Boolean,
+    default: false
+  },
+  href: {
+    type: String,
+    default: null
   }
 })
+
+const emit = defineEmits(['click'])
+
+const handleClick = () => {
+  if (props.clickable) {
+    if (props.href) {
+      window.location.href = props.href
+    } else {
+      emit('click')
+    }
+  }
+}
 
 const iconComponent = computed(() => {
   const iconMap = {
@@ -102,12 +131,13 @@ const iconComponent = computed(() => {
 
 const iconBgColor = computed(() => {
   const colorMap = {
-    blue: 'bg-green-500',
+    blue: 'bg-blue-500',
     green: 'bg-green-500',
     yellow: 'bg-yellow-500',
     red: 'bg-red-500',
     purple: 'bg-purple-500',
-    indigo: 'bg-indigo-500'
+    indigo: 'bg-indigo-500',
+    orange: 'bg-orange-500'
   }
   return colorMap[props.color]
 })

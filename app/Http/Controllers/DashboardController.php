@@ -7,6 +7,9 @@ use App\Models\Project;
 use App\Models\Client;
 use App\Models\Agent;
 use App\Models\Visit;
+use App\Models\EmailCampaign;
+use App\Models\Campaign;
+use App\Models\Lead;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -46,6 +49,7 @@ class DashboardController extends Controller
             'agents' => $this->getAgentMetrics($startDate, $previousPeriodStart),
             'visits' => $this->getVisitMetrics($startDate, $previousPeriodStart),
             'sales' => $this->getSalesMetrics($startDate, $previousPeriodStart),
+            'marketing' => $this->getMarketingMetrics($startDate, $previousPeriodStart),
         ];
     }
 
@@ -216,6 +220,8 @@ class DashboardController extends Controller
             'client_acquisition' => $this->getClientAcquisition($startDate),
             'sales_funnel' => $this->getSalesFunnel(),
             'agent_performance' => $this->getAgentPerformance($startDate),
+            'marketing_performance' => $this->getMarketingPerformance($startDate),
+            'leads_funnel' => $this->getLeadsFunnel(),
         ];
     }
 
@@ -394,6 +400,108 @@ class DashboardController extends Controller
         }
         
         return round((($current - $previous) / $previous) * 100, 2);
+    }
+
+    /**
+     * Get marketing-related metrics
+     */
+    private function getMarketingMetrics(Carbon $startDate, Carbon $previousStart): array
+    {
+        $currentLeads = Lead::where('created_at', '>=', $startDate)->count();
+        $previousLeads = Lead::whereBetween('created_at', [$previousStart, $startDate])->count();
+        
+        $currentCampaigns = Campaign::where('created_at', '>=', $startDate)->count();
+        $previousCampaigns = Campaign::whereBetween('created_at', [$previousStart, $startDate])->count();
+        
+        $currentEmailCampaigns = EmailCampaign::where('created_at', '>=', $startDate)->count();
+        $previousEmailCampaigns = EmailCampaign::whereBetween('created_at', [$previousStart, $startDate])->count();
+        
+        return [
+            'leads' => [
+                'total' => Lead::count(),
+                'new_this_period' => $currentLeads,
+                'change_percentage' => $this->calculateChangePercentage($currentLeads, $previousLeads),
+                'qualified' => Lead::where('status', 'qualified')->count(),
+                'converted' => Lead::where('status', 'converted')->count(),
+                'overdue_followups' => Lead::where('next_follow_up', '<', now())->count(),
+                'by_source' => Lead::select('source', DB::raw('count(*) as count'))
+                    ->groupBy('source')
+                    ->pluck('count', 'source')
+                    ->toArray(),
+                'conversion_rate' => $this->getLeadConversionRate(),
+            ],
+            'campaigns' => [
+                'total' => Campaign::count(),
+                'new_this_period' => $currentCampaigns,
+                'change_percentage' => $this->calculateChangePercentage($currentCampaigns, $previousCampaigns),
+                'active' => Campaign::where('status', 'active')->count(),
+                'completed' => Campaign::where('status', 'completed')->count(),
+                'total_budget' => Campaign::sum('budget') ?? 0,
+                'total_spent' => Campaign::sum('spent') ?? 0,
+                'total_impressions' => Campaign::sum('impressions') ?? 0,
+                'total_clicks' => Campaign::sum('clicks') ?? 0,
+                'total_conversions' => Campaign::sum('conversions') ?? 0,
+            ],
+            'email_campaigns' => [
+                'total' => EmailCampaign::count(),
+                'new_this_period' => $currentEmailCampaigns,
+                'change_percentage' => $this->calculateChangePercentage($currentEmailCampaigns, $previousEmailCampaigns),
+                'sent' => EmailCampaign::where('status', 'sent')->count(),
+                'sending' => EmailCampaign::where('status', 'sending')->count(),
+                'scheduled' => EmailCampaign::where('status', 'scheduled')->count(),
+                'total_emails_sent' => EmailCampaign::sum('emails_sent') ?? 0,
+                'total_emails_opened' => EmailCampaign::sum('emails_opened') ?? 0,
+                'total_emails_clicked' => EmailCampaign::sum('emails_clicked') ?? 0,
+                'avg_open_rate' => EmailCampaign::where('emails_sent', '>', 0)->avg('open_rate') ?? 0,
+                'avg_click_rate' => EmailCampaign::where('emails_sent', '>', 0)->avg('click_rate') ?? 0,
+            ],
+        ];
+    }
+
+    /**
+     * Get marketing performance chart data
+     */
+    private function getMarketingPerformance(Carbon $startDate): array
+    {
+        $emailCampaigns = EmailCampaign::where('created_at', '>=', $startDate)
+            ->where('status', 'sent')
+            ->select('name', 'open_rate', 'click_rate', 'emails_sent')
+            ->orderBy('emails_sent', 'desc')
+            ->limit(10)
+            ->get();
+        
+        return [
+            'labels' => $emailCampaigns->pluck('name')->toArray(),
+            'open_rates' => $emailCampaigns->pluck('open_rate')->toArray(),
+            'click_rates' => $emailCampaigns->pluck('click_rate')->toArray(),
+        ];
+    }
+
+    /**
+     * Get leads funnel data
+     */
+    private function getLeadsFunnel(): array
+    {
+        return [
+            'labels' => ['Nuevos', 'Contactados', 'Calificados', 'Convertidos'],
+            'data' => [
+                Lead::where('status', 'new')->count(),
+                Lead::where('status', 'contacted')->count(),
+                Lead::where('status', 'qualified')->count(),
+                Lead::where('status', 'converted')->count(),
+            ],
+        ];
+    }
+
+    /**
+     * Get lead conversion rate
+     */
+    private function getLeadConversionRate(): float
+    {
+        $totalLeads = Lead::count();
+        $convertedLeads = Lead::where('status', 'converted')->count();
+        
+        return $totalLeads > 0 ? round(($convertedLeads / $totalLeads) * 100, 2) : 0;
     }
 
     /**

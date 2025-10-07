@@ -283,12 +283,12 @@
                   </p>
                   
                   <!-- Stats -->
-                  <div class="flex items-center text-sm text-gray-500 mb-4">
+                  <!-- <div class="flex items-center text-sm text-gray-500 mb-4">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
                     </svg>
                     {{ project.properties_count || 0 }} propiedades
-                  </div>
+                  </div> -->
 
                   <!-- Actions -->
                   <div class="flex space-x-2">
