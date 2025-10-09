@@ -335,11 +335,11 @@
 
               <!-- Gallery indicator -->
               <div v-if="property.gallery_urls && property.gallery_urls.length > 0" class="absolute top-3 right-3">
-                <div class="bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
-                  <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-gradient-to-r from-gray-800 to-gray-900 text-white px-3 py-1.5 rounded-lg shadow-lg backdrop-blur-sm border border-white/20" title="{{ property.gallery_urls.length }} imágenes en galería">
+                  <svg class="w-4 h-4 inline mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                   </svg>
-                  {{ property.gallery_urls.length }}
+                  <span class="font-medium">{{ property.gallery_urls.length }}</span>
                 </div>
               </div>
             </div>
@@ -361,31 +361,32 @@
               </p>
 
               <!-- Features -->
-              <div class="flex items-center space-x-4 text-sm text-gray-500 mb-4">
-                <div v-if="property.bedrooms > 0" class="flex items-center">
-                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="flex items-center space-x-2 text-sm mb-4">
+                <div v-if="property.bedrooms > 0" class="flex items-center bg-green-50 px-2 py-1 rounded" title="{{ property.bedrooms }} habitaciones">
+                  <svg class="w-4 h-4 mr-1 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
                   </svg>
-                  {{ property.bedrooms }} hab.
+                  <span class="font-semibold text-green-700">{{ property.bedrooms }}</span>
                 </div>
-                <div v-if="property.bathrooms > 0" class="flex items-center">
-                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div v-if="property.bathrooms > 0" class="flex items-center bg-blue-50 px-2 py-1 rounded" title="{{ property.bathrooms }} baños">
+                  <svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
                   </svg>
-                  {{ property.bathrooms }} baños
+                  <span class="font-semibold text-blue-700">{{ property.bathrooms }}</span>
                 </div>
-                <div class="flex items-center">
-                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center bg-purple-50 px-2 py-1 rounded" title="{{ property.area }} metros cuadrados">
+                  <svg class="w-4 h-4 mr-1 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
                   </svg>
-                  {{ property.area }} m²
+                  <span class="font-semibold text-purple-700">{{ property.area }}</span>
+                  <span class="text-xs text-purple-600 ml-1">m²</span>
                 </div>
               </div>
 
               <!-- Project Info -->
               <div v-if="property.project" class="mb-3">
-                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                  <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-orange-100 to-orange-200 text-orange-800 border border-orange-300" title="Proyecto: {{ property.project.name }}">
+                  <svg class="w-4 h-4 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-2m-2 0H7m10 0v-2c0-.553-.447-1-1-1s-1 .447-1 1v2m1-10V9a2 2 0 00-2-2M9 7h3M9 11h3M9 15h3"/>
                   </svg>
                   {{ property.project.name }}
@@ -394,33 +395,46 @@
 
               <!-- Agent -->
               <div class="flex items-center justify-between">
-                <div v-if="property.agent" class="flex items-center text-sm text-gray-600">
-                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div v-if="property.agent" class="flex items-center text-sm bg-gray-50 px-3 py-2 rounded-lg" title="Agente: {{ property.agent.name }}">
+                  <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                   </svg>
-                  {{ property.agent.name }}
+                  <span class="font-medium text-gray-700">{{ property.agent.name }}</span>
                 </div>
                 <div class="flex items-center space-x-2">
                   <button
                     @click.stop="goToProperty(property.id)"
-                    class="text-green-600 hover:text-green-800 text-sm font-medium"
+                    class="inline-flex items-center p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg transition-all duration-200"
+                    title="Ver detalles"
                   >
-                    Ver detalles →
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
                   </button>
                   <button
                     @click.stop="toggleStatus(property)"
                     :class="[
-                      'inline-flex items-center px-2 py-1 text-xs font-medium rounded-full transition-colors duration-200',
+                      'inline-flex items-center p-2 rounded-lg transition-all duration-200',
                       getStatusToggleClass(property.status)
                     ]"
+                    :title="getStatusToggleText(property.status)"
                   >
-                    {{ getStatusToggleText(property.status) }}
+                    <svg v-if="property.status === 'available'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M8 11h8l-1 9H9l-1-9z"/>
+                    </svg>
+                    <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0v4m-4 4v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/>
+                    </svg>
                   </button>
                   <button
                     @click.stop="confirmDelete(property)"
-                    class="text-red-600 hover:text-red-900 text-sm font-medium"
+                    class="inline-flex items-center p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all duration-200"
+                    title="Eliminar propiedad"
                   >
-                    Eliminar
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
                   </button>
                 </div>
               </div>

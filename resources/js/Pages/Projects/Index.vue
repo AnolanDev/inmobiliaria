@@ -248,12 +248,16 @@
           <!-- Cards View -->
           <div v-else class="p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Link
+              <div
                 v-for="project in projects.data"
                 :key="project.id"
-                :href="route('projects.show', project.id)"
-                class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer group"
+                class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg hover:scale-[1.02] transition-all duration-300 group relative"
               >
+                <!-- Clickable area for navigation -->
+                <Link
+                  :href="route('projects.show', project.id)"
+                  class="cursor-pointer block"
+                >
                 <!-- Image -->
                 <div class="aspect-video relative overflow-hidden">
                   <img
@@ -290,31 +294,40 @@
                     {{ project.properties_count || 0 }} propiedades
                   </div> -->
 
-                  <!-- Actions -->
-                  <div class="flex space-x-2">
-                    <span class="flex-1 inline-flex justify-center items-center px-3 py-2 text-sm font-medium text-gray-600 group-hover:text-green-600 transition-colors">
+                  <!-- View details text -->
+                  <div class="text-center">
+                    <span class="inline-flex items-center text-green-600 group-hover:text-green-700 font-semibold transition-colors">
                       Ver detalles
+                      <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
                     </span>
-                    <Link
-                      :href="route('projects.edit', project.id)"
-                      @click.stop
-                      class="inline-flex items-center p-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                      </svg>
-                    </Link>
-                    <button
-                      @click.stop="confirmDelete(project)"
-                      class="inline-flex items-center p-2 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                      </svg>
-                    </button>
                   </div>
                 </div>
-              </Link>
+                </Link>
+
+                <!-- Actions (outside of clickable area) -->
+                <div class="absolute bottom-6 right-6 flex space-x-2 z-10">
+                  <Link
+                    :href="route('projects.edit', project.id)"
+                    class="inline-flex items-center p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg transition-all duration-200"
+                    title="Editar proyecto"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                  </Link>
+                  <button
+                    @click="confirmDelete(project)"
+                    class="inline-flex items-center p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-all duration-200"
+                    title="Eliminar proyecto"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
