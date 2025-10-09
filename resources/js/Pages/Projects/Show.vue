@@ -276,24 +276,17 @@
                     </dd>
                   </div>
 
-                  <div v-if="project.property_count">
-                    <dt class="text-sm font-medium text-gray-500">Propiedades planificadas</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ project.property_count }}</dd>
-                  </div>
-
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Propiedades registradas</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ project.properties.length }}</dd>
-                  </div>
-
-                  <div>
-                    <dt class="text-sm font-medium text-gray-500">Fecha de creación</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ formatDate(project.created_at) }}</dd>
-                  </div>
-
-                  <div v-if="project.updated_at !== project.created_at">
-                    <dt class="text-sm font-medium text-gray-500">Última actualización</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ formatDate(project.updated_at) }}</dd>
+                    <dt class="text-sm font-medium text-gray-500">Ubicación</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      <div class="flex items-center text-gray-600">
+                        <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        {{ project.city }}, {{ project.state }}
+                      </div>
+                    </dd>
                   </div>
                 </dl>
               </div>
