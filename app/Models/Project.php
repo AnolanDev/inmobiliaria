@@ -38,6 +38,7 @@ class Project extends Model
         'cover_image_url',
         'cover_image_responsive',
         'gallery_urls',
+        'video_urls',
         'type_color',
         'status_color',
     ];
@@ -163,6 +164,45 @@ class Project extends Model
         }
         
         return $urls;
+    }
+
+    public function getVideoUrlsAttribute(): array
+    {
+        if (!$this->videos || !is_array($this->videos)) {
+            return [];
+        }
+
+        $urls = [];
+        foreach ($this->videos as $videoPath) {
+            if (is_string($videoPath) && !empty($videoPath)) {
+                // Check if video file exists
+                $fullPath = storage_path('app/public/' . $videoPath);
+                if (file_exists($fullPath)) {
+                    $urls[] = [
+                        'url' => asset('storage/' . $videoPath),
+                        'path' => $videoPath,
+                        'filename' => basename($videoPath),
+                        'type' => $this->getVideoType($videoPath)
+                    ];
+                }
+            }
+        }
+        
+        return $urls;
+    }
+
+    private function getVideoType(string $path): string
+    {
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        return match ($extension) {
+            'mp4' => 'video/mp4',
+            'webm' => 'video/webm',
+            'ogg' => 'video/ogg',
+            'avi' => 'video/avi',
+            'mov' => 'video/quicktime',
+            'wmv' => 'video/x-ms-wmv',
+            default => 'video/mp4'
+        };
     }
 
     // Scopes for ordering and filtering
