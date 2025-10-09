@@ -370,7 +370,7 @@ export default {
     clearFiles() {
       this.files = []
       this.previews.forEach(preview => {
-        if (preview.url.startsWith('blob:')) {
+        if (preview.url && typeof preview.url === 'string' && preview.url.startsWith('blob:')) {
           URL.revokeObjectURL(preview.url)
         }
       })
@@ -383,7 +383,7 @@ export default {
   beforeUnmount() {
     // Clean up object URLs
     this.previews.forEach(preview => {
-      if (preview.url && preview.url.startsWith('blob:')) {
+      if (preview.url && typeof preview.url === 'string' && preview.url.startsWith('blob:')) {
         URL.revokeObjectURL(preview.url)
       }
     })

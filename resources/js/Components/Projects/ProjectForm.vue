@@ -270,11 +270,30 @@ const existingCoverImage = computed(() => {
 const existingGallery = computed(() => {
   if (!props.project?.gallery_urls || !Array.isArray(props.project.gallery_urls)) return []
   
-  return props.project.gallery_urls.map((url, index) => ({
-    url,
-    path: (props.project.gallery && props.project.gallery[index]) || url,
-    name: `gallery_${index}.jpg`
-  }))
+  return props.project.gallery_urls.map((imageSet, index) => {
+    // Handle responsive image format from gallery_urls
+    let url = imageSet
+    if (typeof imageSet === 'object' && imageSet !== null) {
+      if (imageSet.medium?.url) {
+        url = imageSet.medium.url
+      } else if (imageSet.thumbnail?.url) {
+        url = imageSet.thumbnail.url
+      } else if (imageSet.original?.url) {
+        url = imageSet.original.url
+      } else if (typeof imageSet === 'string') {
+        url = imageSet
+      } else {
+        // If it's an object but doesn't have expected structure, try to extract URL
+        url = imageSet.url || imageSet.path || ''
+      }
+    }
+    
+    return {
+      url: typeof url === 'string' ? url : '',
+      path: (props.project.gallery && props.project.gallery[index]) || (typeof url === 'string' ? url : ''),
+      name: `gallery_${index}.jpg`
+    }
+  }).filter(item => item.url) // Filter out items without valid URLs
 })
 
 const existingVideos = computed(() => {
