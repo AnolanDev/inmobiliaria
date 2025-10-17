@@ -92,6 +92,7 @@ class ProjectController extends Controller
             'status' => $validated['status'],
             'property_count' => $validated['property_count'] ?? 0,
             'is_public' => $validated['is_public'] ?? false,
+            'sort_order' => $validated['sort_order'] ?? null,
             'city' => $validated['city'],
             'state' => $validated['state'],
             'cover_image' => '', // Will be updated after file upload
@@ -173,6 +174,7 @@ class ProjectController extends Controller
             'status' => $validated['status'],
             'property_count' => $validated['property_count'] ?? $project->property_count,
             'is_public' => $validated['is_public'] ?? false,
+            'sort_order' => $validated['sort_order'] ?? $project->sort_order,
             'city' => $validated['city'],
             'state' => $validated['state'],
         ]);

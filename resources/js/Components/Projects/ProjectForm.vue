@@ -262,7 +262,7 @@ const existingCoverImage = computed(() => {
   if (!props.project?.cover_image_url) return []
   return [{
     url: props.project.cover_image_url,
-    path: props.project.cover_image || '',
+    path: props.project.cover_image_url, // Use the URL directly since it's already a complete URL
     name: 'cover_image.jpg'
   }]
 })
@@ -290,7 +290,7 @@ const existingGallery = computed(() => {
     
     return {
       url: typeof url === 'string' ? url : '',
-      path: (props.project.gallery && props.project.gallery[index]) || (typeof url === 'string' ? url : ''),
+      path: typeof url === 'string' ? url : '', // Use the URL directly since it's already complete
       name: `gallery_${index}.jpg`
     }
   }).filter(item => item.url) // Filter out items without valid URLs

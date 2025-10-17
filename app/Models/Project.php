@@ -27,6 +27,7 @@ class Project extends Model
     ];
 
     protected $casts = [
+        'cover_image' => 'array',
         'gallery' => 'array',
         'videos' => 'array',
         'property_count' => 'integer',
@@ -147,7 +148,7 @@ class Project extends Model
         foreach ($this->gallery as $imageSet) {
             if (is_array($imageSet)) {
                 // New optimized format
-                $urls[] = app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($imageSet);
+                $urls[] = app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($imageSet, 'projects', $this->id);
             } else {
                 // Legacy format - create responsive URLs from existing image
                 $imagePath = storage_path('app/public/' . $imageSet);

@@ -338,6 +338,10 @@ export default {
     },
     
     getFileUrl(path) {
+      // If path is already a complete URL, return as is
+      if (path && (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('/'))) {
+        return path
+      }
       return `/storage/${path}`
     },
     

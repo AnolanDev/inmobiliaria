@@ -151,11 +151,17 @@ class ProjectMediaService
     /**
      * Update cover image
      */
-    public function updateCoverImage(UploadedFile $file, Project $project): string
+    public function updateCoverImage(UploadedFile $file, Project $project): array
     {
-        // Delete old cover image if exists
-        if ($project->cover_image && Storage::disk('public')->exists($project->cover_image)) {
-            Storage::disk('public')->delete($project->cover_image);
+        // Delete old cover image files if they exist
+        if ($project->cover_image) {
+            if (is_array($project->cover_image)) {
+                // New format: delete all sizes
+                $this->imageService->deleteImages($project->cover_image);
+            } elseif (is_string($project->cover_image) && Storage::disk('public')->exists($project->cover_image)) {
+                // Legacy format: delete single file
+                Storage::disk('public')->delete($project->cover_image);
+            }
         }
 
         return $this->storeCoverImage($file, $project->id);
