@@ -99,10 +99,13 @@ class ProjectController extends Controller
         ]);
 
         // Handle cover image upload
-        $coverImagePath = $this->mediaService->storeCoverImage(
-            $request->file('cover_image'),
-            $project->id
-        );
+        $coverImagePath = null;
+        if ($request->hasFile('cover_image') && $request->file('cover_image')->isValid()) {
+            $coverImagePath = $this->mediaService->storeCoverImage(
+                $request->file('cover_image'),
+                $project->id
+            );
+        }
 
         // Handle gallery images
         $galleryPaths = [];
@@ -272,10 +275,13 @@ class ProjectController extends Controller
         ]);
 
         // Handle cover image upload
-        $coverImagePath = $this->mediaService->storeCoverImage(
-            $request->file('cover_image'),
-            $project->id
-        );
+        $coverImagePath = null;
+        if ($request->hasFile('cover_image') && $request->file('cover_image')->isValid()) {
+            $coverImagePath = $this->mediaService->storeCoverImage(
+                $request->file('cover_image'),
+                $project->id
+            );
+        }
 
         $project->update(['cover_image' => $coverImagePath]);
 
