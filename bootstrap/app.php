@@ -29,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\RolePermissionMiddleware::class,
             'permission' => \App\Http\Middleware\RolePermissionMiddleware::class,
+            'debug.request' => \App\Http\Middleware\DebugRequestMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
