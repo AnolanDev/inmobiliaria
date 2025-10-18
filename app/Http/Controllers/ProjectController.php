@@ -142,6 +142,14 @@ class ProjectController extends Controller
      */
     public function edit(Project $project): Response
     {
+        \Log::info('Project edit data', [
+            'project_id' => $project->id,
+            'cover_image' => $project->cover_image,
+            'cover_image_url' => $project->cover_image_url,
+            'gallery' => $project->gallery,
+            'gallery_urls' => $project->gallery_urls,
+        ]);
+        
         return Inertia::render('Projects/Edit', [
             'project' => $project,
             'types' => Project::TYPES,
