@@ -101,6 +101,33 @@ class ProjectController extends Controller
                 'videos' => [],
             ]);
 
+            // Handle cover image
+            if ($request->hasFile('cover_image')) {
+                $coverImagePath = $this->mediaService->storeCoverImage(
+                    $request->file('cover_image'),
+                    $project->id
+                );
+                $project->update(['cover_image' => $coverImagePath]);
+            }
+
+            // Handle gallery images
+            if ($request->hasFile('gallery')) {
+                $galleryPaths = $this->mediaService->storeGalleryImages(
+                    $request->file('gallery'),
+                    $project->id
+                );
+                $project->update(['gallery' => $galleryPaths]);
+            }
+
+            // Handle videos if present
+            if ($request->hasFile('videos')) {
+                $videoPaths = $this->mediaService->storeVideos(
+                    $request->file('videos'),
+                    $project->id
+                );
+                $project->update(['videos' => $videoPaths]);
+            }
+
             return redirect()->route('projects.index')
                 ->with('success', 'Proyecto creado exitosamente.');
                 
