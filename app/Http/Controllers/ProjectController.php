@@ -82,58 +82,51 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        try {
+            \Log::info('ProjectController::store STARTED');
+            
+            // Simple validation without complex logic
+            $validated = $request->validated();
+            \Log::info('Validation passed');
+            
+            // Create basic project without files first
+            $project = Project::create([
+                'name' => $validated['name'],
+                'description' => $validated['description'] ?? '',
+                'type' => $validated['type'],
+                'status' => $validated['status'],
+                'property_count' => $validated['property_count'] ?? 0,
+                'is_public' => $validated['is_public'] ?? false,
+                'sort_order' => $validated['sort_order'] ?? null,
+                'city' => $validated['city'],
+                'state' => $validated['state'],
+                'cover_image' => null,
+                'gallery' => [],
+                'videos' => [],
+            ]);
+            
+            \Log::info('Project created successfully', ['project_id' => $project->id]);
 
-        // Create the project first
-        $project = Project::create([
-            'name' => $validated['name'],
-            'description' => $validated['description'],
-            'type' => $validated['type'],
-            'status' => $validated['status'],
-            'property_count' => $validated['property_count'] ?? 0,
-            'is_public' => $validated['is_public'] ?? false,
-            'sort_order' => $validated['sort_order'] ?? null,
-            'city' => $validated['city'],
-            'state' => $validated['state'],
-            'cover_image' => '', // Will be updated after file upload
-        ]);
-
-        // Handle cover image upload
-        $coverImagePath = null;
-        if ($request->hasFile('cover_image') && $request->file('cover_image')->isValid()) {
-            $coverImagePath = $this->mediaService->storeCoverImage(
-                $request->file('cover_image'),
-                $project->id
-            );
+            return redirect()->route('projects.index')
+                ->with('success', 'Proyecto creado exitosamente.');
+                
+        } catch (\Exception $e) {
+            \Log::error('Error in ProjectController::store', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            // Return a proper error response for production
+            if (request()->expectsJson()) {
+                return response()->json(['error' => 'Error interno del servidor'], 500);
+            }
+            
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Error al crear el proyecto. Por favor, inténtalo de nuevo.']);
         }
-
-        // Handle gallery images
-        $galleryPaths = [];
-        if ($request->hasFile('gallery')) {
-            $galleryPaths = $this->mediaService->storeGalleryImages(
-                $request->file('gallery'),
-                $project->id
-            );
-        }
-
-        // Handle videos
-        $videoPaths = [];
-        if ($request->hasFile('videos')) {
-            $videoPaths = $this->mediaService->storeVideos(
-                $request->file('videos'),
-                $project->id
-            );
-        }
-
-        // Update project with file paths
-        $project->update([
-            'cover_image' => $coverImagePath,
-            'gallery' => $galleryPaths,
-            'videos' => $videoPaths,
-        ]);
-
-        return redirect()->route('projects.index')
-            ->with('success', 'Proyecto creado exitosamente.');
     }
 
     /**

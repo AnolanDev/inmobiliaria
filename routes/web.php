@@ -75,6 +75,10 @@ Route::middleware('auth')->group(function () {
         
         Route::middleware('permission:projects:create')->group(function () {
             Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+            Route::post('/projects/test', function(\Illuminate\Http\Request $request) {
+                \Log::info('Test route reached', ['data' => $request->all()]);
+                return response()->json(['status' => 'success', 'message' => 'Test route working']);
+            })->name('projects.test');
             Route::post('/projects', [ProjectController::class, 'store'])->middleware('debug.request')->name('projects.store');
             Route::post('/projects-quick', [ProjectController::class, 'quickStore'])->name('projects.quick');
         });

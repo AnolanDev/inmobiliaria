@@ -11,6 +11,7 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        \Log::info('StoreProjectRequest::authorize called');
         return true;
     }
 
