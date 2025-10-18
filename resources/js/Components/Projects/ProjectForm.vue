@@ -1,5 +1,25 @@
 <template>
   <form @submit.prevent="submit" class="space-y-6">
+    <!-- Form Instructions -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-blue-800">
+            Información del formulario
+          </h3>
+          <div class="mt-2 text-sm text-blue-700">
+            <p><strong>Campos requeridos (*):</strong> Nombre, tipo, estado, ciudad y departamento</p>
+            <p><strong>Campos opcionales:</strong> Descripción, número de propiedades, imagen de portada, galería y videos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Basic Information -->
     <div class="bg-white shadow-sm rounded-lg overflow-hidden">
       <div class="px-4 py-5 sm:p-6">
@@ -163,12 +183,12 @@
         <div class="mb-6">
           <FileUploader
             id="cover_image"
-            label="Imagen de portada"
+            label="Imagen de portada (opcional)"
             accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
-            :required="!isEdit"
+            :required="false"
             :existing-files="existingCoverImage"
             drag-text="Arrastra la imagen de portada aquí"
-            help-text="JPG, PNG, GIF hasta 5MB. Recomendado: 1200x600px"
+            help-text="JPG, PNG, GIF hasta 5MB. Recomendado: 1200x600px. Si no subes una imagen, se mostrará un placeholder automático."
             @files-changed="handleCoverImageChange"
             @files-removed="handleCoverImageRemove"
           />
@@ -222,14 +242,19 @@
       </Link>
       <button
         type="submit"
-        :disabled="form.processing"
-        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+        :disabled="form.processing || !isFormValid"
+        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+        :class="[
+          form.processing || !isFormValid 
+            ? 'bg-gray-400 cursor-not-allowed' 
+            : 'bg-green-600 hover:bg-green-700'
+        ]"
       >
         <svg v-if="form.processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        {{ form.processing ? 'Guardando...' : (isEdit ? 'Actualizar' : 'Crear proyecto') }}
+        {{ getSubmitButtonText() }}
       </button>
     </div>
   </form>
@@ -311,6 +336,15 @@ const existingVideos = computed(() => {
   })
 })
 
+// Form validation
+const isFormValid = computed(() => {
+  return form.name && 
+         form.type && 
+         form.status && 
+         form.city && 
+         form.state
+})
+
 // Form
 const form = useForm({
   name: props.project?.name || '',
@@ -352,6 +386,16 @@ const handleVideosChange = (files) => {
 
 const handleVideosRemove = (paths) => {
   form.remove_videos = [...form.remove_videos, ...paths]
+}
+
+const getSubmitButtonText = () => {
+  if (form.processing) {
+    return isEdit.value ? 'Actualizando...' : 'Creando...'
+  }
+  if (!isFormValid.value) {
+    return 'Complete los campos requeridos'
+  }
+  return isEdit.value ? 'Actualizar proyecto' : 'Crear proyecto'
 }
 
 const submit = () => {
