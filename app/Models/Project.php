@@ -106,14 +106,34 @@ class Project extends Model
             }
         }
         
-        // Fallback to placeholders based on project type
-        $placeholders = [
-            'Campestres' => 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop&crop=entropy&auto=format',
-            'Urbanos' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop&crop=entropy&auto=format',
-            'Turísticos' => 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=entropy&auto=format'
+        // Fallback to unique placeholders based on project type and ID
+        $placeholdersByType = [
+            'Campestres' => [
+                'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop&crop=entropy&auto=format',
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=entropy&auto=format',
+                'https://images.unsplash.com/photo-1464822759844-d150baec843a?w=800&h=600&fit=crop&crop=entropy&auto=format',
+                'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop&crop=entropy&auto=format'
+            ],
+            'Urbanos' => [
+                'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop&crop=entropy&auto=format',
+                'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop&crop=entropy&auto=format',
+                'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop&crop=entropy&auto=format',
+                'https://images.unsplash.com/photo-1516156008625-3a99593fa974?w=800&h=600&fit=crop&crop=entropy&auto=format'
+            ],
+            'Turísticos' => [
+                'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=entropy&auto=format',
+                'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop&crop=entropy&auto=format',
+                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&h=600&fit=crop&crop=entropy&auto=format',
+                'https://images.unsplash.com/photo-1587061949409-02df41d5e562?w=800&h=600&fit=crop&crop=entropy&auto=format'
+            ]
         ];
         
-        return $placeholders[$this->type ?? 'Urbanos'] ?? $placeholders['Urbanos'];
+        $type = $this->type ?? 'Urbanos';
+        $placeholders = $placeholdersByType[$type] ?? $placeholdersByType['Urbanos'];
+        
+        // Use project ID to select a consistent but different placeholder
+        $index = ($this->id - 1) % count($placeholders);
+        return $placeholders[$index];
     }
 
     public function getCoverImageResponsiveAttribute(): array
