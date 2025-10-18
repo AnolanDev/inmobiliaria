@@ -82,7 +82,15 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        \Log::info('Project store method called', ['request_data' => $request->all()]);
+        
+        try {
+            $validated = $request->validated();
+            \Log::info('Validation passed', ['validated' => $validated]);
+        } catch (\Exception $e) {
+            \Log::error('Validation failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            throw $e;
+        }
 
         // Create the project first
         $project = Project::create([
