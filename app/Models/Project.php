@@ -131,8 +131,10 @@ class Project extends Model
         $type = $this->type ?? 'Urbanos';
         $placeholders = $placeholdersByType[$type] ?? $placeholdersByType['Urbanos'];
         
-        // Use project ID to select a consistent but different placeholder
-        $index = ($this->id - 1) % count($placeholders);
+        // Use project ID and type to select a unique placeholder across all projects
+        // This ensures projects of same type still get different images
+        $hash = crc32($this->id . $this->type . $this->name);
+        $index = abs($hash) % count($placeholders);
         return $placeholders[$index];
     }
 
