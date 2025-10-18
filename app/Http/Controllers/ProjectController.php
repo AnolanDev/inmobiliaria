@@ -21,50 +21,76 @@ class ProjectController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request): Response
-    {
-        $query = Project::query()
-            ->withCount('properties')
-            ->orderBy('sort_order', 'asc')
-            ->orderBy('created_at', 'desc');
+{
+    $query = Project::query()
+        ->withCount('properties')
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('created_at', 'desc');
 
-        // Apply filters
-        if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
-        }
-
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        // Location filtering
-        if ($request->filled('location')) {
-            $query->byLocation($request->location);
-        }
-
-        if ($request->filled('state')) {
-            $query->byState($request->state);
-        }
-
-        if ($request->filled('city')) {
-            $query->byCity($request->city);
-        }
-
-        $projects = $query->paginate(12);
-
-        return Inertia::render('Projects/Index', [
-            'projects' => $projects,
-            'filters' => $request->only(['search', 'type', 'status', 'location', 'state', 'city']),
-            'types' => Project::TYPES,
-            'statuses' => Project::STATUSES,
-            'states' => Project::distinct()->whereNotNull('state')->pluck('state')->sort()->values(),
-            'cities' => Project::distinct()->whereNotNull('city')->pluck('city')->sort()->values(),
-        ]);
+    // Apply filters
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%')
+              ->orWhere('description', 'like', '%' . $request->search . '%');
+        });
     }
+
+    if ($request->filled('type')) {
+        $query->where('type', $request->type);
+    }
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Location filtering
+    if ($request->filled('location')) {
+        $query->byLocation($request->location);
+    }
+
+    if ($request->filled('state')) {
+        $query->byState($request->state);
+    }
+
+    if ($request->filled('city')) {
+        $query->byCity($request->city);
+    }
+
+    $projects = $query->paginate(12);
+
+    // 🔧 Aquí construimos las URLs absolutas de las imágenes
+   $projects->getCollection()->transform(function ($project) {
+    $cover = $project->cover_image;
+
+    // Si cover_image es JSON, lo decodificamos
+    if (is_string($cover) && str_starts_with($cover, '{')) {
+        $cover = json_decode($cover, true);
+    }
+
+    // Si es array y tiene 'path' o algo similar
+    if (is_array($cover)) {
+        $path = $cover['path'] ?? $cover['url'] ?? null;
+    } else {
+        $path = $cover;
+    }
+
+    $project->cover_image_url = $path
+        ? asset('storage/' . ltrim($path, '/'))
+        : asset('images/placeholder.jpg');
+
+    return $project;
+});
+
+
+    return Inertia::render('Projects/Index', [
+        'projects' => $projects,
+        'filters' => $request->only(['search', 'type', 'status', 'location', 'state', 'city']),
+        'types' => Project::TYPES,
+        'statuses' => Project::STATUSES,
+        'states' => Project::distinct()->whereNotNull('state')->pluck('state')->sort()->values(),
+        'cities' => Project::distinct()->whereNotNull('city')->pluck('city')->sort()->values(),
+    ]);
+}
 
     /**
      * Show the form for creating a new resource.
