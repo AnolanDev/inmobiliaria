@@ -181,7 +181,7 @@ class Project extends Model
             if (is_array($imageSet)) {
                 // New optimized format
                 $urls[] = app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($imageSet, 'projects', $this->id);
-            } else {
+            } elseif (is_string($imageSet) && !empty($imageSet)) {
                 // Legacy format - create responsive URLs from existing image
                 $imagePath = storage_path('app/public/' . $imageSet);
                 if (file_exists($imagePath)) {
@@ -194,6 +194,7 @@ class Project extends Model
                     ];
                 }
             }
+            // Skip corrupted data (non-string, non-array values)
         }
         
         return $urls;
