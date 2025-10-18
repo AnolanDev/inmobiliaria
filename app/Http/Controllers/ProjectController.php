@@ -57,30 +57,8 @@ class ProjectController extends Controller
 
     $projects = $query->paginate(12);
 
-    // 🧩 Generar URL absoluta de las imágenes (corrigiendo Unsplash/local)
-    $projects->getCollection()->transform(function ($project) {
-        $cover = $project->cover_image;
-
-        // Si cover_image es JSON, decodificarlo
-        if (is_string($cover) && str_starts_with($cover, '{')) {
-            $cover = json_decode($cover, true);
-        }
-
-        // Extraer la ruta del cover (puede venir como string o array)
-        if (is_array($cover)) {
-            $path = $cover['path'] ?? $cover['url'] ?? null;
-        } else {
-            $path = $cover;
-        }
-
-        // Si es una URL externa (http/https), usarla directamente
-        // Si es ruta local, usar asset('storage/...'), si no existe, placeholder
-        $project->cover_image_url = $path
-            ? (str_starts_with($path, 'http') ? $path : asset('storage/' . ltrim($path, '/')))
-            : asset('images/placeholder.jpg');
-
-        return $project;
-    });
+    // Let the model handle cover_image_url generation via accessor
+    // This ensures proper fallback handling with unique placeholders
 
     return Inertia::render('Projects/Index', [
         'projects' => $projects,
