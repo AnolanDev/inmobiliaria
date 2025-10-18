@@ -11,7 +11,6 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        \Log::info('StoreProjectRequest::authorize called');
         return true;
     }
 
@@ -22,7 +21,6 @@ class StoreProjectRequest extends FormRequest
      */
     public function rules(): array
     {
-        \Log::info('StoreProjectRequest::rules called', ['data' => $this->all()]);
         return [
             'name' => 'required|string|max:255|unique:projects,name',
             'description' => 'nullable|string',
@@ -39,18 +37,6 @@ class StoreProjectRequest extends FormRequest
             'videos' => 'nullable|array',
             'videos.*' => 'file|mimes:mp4,mov,avi,wmv,webm|max:102400',
         ];
-    }
-
-    /**
-     * Handle a failed validation attempt.
-     */
-    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
-    {
-        \Log::error('StoreProjectRequest validation failed', [
-            'errors' => $validator->errors()->toArray(),
-            'data' => $this->all()
-        ]);
-        parent::failedValidation($validator);
     }
 
     /**

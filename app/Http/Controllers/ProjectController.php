@@ -83,11 +83,7 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request): RedirectResponse
     {
         try {
-            \Log::info('ProjectController::store STARTED');
-            
-            // Simple validation without complex logic
             $validated = $request->validated();
-            \Log::info('Validation passed');
             
             // Create basic project without files first
             $project = Project::create([
@@ -104,8 +100,6 @@ class ProjectController extends Controller
                 'gallery' => [],
                 'videos' => [],
             ]);
-            
-            \Log::info('Project created successfully', ['project_id' => $project->id]);
 
             return redirect()->route('projects.index')
                 ->with('success', 'Proyecto creado exitosamente.');
