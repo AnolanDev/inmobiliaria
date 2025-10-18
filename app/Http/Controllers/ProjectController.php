@@ -20,56 +20,51 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index(Request $request): Response
-{
-    $query = Project::query()
-        ->withCount('properties')
-        ->orderBy('sort_order', 'asc')
-        ->orderBy('created_at', 'desc');
+    public function index(Request $request): Response
+    {
+        $query = Project::query()
+            ->withCount('properties')
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('created_at', 'desc');
 
-    // 🔍 Aplicar filtros
-    if ($request->filled('search')) {
-        $query->where(function ($q) use ($request) {
-            $q->where('name', 'like', '%' . $request->search . '%')
-              ->orWhere('description', 'like', '%' . $request->search . '%');
-        });
+        // Apply filters
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('description', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Location filtering
+        if ($request->filled('location')) {
+            $query->byLocation($request->location);
+        }
+
+        if ($request->filled('state')) {
+            $query->byState($request->state);
+        }
+
+        if ($request->filled('city')) {
+            $query->byCity($request->city);
+        }
+
+        $projects = $query->paginate(12);
+
+        return Inertia::render('Projects/Index', [
+            'projects' => $projects,
+            'filters' => $request->only(['search', 'type', 'status', 'location', 'state', 'city']),
+            'types' => Project::TYPES,
+            'statuses' => Project::STATUSES,
+            'states' => Project::distinct()->whereNotNull('state')->pluck('state')->sort()->values(),
+            'cities' => Project::distinct()->whereNotNull('city')->pluck('city')->sort()->values(),
+        ]);
     }
-
-    if ($request->filled('type')) {
-        $query->where('type', $request->type);
-    }
-
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    if ($request->filled('location')) {
-        $query->byLocation($request->location);
-    }
-
-    if ($request->filled('state')) {
-        $query->byState($request->state);
-    }
-
-    if ($request->filled('city')) {
-        $query->byCity($request->city);
-    }
-
-    $projects = $query->paginate(12);
-
-    // Let the model handle cover_image_url generation via accessor
-    // This ensures proper fallback handling with unique placeholders
-
-    return Inertia::render('Projects/Index', [
-        'projects' => $projects,
-        'filters' => $request->only(['search', 'type', 'status', 'location', 'state', 'city']),
-        'types' => Project::TYPES,
-        'statuses' => Project::STATUSES,
-        'states' => Project::distinct()->whereNotNull('state')->pluck('state')->sort()->values(),
-        'cities' => Project::distinct()->whereNotNull('city')->pluck('city')->sort()->values(),
-    ]);
-}
-
 
     /**
      * Show the form for creating a new resource.
