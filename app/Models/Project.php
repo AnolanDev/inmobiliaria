@@ -83,8 +83,11 @@ class Project extends Model
 
     public function getCoverImageUrlAttribute(): string
     {
-        // Handle new optimized image structure
-        if ($this->cover_image && is_array($this->cover_image)) {
+        // Get raw database value to handle empty strings vs null properly
+        $rawCoverImage = $this->getRawOriginal('cover_image');
+        
+        // Handle new optimized image structure (valid JSON array)
+        if (!empty($rawCoverImage) && $this->cover_image && is_array($this->cover_image)) {
             // Return medium size for backward compatibility
             if (isset($this->cover_image['medium'])) {
                 $filename = basename($this->cover_image['medium']);
@@ -97,11 +100,11 @@ class Project extends Model
             }
         }
         
-        // Handle legacy string format
-        if ($this->cover_image && is_string($this->cover_image)) {
-            $imagePath = storage_path('app/public/' . $this->cover_image);
+        // Handle legacy string format (non-empty string)
+        if (!empty($rawCoverImage) && is_string($rawCoverImage) && $rawCoverImage !== 'null') {
+            $imagePath = storage_path('app/public/' . $rawCoverImage);
             if (file_exists($imagePath)) {
-                $filename = basename($this->cover_image);
+                $filename = basename($rawCoverImage);
                 return url("api/images/projects/{$this->id}/{$filename}");
             }
         }
@@ -131,11 +134,18 @@ class Project extends Model
         $type = $this->type ?? 'Urbanos';
         $placeholders = $placeholdersByType[$type] ?? $placeholdersByType['Urbanos'];
         
-        // Use project ID and type to select a unique placeholder across all projects
-        // This ensures projects of same type still get different images
-        $hash = crc32($this->id . $this->type . $this->name);
-        $index = abs($hash) % count($placeholders);
-        return $placeholders[$index];
+        // Simple rotation: use project ID to ensure each project gets different image
+        // across ALL projects regardless of type
+        $globalIndex = ($this->id - 1) % 12; // 12 total placeholder images across all types
+        
+        // Map global index to type-specific placeholder
+        $allPlaceholders = array_merge(
+            $placeholdersByType['Campestres'],
+            $placeholdersByType['Urbanos'], 
+            $placeholdersByType['Turísticos']
+        );
+        
+        return $allPlaceholders[$globalIndex];
     }
 
     public function getCoverImageResponsiveAttribute(): array
