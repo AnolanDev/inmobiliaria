@@ -174,10 +174,24 @@ class ProjectMediaService
     {
         $currentGallery = $project->gallery ?? [];
 
-        // Remove specified files
+        // Remove specified files by index
         if (!empty($removeFiles)) {
-            $this->deleteFiles($removeFiles);
-            $currentGallery = array_diff($currentGallery, $removeFiles);
+            // Sort indexes in descending order to remove from highest to lowest
+            rsort($removeFiles);
+            
+            foreach ($removeFiles as $index) {
+                if (isset($currentGallery[$index])) {
+                    // Delete the physical files for this gallery item
+                    if (is_array($currentGallery[$index])) {
+                        $this->deleteFiles(array_values($currentGallery[$index]));
+                    }
+                    // Remove from array
+                    unset($currentGallery[$index]);
+                }
+            }
+            
+            // Re-index array
+            $currentGallery = array_values($currentGallery);
         }
 
         // Add new files
@@ -186,7 +200,7 @@ class ProjectMediaService
             $currentGallery = array_merge($currentGallery, $newPaths);
         }
 
-        return array_values($currentGallery);
+        return $currentGallery;
     }
 
     /**

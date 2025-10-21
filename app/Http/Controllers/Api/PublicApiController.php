@@ -52,7 +52,8 @@ class PublicApiController extends Controller
             });
         }
 
-        $projects = $query->paginate(12);
+        $perPage = min($request->get('per_page', 12), 50); // Máximo 50 por página
+        $projects = $query->paginate($perPage);
 
         return response()->json([
             'data' => $projects->items(),

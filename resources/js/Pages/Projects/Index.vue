@@ -353,56 +353,233 @@
         </div>
 
         <!-- Pagination -->
-        <div v-if="projects.links && projects.links.length > 3" class="mt-6 flex justify-center">
-          <nav class="flex items-center space-x-2">
-            <component
-              v-for="(link, index) in projects.links"
-              :key="index"
-              :is="link.url ? 'Link' : 'span'"
-              :href="link.url"
-              v-html="link.label"
-              :class="[
-                'px-3 py-2 text-sm font-medium rounded-md',
-                link.active
-                  ? 'bg-green-600 text-white'
-                  : link.url
-                  ? 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
-                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              ]"
-            />
-          </nav>
+        <div v-if="projects.last_page && projects.last_page > 1" class="mt-6">
+          <!-- Pagination Info -->
+          <div class="flex justify-center mb-4">
+            <p class="text-sm text-gray-700">
+              Mostrando
+              <span class="font-medium">{{ projects.from }}</span>
+              a
+              <span class="font-medium">{{ projects.to }}</span>
+              de
+              <span class="font-medium">{{ projects.total }}</span>
+              resultados
+            </p>
+          </div>
+          <!-- Pagination Controls -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- Previous Button -->
+            <div class="flex items-center">
+              <Link
+                v-if="projects.prev_page_url"
+                :href="projects.prev_page_url"
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors"
+                aria-label="Página anterior"
+              >
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Anterior
+              </Link>
+              <span
+                v-else
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-l-md cursor-not-allowed"
+              >
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Anterior
+              </span>
+            </div>
+
+            <!-- Page Numbers (Smart pagination) -->
+            <nav class="flex items-center space-x-1">
+              <!-- First page -->
+              <Link
+                v-if="props.projects.current_page > 3"
+                :href="getPageUrl(1)"
+                class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors"
+              >
+                1
+              </Link>
+              
+              <!-- Dots before current page group -->
+              <span v-if="props.projects.current_page > 4" class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-400">
+                ...
+              </span>
+
+              <!-- Page numbers around current page -->
+              <template v-for="page in getPaginationRange()" :key="page">
+                <Link
+                  v-if="page !== props.projects.current_page"
+                  :href="getPageUrl(page)"
+                  class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors"
+                >
+                  {{ page }}
+                </Link>
+                <span
+                  v-else
+                  class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-green-600 border border-green-600 cursor-default"
+                  aria-current="page"
+                >
+                  {{ page }}
+                </span>
+              </template>
+
+              <!-- Dots after current page group -->
+              <span v-if="props.projects.current_page < props.projects.last_page - 3" class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-400">
+                ...
+              </span>
+
+              <!-- Last page -->
+              <Link
+                v-if="props.projects.current_page < props.projects.last_page - 2"
+                :href="getPageUrl(props.projects.last_page)"
+                class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors"
+              >
+                {{ props.projects.last_page }}
+              </Link>
+            </nav>
+
+            <!-- Next Button -->
+            <div class="flex items-center">
+              <Link
+                v-if="projects.next_page_url"
+                :href="projects.next_page_url"
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 transition-colors"
+                aria-label="Página siguiente"
+              >
+                Siguiente
+                <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              </Link>
+              <span
+                v-else
+                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-r-md cursor-not-allowed"
+              >
+                Siguiente
+                <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <Modal :show="showDeleteModal" @close="showDeleteModal = false">
+    <Modal :show="showDeleteModal" @close="showDeleteModal = false" max-width="2xl">
       <div class="p-6">
-        <div class="flex items-center">
-          <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-            </svg>
+        <!-- Header -->
+        <div class="flex items-start space-x-4">
+          <div class="flex-shrink-0">
+            <div class="flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+              <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </div>
           </div>
-          <div class="ml-4">
-            <h3 class="text-lg font-medium text-gray-900">Eliminar proyecto</h3>
-            <p class="mt-2 text-sm text-gray-500">
-              ¿Estás seguro de que deseas eliminar "{{ projectToDelete?.name }}"? Esta acción no se puede deshacer y se eliminarán todos los archivos asociados.
-            </p>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              ¿Eliminar proyecto?
+            </h3>
+            <div class="text-sm text-gray-600 space-y-3">
+              <p class="font-medium">
+                Estás a punto de eliminar permanentemente el proyecto:
+              </p>
+              <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-red-400">
+                <div class="flex items-start space-x-3">
+                  <img 
+                    v-if="projectToDelete?.cover_image_url" 
+                    :src="projectToDelete.cover_image_url" 
+                    :alt="projectToDelete.name"
+                    class="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                  />
+                  <div class="flex-1 min-w-0">
+                    <p class="font-semibold text-gray-900 truncate">
+                      {{ projectToDelete?.name }}
+                    </p>
+                    <p class="text-sm text-gray-600 mt-1">
+                      Tipo: <span class="font-medium">{{ projectToDelete?.type }}</span>
+                    </p>
+                    <p class="text-sm text-gray-600">
+                      Estado: <span class="font-medium">{{ projectToDelete?.status }}</span>
+                    </p>
+                    <p v-if="projectToDelete?.properties_count > 0" class="text-sm text-gray-600">
+                      Propiedades asociadas: <span class="font-medium text-red-600">{{ projectToDelete.properties_count }}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="mt-6 flex justify-end space-x-3">
-          <button
-            @click="showDeleteModal = false"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          >
-            Cancelar
-          </button>
+
+        <!-- Warning content -->
+        <div class="mt-6">
+          <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h4 class="text-sm font-medium text-red-800">
+                  ⚠️ Esta acción es irreversible
+                </h4>
+                <div class="mt-2 text-sm text-red-700">
+                  <ul class="list-disc list-inside space-y-1">
+                    <li>Se eliminará el proyecto y toda su información</li>
+                    <li>Se borrarán todas las imágenes y archivos multimedia</li>
+                    <li v-if="projectToDelete?.properties_count > 0">
+                      Las <strong>{{ projectToDelete.properties_count }} propiedades</strong> asociadas quedarán sin proyecto
+                    </li>
+                    <li>Esta acción no se puede deshacer</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirmation input (optional for extra security) -->
+        <div class="mt-6" v-if="projectToDelete?.properties_count > 0">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Para confirmar, escribe el nombre del proyecto:
+          </label>
+          <input
+            v-model="deleteConfirmationText"
+            type="text"
+            :placeholder="projectToDelete?.name"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+          />
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-8 flex flex-col sm:flex-row-reverse gap-3">
           <button
             @click="deleteProject"
-            class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            :disabled="projectToDelete?.properties_count > 0 && deleteConfirmationText !== projectToDelete?.name"
+            :class="[
+              'w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-200',
+              (projectToDelete?.properties_count > 0 && deleteConfirmationText !== projectToDelete?.name)
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 hover:shadow-lg'
+            ]"
           >
-            Eliminar
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+            Sí, eliminar proyecto
+          </button>
+          <button
+            @click="showDeleteModal = false; deleteConfirmationText = ''"
+            class="w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+          >
+            Cancelar
           </button>
         </div>
       </div>
@@ -443,6 +620,7 @@ const selectedState = ref(props.filters.state || '')
 const selectedCity = ref(props.filters.city || '')
 const showDeleteModal = ref(false)
 const projectToDelete = ref(null)
+const deleteConfirmationText = ref('')
 
 // Computed
 const hasFilters = computed(() => {
@@ -501,6 +679,7 @@ const truncateText = (text, length) => {
 
 const confirmDelete = (project) => {
   projectToDelete.value = project
+  deleteConfirmationText.value = ''
   showDeleteModal.value = true
 }
 
@@ -510,6 +689,7 @@ const deleteProject = () => {
       onSuccess: () => {
         showDeleteModal.value = false
         projectToDelete.value = null
+        deleteConfirmationText.value = ''
       }
     })
   }
@@ -518,5 +698,41 @@ const deleteProject = () => {
 const handleOrderUpdated = () => {
   // Refresh the page to show updated order
   router.reload({ only: ['projects'] })
+}
+
+const getPaginationAriaLabel = (link) => {
+  if (link.label.includes('Previous')) {
+    return 'Ir a la página anterior'
+  } else if (link.label.includes('Next')) {
+    return 'Ir a la página siguiente'
+  } else if (link.active) {
+    return `Página actual, página ${link.label}`
+  } else if (link.url) {
+    return `Ir a la página ${link.label}`
+  } else {
+    return `Página ${link.label} no disponible`
+  }
+}
+
+const getPaginationRange = () => {
+  const current = props.projects.current_page
+  const last = props.projects.last_page
+  const range = []
+  
+  // Show 2 pages before and after current page
+  const start = Math.max(1, current - 2)
+  const end = Math.min(last, current + 2)
+  
+  for (let i = start; i <= end; i++) {
+    range.push(i)
+  }
+  
+  return range
+}
+
+const getPageUrl = (page) => {
+  const url = new URL(window.location.href)
+  url.searchParams.set('page', page)
+  return url.toString()
 }
 </script>

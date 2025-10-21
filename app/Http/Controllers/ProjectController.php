@@ -54,7 +54,8 @@ class ProjectController extends Controller
             $query->byCity($request->city);
         }
 
-        $projects = $query->paginate(12);
+        $perPage = min($request->get('per_page', 12), 100); // Máximo 100 por página para admin
+        $projects = $query->paginate($perPage);
 
         return Inertia::render('Projects/Index', [
             'projects' => $projects,
