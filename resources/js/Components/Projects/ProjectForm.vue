@@ -364,7 +364,8 @@ const form = useForm({
 
 // Methods
 const handleCoverImageChange = (files) => {
-  form.cover_image = files[0] || null
+  const file = files[0] || null
+  form.cover_image = file && Object.keys(file).length > 0 ? file : null
 }
 
 const handleCoverImageRemove = (paths) => {
@@ -373,7 +374,7 @@ const handleCoverImageRemove = (paths) => {
 }
 
 const handleGalleryChange = (files) => {
-  form.gallery = files
+  form.gallery = files.filter(file => file && Object.keys(file).length > 0)
 }
 
 const handleGalleryRemove = (paths) => {
@@ -381,7 +382,7 @@ const handleGalleryRemove = (paths) => {
 }
 
 const handleVideosChange = (files) => {
-  form.videos = files
+  form.videos = files.filter(file => file && Object.keys(file).length > 0)
 }
 
 const handleVideosRemove = (paths) => {
