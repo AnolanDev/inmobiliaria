@@ -147,17 +147,24 @@ class ProjectController extends Controller
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all(),
+                'validation_rules' => 'StoreProjectRequest rules'
             ]);
+            
+            // For debugging in production, return the actual error
+            $errorMessage = app()->environment('production') ? 
+                'Error al crear el proyecto. Error: ' . $e->getMessage() : 
+                $e->getMessage();
             
             // Return a proper error response for production
             if (request()->expectsJson()) {
-                return response()->json(['error' => 'Error interno del servidor'], 500);
+                return response()->json(['error' => $errorMessage], 500);
             }
             
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['error' => 'Error al crear el proyecto. Por favor, inténtalo de nuevo.']);
+                ->withErrors(['error' => $errorMessage]);
         }
     }
 
