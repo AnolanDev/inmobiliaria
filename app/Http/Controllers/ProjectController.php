@@ -96,6 +96,9 @@ class ProjectController extends Controller
                 'validated_data' => $validated
             ]);
             
+            // Get the next sort_order value
+            $nextSortOrder = Project::max('sort_order') + 1;
+            
             // Create basic project without files first
             $project = Project::create([
                 'name' => $validated['name'],
@@ -104,7 +107,7 @@ class ProjectController extends Controller
                 'status' => $validated['status'],
                 'property_count' => $validated['property_count'] ?? 0,
                 'is_public' => $validated['is_public'] ?? false,
-                'sort_order' => $validated['sort_order'] ?? null,
+                'sort_order' => $validated['sort_order'] ?? $nextSortOrder,
                 'city' => $validated['city'],
                 'state' => $validated['state'],
                 'cover_image' => null,
