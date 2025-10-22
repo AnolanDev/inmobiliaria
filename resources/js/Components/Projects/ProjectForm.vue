@@ -419,38 +419,29 @@ const submit = () => {
   console.log('cover_image instanceof File:', form.cover_image instanceof File)
   console.log('gallery files check:', form.gallery.map(file => file instanceof File))
   
-  // Clean up form data BEFORE sending
-  const cleanedData = {
+  // Clean up file fields directly in the form before sending
+  if (!form.cover_image || !(form.cover_image instanceof File)) {
+    form.cover_image = null
+  }
+  form.gallery = form.gallery.filter(file => file instanceof File)
+  form.videos = form.videos.filter(file => file instanceof File)
+  
+  console.log('Form data after cleanup:', {
     name: form.name,
-    description: form.description,
     type: form.type,
     status: form.status,
-    property_count: form.property_count,
-    is_public: form.is_public,
     city: form.city,
     state: form.state,
-    cover_image: (form.cover_image && form.cover_image instanceof File) ? form.cover_image : null,
-    gallery: form.gallery.filter(file => file instanceof File),
-    videos: form.videos.filter(file => file instanceof File),
-    remove_gallery: form.remove_gallery,
-    remove_videos: form.remove_videos
-  }
-  
-  console.log('Cleaned data for submission:', {
-    ...cleanedData,
-    cover_image: cleanedData.cover_image ? 'FILE_OBJECT' : null,
-    gallery: cleanedData.gallery.map(() => 'FILE_OBJECT'),
-    videos: cleanedData.videos.map(() => 'FILE_OBJECT')
+    cover_image: form.cover_image ? 'FILE_OBJECT' : null,
+    gallery: form.gallery.map(() => 'FILE_OBJECT'),
+    videos: form.videos.map(() => 'FILE_OBJECT')
   })
   
   console.log('CSRF Token:', document.querySelector('meta[name="csrf-token"]')?.content)
   
-  // Create new form with cleaned data
-  const cleanForm = useForm(cleanedData)
-  
   if (isEdit.value) {
     // Use patch method directly for updates with FormData
-    cleanForm.patch(route('projects.update', props.project.id), {
+    form.patch(route('projects.update', props.project.id), {
       preserveScroll: true,
       forceFormData: true,
       onError: (errors) => {
@@ -462,7 +453,7 @@ const submit = () => {
       }
     })
   } else {
-    cleanForm.post(route('projects.store'), {
+    form.post(route('projects.store'), {
       preserveScroll: true,
       forceFormData: true,
       onError: (errors) => {
