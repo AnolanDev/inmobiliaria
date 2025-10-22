@@ -24,19 +24,29 @@ class ProjectMediaService
      */
     public function storeCoverImage(UploadedFile $file, int $projectId): array
     {
-        if (!$this->imageService->validateImage($file)) {
+        // Simple validation
+        if (!$file->isValid() || !in_array($file->getMimeType(), ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])) {
             throw new \InvalidArgumentException('Invalid image file');
         }
 
         $path = self::PROJECTS_STORAGE_PATH . '/' . $projectId;
-        $imagePaths = $this->imageService->processImage($file, $path, 'cover');
+        
+        // Simple file storage without optimization for now
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+        $timestamp = now()->timestamp;
+        $hash = substr(md5($originalName . $timestamp), 0, 10);
+        
+        $filename = "cover_{$timestamp}_{$hash}.{$extension}";
+        $storedPath = $file->storeAs($path, $filename, 'public');
 
-        Log::info('Cover image stored with optimization', [
+        Log::info('Cover image stored successfully', [
             'project_id' => $projectId,
-            'sizes' => array_keys($imagePaths)
+            'path' => $storedPath
         ]);
 
-        return $imagePaths;
+        // Return simple path instead of array for now
+        return [$storedPath];
     }
 
     /**
@@ -48,14 +58,23 @@ class ProjectMediaService
         $path = self::PROJECTS_STORAGE_PATH . '/' . $projectId;
 
         foreach ($files as $index => $file) {
-            if ($file instanceof UploadedFile && $this->imageService->validateImage($file)) {
-                $imagePaths = $this->imageService->processImage($file, $path, 'gallery_' . $index);
-                $allPaths[] = $imagePaths;
+            if ($file instanceof UploadedFile && $file->isValid() && 
+                in_array($file->getMimeType(), ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])) {
+                
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $timestamp = now()->timestamp;
+                $hash = substr(md5($originalName . $timestamp . $index), 0, 10);
+                
+                $filename = "gallery_{$index}_{$timestamp}_{$hash}.{$extension}";
+                $storedPath = $file->storeAs($path, $filename, 'public');
+                
+                $allPaths[] = $storedPath;
 
-                Log::info('Gallery image stored with optimization', [
+                Log::info('Gallery image stored successfully', [
                     'project_id' => $projectId,
                     'index' => $index,
-                    'sizes' => array_keys($imagePaths)
+                    'path' => $storedPath
                 ]);
             }
         }

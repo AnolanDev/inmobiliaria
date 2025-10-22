@@ -122,7 +122,8 @@ class ProjectController extends Controller
                         $request->file('cover_image'),
                         $project->id
                     );
-                    $project->update(['cover_image' => $coverImagePath]);
+                    // Extract the first path from array
+                    $project->update(['cover_image' => $coverImagePath[0] ?? null]);
                     \Log::info('Cover image processed successfully', ['path' => $coverImagePath]);
                 } catch (\Exception $e) {
                     \Log::error('Error processing cover image', [
