@@ -399,17 +399,33 @@ const getSubmitButtonText = () => {
 }
 
 const submit = () => {
+  console.log('Form data before submit:', form.data())
+  
   if (isEdit.value) {
     // Usar POST con _method: PATCH para formularios con archivos
     form.transform(data => ({
       ...data,
       _method: 'PATCH'
     })).post(route('projects.update', props.project.id), {
-      preserveScroll: true
+      preserveScroll: true,
+      onError: (errors) => {
+        console.error('Validation errors:', errors)
+        alert('Errores de validación: ' + JSON.stringify(errors))
+      },
+      onSuccess: () => {
+        console.log('Project updated successfully')
+      }
     })
   } else {
     form.post(route('projects.store'), {
-      preserveScroll: true
+      preserveScroll: true,
+      onError: (errors) => {
+        console.error('Validation errors:', errors)
+        alert('Errores de validación: ' + JSON.stringify(errors))
+      },
+      onSuccess: () => {
+        console.log('Project created successfully')
+      }
     })
   }
 }
