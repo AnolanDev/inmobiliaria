@@ -414,10 +414,18 @@ const submit = () => {
   
   // Pre-process files BEFORE submission
   console.log('=== DEBUGGING FILE SUBMISSION ===')
-  console.log('Raw form.cover_image:', form.cover_image)
-  console.log('Raw form.gallery:', form.gallery)
-  console.log('cover_image instanceof File:', form.cover_image instanceof File)
-  console.log('gallery files check:', form.gallery.map(file => file instanceof File))
+  console.log('Raw form data before cleanup:')
+  console.log('- name:', form.name)
+  console.log('- type:', form.type) 
+  console.log('- status:', form.status)
+  console.log('- city:', form.city)
+  console.log('- state:', form.state)
+  console.log('- description:', form.description)
+  console.log('- property_count:', form.property_count)
+  console.log('- is_public:', form.is_public)
+  console.log('- cover_image:', form.cover_image)
+  console.log('- gallery:', form.gallery)
+  console.log('- videos:', form.videos)
   
   // Clean up file fields directly in the form before sending
   if (!form.cover_image || !(form.cover_image instanceof File)) {
@@ -426,15 +434,18 @@ const submit = () => {
   form.gallery = form.gallery.filter(file => file instanceof File)
   form.videos = form.videos.filter(file => file instanceof File)
   
-  console.log('Form data after cleanup:', {
+  console.log('Form data after file cleanup:', {
     name: form.name,
     type: form.type,
     status: form.status,
     city: form.city,
     state: form.state,
+    description: form.description,
+    property_count: form.property_count,
+    is_public: form.is_public,
     cover_image: form.cover_image ? 'FILE_OBJECT' : null,
-    gallery: form.gallery.map(() => 'FILE_OBJECT'),
-    videos: form.videos.map(() => 'FILE_OBJECT')
+    gallery: form.gallery.length + ' files',
+    videos: form.videos.length + ' files'
   })
   
   console.log('CSRF Token:', document.querySelector('meta[name="csrf-token"]')?.content)
@@ -445,7 +456,19 @@ const submit = () => {
       preserveScroll: true,
       forceFormData: true,
       transform: (data) => {
-        console.log('Transform data:', data)
+        console.log('=== TRANSFORM FUNCTION CALLED ===')
+        console.log('Transform received data type:', typeof data)
+        console.log('Transform received data keys:', Object.keys(data))
+        console.log('Transform data values:')
+        Object.entries(data).forEach(([key, value]) => {
+          if (value instanceof File) {
+            console.log(`  ${key}: [File] ${value.name} (${value.size} bytes)`)
+          } else if (value instanceof FileList) {
+            console.log(`  ${key}: [FileList] ${value.length} files`)
+          } else {
+            console.log(`  ${key}:`, value)
+          }
+        })
         return data
       },
       onError: (errors) => {
@@ -461,7 +484,19 @@ const submit = () => {
       preserveScroll: true,
       forceFormData: true,
       transform: (data) => {
-        console.log('Transform data:', data)
+        console.log('=== TRANSFORM FUNCTION CALLED ===')
+        console.log('Transform received data type:', typeof data)
+        console.log('Transform received data keys:', Object.keys(data))
+        console.log('Transform data values:')
+        Object.entries(data).forEach(([key, value]) => {
+          if (value instanceof File) {
+            console.log(`  ${key}: [File] ${value.name} (${value.size} bytes)`)
+          } else if (value instanceof FileList) {
+            console.log(`  ${key}: [FileList] ${value.length} files`)
+          } else {
+            console.log(`  ${key}:`, value)
+          }
+        })
         return data
       },
       onError: (errors) => {
