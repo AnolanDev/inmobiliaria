@@ -420,7 +420,8 @@ const submit = () => {
     // Usar POST con _method: PATCH para formularios con archivos
     form.transform(data => ({
       ...data,
-      _method: 'PATCH'
+      _method: 'PATCH',
+      cover_image: data.cover_image && Object.keys(data.cover_image).length > 0 ? data.cover_image : null
     })).post(route('projects.update', props.project.id), {
       preserveScroll: true,
       onError: (errors) => {
@@ -432,7 +433,10 @@ const submit = () => {
       }
     })
   } else {
-    form.post(route('projects.store'), {
+    form.transform(data => ({
+      ...data,
+      cover_image: data.cover_image && Object.keys(data.cover_image).length > 0 ? data.cover_image : null
+    })).post(route('projects.store'), {
       preserveScroll: true,
       onError: (errors) => {
         console.error('Validation errors:', errors)
