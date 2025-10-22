@@ -444,6 +444,10 @@ const submit = () => {
     form.patch(route('projects.update', props.project.id), {
       preserveScroll: true,
       forceFormData: true,
+      transform: (data) => {
+        console.log('Transform data:', data)
+        return data
+      },
       onError: (errors) => {
         console.error('Validation errors:', errors)
         alert('Errores de validación: ' + JSON.stringify(errors))
@@ -456,6 +460,10 @@ const submit = () => {
     form.post(route('projects.store'), {
       preserveScroll: true,
       forceFormData: true,
+      transform: (data) => {
+        console.log('Transform data:', data)
+        return data
+      },
       onError: (errors) => {
         console.error('Validation errors:', errors)
         alert('Errores de validación: ' + JSON.stringify(errors))
