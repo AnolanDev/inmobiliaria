@@ -400,6 +400,8 @@ const getSubmitButtonText = () => {
 
 const submit = () => {
   console.log('Form data before submit:', form.data())
+  console.log('CSRF Token from meta:', document.querySelector('meta[name="csrf-token"]')?.content)
+  console.log('Axios CSRF header:', window.axios.defaults.headers.common['X-CSRF-TOKEN'])
   
   if (isEdit.value) {
     // Usar POST con _method: PATCH para formularios con archivos
