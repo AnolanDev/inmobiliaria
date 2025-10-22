@@ -117,29 +117,56 @@ class ProjectController extends Controller
 
             // Handle cover image
             if ($request->hasFile('cover_image')) {
-                $coverImagePath = $this->mediaService->storeCoverImage(
-                    $request->file('cover_image'),
-                    $project->id
-                );
-                $project->update(['cover_image' => $coverImagePath]);
+                try {
+                    $coverImagePath = $this->mediaService->storeCoverImage(
+                        $request->file('cover_image'),
+                        $project->id
+                    );
+                    $project->update(['cover_image' => $coverImagePath]);
+                    \Log::info('Cover image processed successfully', ['path' => $coverImagePath]);
+                } catch (\Exception $e) {
+                    \Log::error('Error processing cover image', [
+                        'error' => $e->getMessage(),
+                        'project_id' => $project->id
+                    ]);
+                    // Continue without cover image
+                }
             }
 
             // Handle gallery images
             if ($request->hasFile('gallery')) {
-                $galleryPaths = $this->mediaService->storeGalleryImages(
-                    $request->file('gallery'),
-                    $project->id
-                );
-                $project->update(['gallery' => $galleryPaths]);
+                try {
+                    $galleryPaths = $this->mediaService->storeGalleryImages(
+                        $request->file('gallery'),
+                        $project->id
+                    );
+                    $project->update(['gallery' => $galleryPaths]);
+                    \Log::info('Gallery images processed successfully', ['count' => count($galleryPaths)]);
+                } catch (\Exception $e) {
+                    \Log::error('Error processing gallery images', [
+                        'error' => $e->getMessage(),
+                        'project_id' => $project->id
+                    ]);
+                    // Continue without gallery
+                }
             }
 
             // Handle videos if present
             if ($request->hasFile('videos')) {
-                $videoPaths = $this->mediaService->storeVideos(
-                    $request->file('videos'),
-                    $project->id
-                );
-                $project->update(['videos' => $videoPaths]);
+                try {
+                    $videoPaths = $this->mediaService->storeVideos(
+                        $request->file('videos'),
+                        $project->id
+                    );
+                    $project->update(['videos' => $videoPaths]);
+                    \Log::info('Videos processed successfully', ['count' => count($videoPaths)]);
+                } catch (\Exception $e) {
+                    \Log::error('Error processing videos', [
+                        'error' => $e->getMessage(),
+                        'project_id' => $project->id
+                    ]);
+                    // Continue without videos
+                }
             }
 
             return redirect()->route('projects.index')
