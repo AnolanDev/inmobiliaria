@@ -110,9 +110,9 @@ class ProjectController extends Controller
                 'sort_order' => $validated['sort_order'] ?? $nextSortOrder,
                 'city' => $validated['city'],
                 'state' => $validated['state'],
-                'cover_image' => [],
-                'gallery' => [],
-                'videos' => [],
+                'cover_image' => null,
+                'gallery' => null,
+                'videos' => null,
             ]);
 
             // Handle cover image
@@ -122,8 +122,8 @@ class ProjectController extends Controller
                         $request->file('cover_image'),
                         $project->id
                     );
-                    // Extract the first path from array
-                    $project->update(['cover_image' => $coverImagePath[0] ?? null]);
+                    // Update with the returned path structure
+                    $project->update(['cover_image' => $coverImagePath]);
                     \Log::info('Cover image processed successfully', ['path' => $coverImagePath]);
                 } catch (\Exception $e) {
                     \Log::error('Error processing cover image', [
