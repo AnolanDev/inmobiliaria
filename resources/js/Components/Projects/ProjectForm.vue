@@ -421,7 +421,9 @@ const submit = () => {
     form.transform(data => ({
       ...data,
       _method: 'PATCH',
-      cover_image: data.cover_image && Object.keys(data.cover_image).length > 0 ? data.cover_image : null
+      cover_image: data.cover_image && Object.keys(data.cover_image).length > 0 ? data.cover_image : null,
+      gallery: data.gallery?.filter(item => item && Object.keys(item).length > 0) || [],
+      videos: data.videos?.filter(item => item && Object.keys(item).length > 0) || []
     })).post(route('projects.update', props.project.id), {
       preserveScroll: true,
       onError: (errors) => {
@@ -435,7 +437,9 @@ const submit = () => {
   } else {
     form.transform(data => ({
       ...data,
-      cover_image: data.cover_image && Object.keys(data.cover_image).length > 0 ? data.cover_image : null
+      cover_image: data.cover_image && Object.keys(data.cover_image).length > 0 ? data.cover_image : null,
+      gallery: data.gallery?.filter(item => item && Object.keys(item).length > 0) || [],
+      videos: data.videos?.filter(item => item && Object.keys(item).length > 0) || []
     })).post(route('projects.store'), {
       preserveScroll: true,
       onError: (errors) => {
