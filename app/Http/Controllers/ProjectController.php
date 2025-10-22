@@ -84,7 +84,17 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request): RedirectResponse
     {
         try {
+            \Log::info('ProjectController::store - Request received', [
+                'all_data' => $request->all(),
+                'files' => array_keys($request->allFiles()),
+                'headers' => $request->headers->all()
+            ]);
+            
             $validated = $request->validated();
+            
+            \Log::info('ProjectController::store - Validation passed', [
+                'validated_data' => $validated
+            ]);
             
             // Create basic project without files first
             $project = Project::create([

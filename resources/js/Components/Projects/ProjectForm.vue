@@ -399,9 +399,22 @@ const getSubmitButtonText = () => {
 }
 
 const submit = () => {
-  console.log('Form data before submit:', form.data())
+  const formData = form.data()
+  console.log('Form data before submit (complete):', JSON.stringify(formData, null, 2))
+  console.log('Required fields check:')
+  console.log('- name:', formData.name)
+  console.log('- type:', formData.type) 
+  console.log('- status:', formData.status)
+  console.log('- city:', formData.city)
+  console.log('- state:', formData.state)
   console.log('CSRF Token from meta:', document.querySelector('meta[name="csrf-token"]')?.content)
   console.log('Axios CSRF header:', window.axios.defaults.headers.common['X-CSRF-TOKEN'])
+  
+  // Validate required fields
+  if (!isFormValid.value) {
+    alert('Por favor completa todos los campos requeridos: Nombre, Tipo, Estado, Ciudad y Departamento')
+    return
+  }
   
   if (isEdit.value) {
     // Usar POST con _method: PATCH para formularios con archivos
