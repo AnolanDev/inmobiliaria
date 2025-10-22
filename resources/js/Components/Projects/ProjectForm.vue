@@ -364,8 +364,10 @@ const form = useForm({
 
 // Methods
 const handleCoverImageChange = (files) => {
+  console.log('Cover image files received:', files)
   const file = files[0] || null
-  form.cover_image = file && Object.keys(file).length > 0 ? file : null
+  form.cover_image = file
+  console.log('Cover image set to:', form.cover_image)
 }
 
 const handleCoverImageRemove = (paths) => {
@@ -374,7 +376,9 @@ const handleCoverImageRemove = (paths) => {
 }
 
 const handleGalleryChange = (files) => {
-  form.gallery = files.filter(file => file && Object.keys(file).length > 0)
+  console.log('Gallery files received:', files)
+  form.gallery = files
+  console.log('Gallery set to:', form.gallery)
 }
 
 const handleGalleryRemove = (paths) => {
@@ -382,7 +386,9 @@ const handleGalleryRemove = (paths) => {
 }
 
 const handleVideosChange = (files) => {
-  form.videos = files.filter(file => file && Object.keys(file).length > 0)
+  console.log('Videos files received:', files)
+  form.videos = files
+  console.log('Videos set to:', form.videos)
 }
 
 const handleVideosRemove = (paths) => {
@@ -419,14 +425,18 @@ const submit = () => {
   
   if (isEdit.value) {
     // Usar POST con _method: PATCH para formularios con archivos
-    form.transform(data => ({
-      ...data,
-      _method: 'PATCH',
-      cover_image: data.cover_image && Object.keys(data.cover_image).length > 0 ? data.cover_image : null,
-      gallery: data.gallery?.filter(item => item && Object.keys(item).length > 0) || [],
-      videos: data.videos?.filter(item => item && Object.keys(item).length > 0) || []
-    })).post(route('projects.update', props.project.id), {
+    form.post(route('projects.update', props.project.id), {
       preserveScroll: true,
+      forceFormData: true,
+      onBefore: () => {
+        // Clean up form data before sending
+        if (!form.cover_image || (form.cover_image && !(form.cover_image instanceof File))) {
+          form.cover_image = null
+        }
+        form.gallery = form.gallery.filter(file => file instanceof File)
+        form.videos = form.videos.filter(file => file instanceof File)
+        form._method = 'PATCH'
+      },
       onError: (errors) => {
         console.error('Validation errors:', errors)
         alert('Errores de validación: ' + JSON.stringify(errors))
@@ -436,13 +446,17 @@ const submit = () => {
       }
     })
   } else {
-    form.transform(data => ({
-      ...data,
-      cover_image: data.cover_image && Object.keys(data.cover_image).length > 0 ? data.cover_image : null,
-      gallery: data.gallery?.filter(item => item && Object.keys(item).length > 0) || [],
-      videos: data.videos?.filter(item => item && Object.keys(item).length > 0) || []
-    })).post(route('projects.store'), {
+    form.post(route('projects.store'), {
       preserveScroll: true,
+      forceFormData: true,
+      onBefore: () => {
+        // Clean up form data before sending
+        if (!form.cover_image || (form.cover_image && !(form.cover_image instanceof File))) {
+          form.cover_image = null
+        }
+        form.gallery = form.gallery.filter(file => file instanceof File)
+        form.videos = form.videos.filter(file => file instanceof File)
+      },
       onError: (errors) => {
         console.error('Validation errors:', errors)
         alert('Errores de validación: ' + JSON.stringify(errors))
