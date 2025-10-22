@@ -97,7 +97,7 @@ class ProjectController extends Controller
             ]);
             
             // Get the next sort_order value
-            $nextSortOrder = Project::max('sort_order') + 1;
+            $nextSortOrder = (Project::max('sort_order') ?? 0) + 1;
             
             // Create basic project without files first
             $project = Project::create([
@@ -307,6 +307,8 @@ class ProjectController extends Controller
             'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
+        $nextSortOrder = (Project::max('sort_order') ?? 0) + 1;
+        
         $project = Project::create([
             'name' => $request->name,
             'type' => $request->type,
@@ -314,7 +316,10 @@ class ProjectController extends Controller
             'property_count' => 0,
             'city' => $request->city ?? '',
             'state' => $request->state ?? '',
-            'cover_image' => '', // Will be updated after file upload
+            'sort_order' => $nextSortOrder,
+            'cover_image' => null, // Will be updated after file upload
+            'gallery' => [],
+            'videos' => [],
         ]);
 
         // Handle cover image upload
