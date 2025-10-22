@@ -426,82 +426,97 @@ const submit = () => {
   console.log('- gallery length:', form.gallery?.length)
   console.log('- videos length:', form.videos?.length)
   
-  // Try a simple submission without forceFormData first
-  console.log('=== TRYING SIMPLE JSON SUBMISSION ===')
+  // Check if we have files to upload
+  const hasFiles = form.cover_image || (form.gallery && form.gallery.length > 0) || (form.videos && form.videos.length > 0)
   
-  // Create simple data object for testing
-  const simpleData = {
-    name: form.name,
-    type: form.type,
-    status: form.status,
-    city: form.city,
-    state: form.state,
-    description: form.description || '',
-    property_count: form.property_count || 0,
-    is_public: form.is_public || false
-  }
+  console.log('Has files to upload:', hasFiles)
   
-  console.log('Simple data object:', simpleData)
-  console.log('CSRF Token:', document.querySelector('meta[name="csrf-token"]')?.content)
-  
-  if (isEdit.value) {
-    form.patch(route('projects.update', props.project.id), {
-      preserveScroll: true,
-      onBefore: () => {
-        console.log('onBefore called - form data at submission time:', {
-          name: form.name,
-          type: form.type,
-          status: form.status,
-          city: form.city,
-          state: form.state
-        })
-        return true
-      },
-      onError: (errors) => {
-        console.error('=== SUBMISSION ERROR ===')
-        console.error('Validation errors:', errors)
-        console.error('Request details at error time:', {
-          name: form.name,
-          type: form.type,
-          status: form.status,
-          city: form.city,
-          state: form.state
-        })
-        alert('Errores de validación: ' + JSON.stringify(errors))
-      },
-      onSuccess: () => {
-        console.log('Project updated successfully')
-      }
-    })
+  if (hasFiles) {
+    console.log('=== USING FORMDATA FOR FILE UPLOAD ===')
+    
+    // Clean up file fields to ensure we only send actual File objects
+    if (!form.cover_image || !(form.cover_image instanceof File)) {
+      form.cover_image = null
+    }
+    form.gallery = form.gallery.filter(file => file instanceof File)
+    form.videos = form.videos.filter(file => file instanceof File)
+    
+    console.log('Files after cleanup:')
+    console.log('- cover_image:', form.cover_image ? `File: ${form.cover_image.name}` : null)
+    console.log('- gallery:', form.gallery.length, 'files')
+    console.log('- videos:', form.videos.length, 'files')
+    
+    if (isEdit.value) {
+      form.patch(route('projects.update', props.project.id), {
+        preserveScroll: true,
+        forceFormData: true,
+        onBefore: () => {
+          console.log('onBefore called for FormData submission')
+          return true
+        },
+        onError: (errors) => {
+          console.error('=== FORMDATA SUBMISSION ERROR ===')
+          console.error('Validation errors:', errors)
+          alert('Errores de validación: ' + JSON.stringify(errors))
+        },
+        onSuccess: () => {
+          console.log('Project with files updated successfully')
+        }
+      })
+    } else {
+      form.post(route('projects.store'), {
+        preserveScroll: true,
+        forceFormData: true,
+        onBefore: () => {
+          console.log('onBefore called for FormData submission')
+          return true
+        },
+        onError: (errors) => {
+          console.error('=== FORMDATA SUBMISSION ERROR ===')
+          console.error('Validation errors:', errors)
+          alert('Errores de validación: ' + JSON.stringify(errors))
+        },
+        onSuccess: () => {
+          console.log('Project with files created successfully')
+        }
+      })
+    }
   } else {
-    form.post(route('projects.store'), {
-      preserveScroll: true,
-      onBefore: () => {
-        console.log('onBefore called - form data at submission time:', {
-          name: form.name,
-          type: form.type,
-          status: form.status,
-          city: form.city,
-          state: form.state
-        })
-        return true
-      },
-      onError: (errors) => {
-        console.error('=== SUBMISSION ERROR ===')
-        console.error('Validation errors:', errors)
-        console.error('Request details at error time:', {
-          name: form.name,
-          type: form.type,
-          status: form.status,
-          city: form.city,
-          state: form.state
-        })
-        alert('Errores de validación: ' + JSON.stringify(errors))
-      },
-      onSuccess: () => {
-        console.log('Project created successfully')
-      }
-    })
+    console.log('=== USING JSON SUBMISSION (NO FILES) ===')
+    
+    if (isEdit.value) {
+      form.patch(route('projects.update', props.project.id), {
+        preserveScroll: true,
+        onBefore: () => {
+          console.log('onBefore called for JSON submission')
+          return true
+        },
+        onError: (errors) => {
+          console.error('=== JSON SUBMISSION ERROR ===')
+          console.error('Validation errors:', errors)
+          alert('Errores de validación: ' + JSON.stringify(errors))
+        },
+        onSuccess: () => {
+          console.log('Project updated successfully')
+        }
+      })
+    } else {
+      form.post(route('projects.store'), {
+        preserveScroll: true,
+        onBefore: () => {
+          console.log('onBefore called for JSON submission')
+          return true
+        },
+        onError: (errors) => {
+          console.error('=== JSON SUBMISSION ERROR ===')
+          console.error('Validation errors:', errors)
+          alert('Errores de validación: ' + JSON.stringify(errors))
+        },
+        onSuccess: () => {
+          console.log('Project created successfully')
+        }
+      })
+    }
   }
 }
 </script>
