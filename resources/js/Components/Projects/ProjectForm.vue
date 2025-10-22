@@ -406,37 +406,53 @@ const getSubmitButtonText = () => {
 }
 
 const submit = () => {
-  const formData = form.data()
-  console.log('Form data before submit (complete):', JSON.stringify(formData, null, 2))
-  console.log('Required fields check:')
-  console.log('- name:', formData.name)
-  console.log('- type:', formData.type) 
-  console.log('- status:', formData.status)
-  console.log('- city:', formData.city)
-  console.log('- state:', formData.state)
-  console.log('CSRF Token from meta:', document.querySelector('meta[name="csrf-token"]')?.content)
-  console.log('Axios CSRF header:', window.axios.defaults.headers.common['X-CSRF-TOKEN'])
-  
-  // Validate required fields
+  // Validate required fields first
   if (!isFormValid.value) {
     alert('Por favor completa todos los campos requeridos: Nombre, Tipo, Estado, Ciudad y Departamento')
     return
   }
   
+  // Pre-process files BEFORE submission
+  console.log('=== DEBUGGING FILE SUBMISSION ===')
+  console.log('Raw form.cover_image:', form.cover_image)
+  console.log('Raw form.gallery:', form.gallery)
+  console.log('cover_image instanceof File:', form.cover_image instanceof File)
+  console.log('gallery files check:', form.gallery.map(file => file instanceof File))
+  
+  // Clean up form data BEFORE sending
+  const cleanedData = {
+    name: form.name,
+    description: form.description,
+    type: form.type,
+    status: form.status,
+    property_count: form.property_count,
+    is_public: form.is_public,
+    city: form.city,
+    state: form.state,
+    cover_image: (form.cover_image && form.cover_image instanceof File) ? form.cover_image : null,
+    gallery: form.gallery.filter(file => file instanceof File),
+    videos: form.videos.filter(file => file instanceof File),
+    remove_gallery: form.remove_gallery,
+    remove_videos: form.remove_videos
+  }
+  
+  console.log('Cleaned data for submission:', {
+    ...cleanedData,
+    cover_image: cleanedData.cover_image ? 'FILE_OBJECT' : null,
+    gallery: cleanedData.gallery.map(() => 'FILE_OBJECT'),
+    videos: cleanedData.videos.map(() => 'FILE_OBJECT')
+  })
+  
+  console.log('CSRF Token:', document.querySelector('meta[name="csrf-token"]')?.content)
+  
+  // Create new form with cleaned data
+  const cleanForm = useForm(cleanedData)
+  
   if (isEdit.value) {
-    // Usar POST con _method: PATCH para formularios con archivos
-    form.post(route('projects.update', props.project.id), {
+    cleanForm._method = 'PATCH'
+    cleanForm.post(route('projects.update', props.project.id), {
       preserveScroll: true,
       forceFormData: true,
-      onBefore: () => {
-        // Clean up form data before sending
-        if (!form.cover_image || (form.cover_image && !(form.cover_image instanceof File))) {
-          form.cover_image = null
-        }
-        form.gallery = form.gallery.filter(file => file instanceof File)
-        form.videos = form.videos.filter(file => file instanceof File)
-        form._method = 'PATCH'
-      },
       onError: (errors) => {
         console.error('Validation errors:', errors)
         alert('Errores de validación: ' + JSON.stringify(errors))
@@ -446,17 +462,9 @@ const submit = () => {
       }
     })
   } else {
-    form.post(route('projects.store'), {
+    cleanForm.post(route('projects.store'), {
       preserveScroll: true,
       forceFormData: true,
-      onBefore: () => {
-        // Clean up form data before sending
-        if (!form.cover_image || (form.cover_image && !(form.cover_image instanceof File))) {
-          form.cover_image = null
-        }
-        form.gallery = form.gallery.filter(file => file instanceof File)
-        form.videos = form.videos.filter(file => file instanceof File)
-      },
       onError: (errors) => {
         console.error('Validation errors:', errors)
         alert('Errores de validación: ' + JSON.stringify(errors))
