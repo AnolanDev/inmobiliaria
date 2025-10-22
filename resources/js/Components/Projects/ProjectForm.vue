@@ -449,7 +449,9 @@ const submit = () => {
   const cleanForm = useForm(cleanedData)
   
   if (isEdit.value) {
+    // Set _method BEFORE making the request
     cleanForm._method = 'PATCH'
+    
     cleanForm.post(route('projects.update', props.project.id), {
       preserveScroll: true,
       forceFormData: true,
