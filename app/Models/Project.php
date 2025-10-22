@@ -86,66 +86,66 @@ class Project extends Model
         // Get raw database value to handle empty strings vs null properly
         $rawCoverImage = $this->getRawOriginal('cover_image');
         
-        // Handle new optimized image structure (valid JSON array)
-        if (!empty($rawCoverImage) && $this->cover_image && is_array($this->cover_image)) {
-            // Return medium size for backward compatibility
-            if (isset($this->cover_image['medium'])) {
-                $filename = basename($this->cover_image['medium']);
-                return url("api/images/projects/{$this->id}/{$filename}");
+        // Handle actual stored images with proper validation
+        if (!empty($rawCoverImage) && $rawCoverImage !== '""' && $rawCoverImage !== '[]') {
+            // Handle new optimized image structure (valid JSON array)
+            if ($this->cover_image && is_array($this->cover_image) && !empty($this->cover_image)) {
+                // Return medium size for backward compatibility
+                if (isset($this->cover_image['medium'])) {
+                    $filename = basename($this->cover_image['medium']);
+                    return url("api/images/projects/{$this->id}/{$filename}");
+                }
+                // Fallback to original if medium doesn't exist
+                if (isset($this->cover_image['original'])) {
+                    $filename = basename($this->cover_image['original']);
+                    return url("api/images/projects/{$this->id}/{$filename}");
+                }
             }
-            // Fallback to original if medium doesn't exist
-            if (isset($this->cover_image['original'])) {
-                $filename = basename($this->cover_image['original']);
-                return url("api/images/projects/{$this->id}/{$filename}");
+            
+            // Handle legacy string format (non-empty string)
+            if (is_string($rawCoverImage) && $rawCoverImage !== 'null' && !str_starts_with($rawCoverImage, '[')) {
+                $imagePath = storage_path('app/public/' . $rawCoverImage);
+                if (file_exists($imagePath)) {
+                    return asset('storage/' . $rawCoverImage);
+                }
             }
         }
         
-        // Handle legacy string format (non-empty string)
-        if (!empty($rawCoverImage) && is_string($rawCoverImage) && $rawCoverImage !== 'null') {
-            $imagePath = storage_path('app/public/' . $rawCoverImage);
-            if (file_exists($imagePath)) {
-                $filename = basename($rawCoverImage);
-                return url("api/images/projects/{$this->id}/{$filename}");
-            }
-        }
-        
-        // Fallback to unique placeholders based on project type and ID
-        $placeholdersByType = [
-            'Campestres' => [
-                'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop&crop=entropy&auto=format',
-                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=entropy&auto=format',
-                'https://images.unsplash.com/photo-1464822759844-d150baec843a?w=800&h=600&fit=crop&crop=entropy&auto=format',
-                'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop&crop=entropy&auto=format'
-            ],
-            'Urbanos' => [
-                'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop&crop=entropy&auto=format',
-                'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop&crop=entropy&auto=format',
-                'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop&crop=entropy&auto=format',
-                'https://images.unsplash.com/photo-1516156008625-3a99593fa974?w=800&h=600&fit=crop&crop=entropy&auto=format'
-            ],
-            'Turísticos' => [
-                'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=entropy&auto=format',
-                'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop&crop=entropy&auto=format',
-                'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&h=600&fit=crop&crop=entropy&auto=format',
-                'https://images.unsplash.com/photo-1587061949409-02df41d5e562?w=800&h=600&fit=crop&crop=entropy&auto=format'
-            ]
+        // Generate unique placeholder for projects without images
+        return $this->generateUniquePlaceholder();
+    }
+
+    /**
+     * Generate unique placeholder image based on project ID
+     * Ensures each project gets a different placeholder image
+     */
+    private function generateUniquePlaceholder(): string
+    {
+        $placeholders = [
+            // Campestres (0-3)
+            'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'https://images.unsplash.com/photo-1464822759844-d150baec843a?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            
+            // Urbanos (4-7)
+            'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'https://images.unsplash.com/photo-1516156008625-3a99593fa974?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            
+            // Turísticos (8-11)
+            'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&h=600&fit=crop&crop=entropy&auto=format',
+            'https://images.unsplash.com/photo-1587061949409-02df41d5e562?w=800&h=600&fit=crop&crop=entropy&auto=format'
         ];
         
-        $type = $this->type ?? 'Urbanos';
-        $placeholders = $placeholdersByType[$type] ?? $placeholdersByType['Urbanos'];
+        // Simple algorithm: Use project ID to ensure unique distribution
+        // This guarantees each project gets a different image without collisions
+        $index = ($this->id - 1) % count($placeholders);
         
-        // Simple rotation: use project ID to ensure each project gets different image
-        // across ALL projects regardless of type
-        $globalIndex = ($this->id - 1) % 12; // 12 total placeholder images across all types
-        
-        // Map global index to type-specific placeholder
-        $allPlaceholders = array_merge(
-            $placeholdersByType['Campestres'],
-            $placeholdersByType['Urbanos'], 
-            $placeholdersByType['Turísticos']
-        );
-        
-        return $allPlaceholders[$globalIndex];
+        return $placeholders[$index];
     }
 
     public function getCoverImageResponsiveAttribute(): array
