@@ -412,67 +412,61 @@ const submit = () => {
     return
   }
   
-  // Pre-process files BEFORE submission
-  console.log('=== DEBUGGING FILE SUBMISSION ===')
-  console.log('Raw form data before cleanup:')
-  console.log('- name:', form.name)
-  console.log('- type:', form.type) 
-  console.log('- status:', form.status)
-  console.log('- city:', form.city)
-  console.log('- state:', form.state)
+  console.log('=== DEBUGGING SUBMISSION START ===')
+  console.log('Form data before submission:')
+  console.log('- name:', form.name, '(length:', form.name?.length, ')')
+  console.log('- type:', form.type, '(length:', form.type?.length, ')')
+  console.log('- status:', form.status, '(length:', form.status?.length, ')')
+  console.log('- city:', form.city, '(length:', form.city?.length, ')')
+  console.log('- state:', form.state, '(length:', form.state?.length, ')')
   console.log('- description:', form.description)
   console.log('- property_count:', form.property_count)
   console.log('- is_public:', form.is_public)
   console.log('- cover_image:', form.cover_image)
-  console.log('- gallery:', form.gallery)
-  console.log('- videos:', form.videos)
+  console.log('- gallery length:', form.gallery?.length)
+  console.log('- videos length:', form.videos?.length)
   
-  // Clean up file fields directly in the form before sending
-  if (!form.cover_image || !(form.cover_image instanceof File)) {
-    form.cover_image = null
-  }
-  form.gallery = form.gallery.filter(file => file instanceof File)
-  form.videos = form.videos.filter(file => file instanceof File)
+  // Try a simple submission without forceFormData first
+  console.log('=== TRYING SIMPLE JSON SUBMISSION ===')
   
-  console.log('Form data after file cleanup:', {
+  // Create simple data object for testing
+  const simpleData = {
     name: form.name,
     type: form.type,
     status: form.status,
     city: form.city,
     state: form.state,
-    description: form.description,
-    property_count: form.property_count,
-    is_public: form.is_public,
-    cover_image: form.cover_image ? 'FILE_OBJECT' : null,
-    gallery: form.gallery.length + ' files',
-    videos: form.videos.length + ' files'
-  })
+    description: form.description || '',
+    property_count: form.property_count || 0,
+    is_public: form.is_public || false
+  }
   
+  console.log('Simple data object:', simpleData)
   console.log('CSRF Token:', document.querySelector('meta[name="csrf-token"]')?.content)
   
   if (isEdit.value) {
-    // Use patch method directly for updates with FormData
     form.patch(route('projects.update', props.project.id), {
       preserveScroll: true,
-      forceFormData: true,
-      transform: (data) => {
-        console.log('=== TRANSFORM FUNCTION CALLED ===')
-        console.log('Transform received data type:', typeof data)
-        console.log('Transform received data keys:', Object.keys(data))
-        console.log('Transform data values:')
-        Object.entries(data).forEach(([key, value]) => {
-          if (value instanceof File) {
-            console.log(`  ${key}: [File] ${value.name} (${value.size} bytes)`)
-          } else if (value instanceof FileList) {
-            console.log(`  ${key}: [FileList] ${value.length} files`)
-          } else {
-            console.log(`  ${key}:`, value)
-          }
+      onBefore: () => {
+        console.log('onBefore called - form data at submission time:', {
+          name: form.name,
+          type: form.type,
+          status: form.status,
+          city: form.city,
+          state: form.state
         })
-        return data
+        return true
       },
       onError: (errors) => {
+        console.error('=== SUBMISSION ERROR ===')
         console.error('Validation errors:', errors)
+        console.error('Request details at error time:', {
+          name: form.name,
+          type: form.type,
+          status: form.status,
+          city: form.city,
+          state: form.state
+        })
         alert('Errores de validación: ' + JSON.stringify(errors))
       },
       onSuccess: () => {
@@ -482,25 +476,26 @@ const submit = () => {
   } else {
     form.post(route('projects.store'), {
       preserveScroll: true,
-      forceFormData: true,
-      transform: (data) => {
-        console.log('=== TRANSFORM FUNCTION CALLED ===')
-        console.log('Transform received data type:', typeof data)
-        console.log('Transform received data keys:', Object.keys(data))
-        console.log('Transform data values:')
-        Object.entries(data).forEach(([key, value]) => {
-          if (value instanceof File) {
-            console.log(`  ${key}: [File] ${value.name} (${value.size} bytes)`)
-          } else if (value instanceof FileList) {
-            console.log(`  ${key}: [FileList] ${value.length} files`)
-          } else {
-            console.log(`  ${key}:`, value)
-          }
+      onBefore: () => {
+        console.log('onBefore called - form data at submission time:', {
+          name: form.name,
+          type: form.type,
+          status: form.status,
+          city: form.city,
+          state: form.state
         })
-        return data
+        return true
       },
       onError: (errors) => {
+        console.error('=== SUBMISSION ERROR ===')
         console.error('Validation errors:', errors)
+        console.error('Request details at error time:', {
+          name: form.name,
+          type: form.type,
+          status: form.status,
+          city: form.city,
+          state: form.state
+        })
         alert('Errores de validación: ' + JSON.stringify(errors))
       },
       onSuccess: () => {
