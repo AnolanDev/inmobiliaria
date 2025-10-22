@@ -110,7 +110,7 @@ class ProjectController extends Controller
                 'sort_order' => $validated['sort_order'] ?? $nextSortOrder,
                 'city' => $validated['city'],
                 'state' => $validated['state'],
-                'cover_image' => null,
+                'cover_image' => [],
                 'gallery' => [],
                 'videos' => [],
             ]);
@@ -317,7 +317,7 @@ class ProjectController extends Controller
             'city' => $request->city ?? '',
             'state' => $request->state ?? '',
             'sort_order' => $nextSortOrder,
-            'cover_image' => null, // Will be updated after file upload
+            'cover_image' => [], // Will be updated after file upload
             'gallery' => [],
             'videos' => [],
         ]);
