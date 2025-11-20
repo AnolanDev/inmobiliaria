@@ -1,7 +1,7 @@
 import '../css/app.css';
 import './bootstrap';
 
-import { createInertiaApp } from '@inertiajs/vue3';
+import { createInertiaApp, router } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
@@ -17,6 +17,18 @@ if (token) {
     // Also set for fetch requests
     window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }
+
+// Configure Inertia to handle CSRF token properly
+router.on('before', (event) => {
+    const csrfToken = document.head.querySelector('meta[name="csrf-token"]');
+    if (csrfToken) {
+        // Ensure the token is included in all requests
+        event.detail.visit.headers = {
+            ...event.detail.visit.headers,
+            'X-CSRF-TOKEN': csrfToken.content,
+        };
+    }
+});
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

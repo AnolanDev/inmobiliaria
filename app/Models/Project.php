@@ -85,23 +85,30 @@ class Project extends Model
     {
         // Get raw database value to handle empty strings vs null properly
         $rawCoverImage = $this->getRawOriginal('cover_image');
-        
+
         // Handle actual stored images with proper validation
         if (!empty($rawCoverImage) && $rawCoverImage !== '""' && $rawCoverImage !== '[]') {
             // Handle new optimized image structure (valid JSON array)
             if ($this->cover_image && is_array($this->cover_image) && !empty($this->cover_image)) {
-                // Return medium size for backward compatibility
+                // Check if it's an associative array with size keys (medium, original, etc.)
                 if (isset($this->cover_image['medium'])) {
                     $filename = basename($this->cover_image['medium']);
                     return url("api/images/projects/{$this->id}/{$filename}");
                 }
-                // Fallback to original if medium doesn't exist
                 if (isset($this->cover_image['original'])) {
                     $filename = basename($this->cover_image['original']);
                     return url("api/images/projects/{$this->id}/{$filename}");
                 }
+
+                // Handle simple array format: ['projects/1/cover_123.jpg']
+                if (isset($this->cover_image[0]) && is_string($this->cover_image[0])) {
+                    $imagePath = storage_path('app/public/' . $this->cover_image[0]);
+                    if (file_exists($imagePath)) {
+                        return asset('storage/' . $this->cover_image[0]);
+                    }
+                }
             }
-            
+
             // Handle legacy string format (non-empty string)
             if (is_string($rawCoverImage) && $rawCoverImage !== 'null' && !str_starts_with($rawCoverImage, '[')) {
                 $imagePath = storage_path('app/public/' . $rawCoverImage);
@@ -110,7 +117,7 @@ class Project extends Model
                 }
             }
         }
-        
+
         // Generate unique placeholder for projects without images
         return $this->generateUniquePlaceholder();
     }
@@ -178,11 +185,12 @@ class Project extends Model
 
         $urls = [];
         foreach ($this->gallery as $imageSet) {
-            if (is_array($imageSet)) {
-                // New optimized format
+            // Handle optimized format with responsive sizes
+            if (is_array($imageSet) && (isset($imageSet['thumbnail']) || isset($imageSet['medium']))) {
                 $urls[] = app(\App\Services\ImageOptimizationService::class)->generateResponsiveUrls($imageSet, 'projects', $this->id);
-            } elseif (is_string($imageSet) && !empty($imageSet)) {
-                // Legacy format - create responsive URLs from existing image
+            }
+            // Handle simple string path from storage: 'projects/1/gallery_0_123.jpg'
+            elseif (is_string($imageSet) && !empty($imageSet)) {
                 $imagePath = storage_path('app/public/' . $imageSet);
                 if (file_exists($imagePath)) {
                     $baseUrl = asset('storage/' . $imageSet);
@@ -196,7 +204,7 @@ class Project extends Model
             }
             // Skip corrupted data (non-string, non-array values)
         }
-        
+
         return $urls;
     }
 

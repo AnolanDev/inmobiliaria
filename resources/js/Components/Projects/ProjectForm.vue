@@ -411,7 +411,7 @@ const submit = () => {
     alert('Por favor completa todos los campos requeridos: Nombre, Tipo, Estado, Ciudad y Departamento')
     return
   }
-  
+
   console.log('=== DEBUGGING SUBMISSION START ===')
   console.log('Form data before submission:')
   console.log('- name:', form.name, '(length:', form.name?.length, ')')
@@ -425,31 +425,38 @@ const submit = () => {
   console.log('- cover_image:', form.cover_image)
   console.log('- gallery length:', form.gallery?.length)
   console.log('- videos length:', form.videos?.length)
-  
+
   // Check if we have files to upload
   const hasFiles = form.cover_image || (form.gallery && form.gallery.length > 0) || (form.videos && form.videos.length > 0)
-  
+
   console.log('Has files to upload:', hasFiles)
-  
+
   if (hasFiles) {
     console.log('=== USING FORMDATA FOR FILE UPLOAD ===')
-    
+
     // Clean up file fields to ensure we only send actual File objects
     if (!form.cover_image || !(form.cover_image instanceof File)) {
       form.cover_image = null
     }
     form.gallery = form.gallery.filter(file => file instanceof File)
     form.videos = form.videos.filter(file => file instanceof File)
-    
+
     console.log('Files after cleanup:')
     console.log('- cover_image:', form.cover_image ? `File: ${form.cover_image.name}` : null)
     console.log('- gallery:', form.gallery.length, 'files')
     console.log('- videos:', form.videos.length, 'files')
-    
+
+    // Get CSRF token
+    const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.content
+    console.log('CSRF token found:', csrfToken ? 'YES' : 'NO')
+
     if (isEdit.value) {
       form.patch(route('projects.update', props.project.id), {
         preserveScroll: true,
         forceFormData: true,
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
         onBefore: () => {
           console.log('onBefore called for FormData submission')
           return true
@@ -467,6 +474,9 @@ const submit = () => {
       form.post(route('projects.store'), {
         preserveScroll: true,
         forceFormData: true,
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
         onBefore: () => {
           console.log('onBefore called for FormData submission')
           return true
@@ -483,7 +493,7 @@ const submit = () => {
     }
   } else {
     console.log('=== USING JSON SUBMISSION (NO FILES) ===')
-    
+
     if (isEdit.value) {
       form.patch(route('projects.update', props.project.id), {
         preserveScroll: true,
