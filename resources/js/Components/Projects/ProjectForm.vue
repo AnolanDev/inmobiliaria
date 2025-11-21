@@ -451,20 +451,38 @@ const submit = () => {
     console.log('CSRF token found:', csrfToken ? 'YES' : 'NO')
 
     if (isEdit.value) {
-      form.patch(route('projects.update', props.project.id), {
+      // Log all form data being sent
+      console.log('=== FORM DATA BEING SENT (EDIT) ===')
+      console.log('name:', form.name)
+      console.log('type:', form.type)
+      console.log('status:', form.status)
+      console.log('city:', form.city)
+      console.log('state:', form.state)
+      console.log('description:', form.description)
+      console.log('property_count:', form.property_count)
+      console.log('is_public:', form.is_public)
+
+      // Use POST with _method=PATCH for better compatibility with FormData
+      form.post(route('projects.update', props.project.id), {
         preserveScroll: true,
         forceFormData: true,
         headers: {
           'X-CSRF-TOKEN': csrfToken,
         },
         onBefore: () => {
-          console.log('onBefore called for FormData submission')
+          console.log('onBefore called for FormData submission (POST with _method=PATCH)')
           return true
         },
         onError: (errors) => {
           console.error('=== FORMDATA SUBMISSION ERROR ===')
           console.error('Validation errors:', errors)
-          alert('Errores de validación: ' + JSON.stringify(errors))
+
+          // Show detailed error message
+          let errorMessage = 'Errores de validación:\n';
+          Object.keys(errors).forEach(field => {
+            errorMessage += `\n• ${field}: ${errors[field]}`;
+          });
+          alert(errorMessage)
         },
         onSuccess: () => {
           console.log('Project with files updated successfully')

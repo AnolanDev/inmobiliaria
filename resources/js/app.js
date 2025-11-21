@@ -18,6 +18,39 @@ if (token) {
     window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }
 
+// Auto-refresh CSRF token every 5 minutes to prevent expiration
+let csrfRefreshInterval = null;
+
+function refreshCsrfToken() {
+    axios.get('/refresh-csrf')
+        .then(response => {
+            if (response.data.token) {
+                const metaTag = document.head.querySelector('meta[name="csrf-token"]');
+                if (metaTag) {
+                    metaTag.content = response.data.token;
+                    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
+                    console.log('CSRF token refreshed successfully');
+                }
+            }
+        })
+        .catch(error => {
+            console.warn('Failed to refresh CSRF token:', error);
+        });
+}
+
+// Start auto-refresh after page load
+window.addEventListener('load', () => {
+    // Refresh token every 5 minutes (300000ms)
+    csrfRefreshInterval = setInterval(refreshCsrfToken, 300000);
+});
+
+// Clean up interval on page unload
+window.addEventListener('beforeunload', () => {
+    if (csrfRefreshInterval) {
+        clearInterval(csrfRefreshInterval);
+    }
+});
+
 // Configure Inertia to handle CSRF token properly
 router.on('before', (event) => {
     const csrfToken = document.head.querySelector('meta[name="csrf-token"]');
@@ -27,6 +60,19 @@ router.on('before', (event) => {
             ...event.detail.visit.headers,
             'X-CSRF-TOKEN': csrfToken.content,
         };
+    }
+});
+
+// Handle 419 errors (CSRF token mismatch) gracefully
+router.on('error', (event) => {
+    const response = event.detail.response;
+    if (response && response.status === 419) {
+        event.preventDefault();
+
+        // Show user-friendly message
+        if (confirm('Tu sesión ha expirado. ¿Deseas recargar la página para continuar?')) {
+            window.location.reload();
+        }
     }
 });
 

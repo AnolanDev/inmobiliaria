@@ -20,6 +20,13 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// CSRF token refresh endpoint
+Route::get('/refresh-csrf', function () {
+    return response()->json([
+        'token' => csrf_token()
+    ]);
+});
+
 Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard');
