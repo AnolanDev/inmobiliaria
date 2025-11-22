@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show')->middleware('permission:users:view');
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('permission:users:edit');
     Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update')->middleware('permission:users:edit');
+    Route::post('/users/{user}', [UserController::class, 'update'])->name('users.update.post')->middleware('permission:users:edit');
     Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status')->middleware('permission:users:edit');
     Route::post('/users/{user}/assign-roles', [UserController::class, 'assignRoles'])->name('users.assign-roles')->middleware('permission:users:edit');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy')->middleware('permission:users:delete');
