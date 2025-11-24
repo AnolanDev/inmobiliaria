@@ -18,7 +18,7 @@ if (token) {
     window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }
 
-// Auto-refresh CSRF token every 5 minutes to prevent expiration
+// Auto-refresh CSRF token every 60 minutes to prevent expiration
 let csrfRefreshInterval = null;
 
 function refreshCsrfToken() {
@@ -29,7 +29,12 @@ function refreshCsrfToken() {
                 if (metaTag) {
                     metaTag.content = response.data.token;
                     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.token;
-                    console.log('CSRF token refreshed successfully');
+
+                    // Log refresh with session info
+                    console.log('CSRF token refreshed successfully', {
+                        refreshed_at: response.data.refreshed_at,
+                        session_lifetime: `${response.data.session_lifetime} minutes`
+                    });
                 }
             }
         })
@@ -40,8 +45,9 @@ function refreshCsrfToken() {
 
 // Start auto-refresh after page load
 window.addEventListener('load', () => {
-    // Refresh token every 5 minutes (300000ms)
-    csrfRefreshInterval = setInterval(refreshCsrfToken, 300000);
+    // Refresh token every 60 minutes (3600000ms)
+    // This is safe with a 720-minute (12 hour) session lifetime
+    csrfRefreshInterval = setInterval(refreshCsrfToken, 3600000);
 });
 
 // Clean up interval on page unload
@@ -68,6 +74,16 @@ router.on('error', (event) => {
     const response = event.detail.response;
     if (response && response.status === 419) {
         event.preventDefault();
+
+        // Log diagnostic information
+        console.error('CSRF Token Mismatch (419)', {
+            url: event.detail.visit?.url,
+            method: event.detail.visit?.method,
+            timestamp: new Date().toISOString(),
+            currentToken: document.head.querySelector('meta[name="csrf-token"]')?.content,
+            userAgent: navigator.userAgent,
+            referrer: document.referrer
+        });
 
         // Show user-friendly message
         if (confirm('Tu sesión ha expirado. ¿Deseas recargar la página para continuar?')) {

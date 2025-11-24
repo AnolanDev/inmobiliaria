@@ -238,6 +238,13 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
     {
+        \Log::info('ProjectController::update - Request received', [
+            'all_data' => $request->all(),
+            'files' => array_keys($request->allFiles()),
+            'remove_gallery' => $request->input('remove_gallery'),
+            'remove_videos' => $request->input('remove_videos'),
+        ]);
+
         $validated = $request->validated();
 
         // Update basic project information
@@ -266,6 +273,13 @@ class ProjectController extends Controller
         $newGalleryFiles = $request->hasFile('gallery') ? $request->file('gallery') : [];
         $removeGalleryFiles = $validated['remove_gallery'] ?? [];
 
+        \Log::info('Gallery update info', [
+            'has_new_files' => !empty($newGalleryFiles),
+            'new_files_count' => count($newGalleryFiles),
+            'remove_files' => $removeGalleryFiles,
+            'remove_files_count' => count($removeGalleryFiles),
+        ]);
+
         if (!empty($newGalleryFiles) || !empty($removeGalleryFiles)) {
             $updatedGallery = $this->mediaService->updateGalleryImages(
                 $newGalleryFiles,
@@ -273,6 +287,7 @@ class ProjectController extends Controller
                 $project
             );
             $project->update(['gallery' => $updatedGallery]);
+            \Log::info('Gallery updated', ['new_gallery' => $updatedGallery]);
         }
 
         // Handle video updates
@@ -288,7 +303,7 @@ class ProjectController extends Controller
             $project->update(['videos' => $updatedVideos]);
         }
 
-        return redirect()->route('projects.index')
+        return redirect()->route('projects.edit', $project)
             ->with('success', 'Proyecto actualizado exitosamente.');
     }
 

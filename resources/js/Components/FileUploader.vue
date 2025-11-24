@@ -64,6 +64,7 @@
           />
           <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-200 flex items-center justify-center">
             <button
+              type="button"
               @click="removeFile(index)"
               class="opacity-0 group-hover:opacity-100 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition-all duration-200"
             >
@@ -83,6 +84,7 @@
           ></video>
           <div class="absolute top-2 right-2">
             <button
+              type="button"
               @click="removeFile(index)"
               class="bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
             >
@@ -281,34 +283,35 @@ export default {
     
     removeFile(index) {
       const preview = this.previews[index]
-      
+
       if (preview.isNew) {
         // Remove from files array
         const fileIndex = this.files.findIndex(f => f.name === preview.name)
         if (fileIndex !== -1) {
           this.files.splice(fileIndex, 1)
         }
-        
+
         // Revoke object URL to free memory
         if (preview.url.startsWith('blob:')) {
           URL.revokeObjectURL(preview.url)
         }
       } else {
-        // Emit removal of existing file
-        this.$emit('files-removed', [preview.path])
+        // Emit removal of existing file using its original index
+        // The backend expects indices, not paths
+        this.$emit('files-removed', [preview.originalIndex])
       }
-      
+
       this.previews.splice(index, 1)
       this.emitFilesChanged()
     },
     
     loadExistingFiles() {
       if (!this.existingFiles || this.existingFiles.length === 0) return
-      
-      this.previews = this.existingFiles.map(file => {
+
+      this.previews = this.existingFiles.map((file, index) => {
         // Handle different file formats
         let filePath, fileName, fileUrl
-        
+
         if (typeof file === 'string') {
           // file is just a path string
           filePath = file
@@ -325,14 +328,15 @@ export default {
           fileName = 'archivo'
           fileUrl = ''
         }
-        
+
         return {
           name: fileName,
           path: filePath,
           url: fileUrl,
           type: this.getFileType(filePath),
           isNew: false,
-          size: 0
+          size: 0,
+          originalIndex: index  // Store the original index for removal
         }
       })
     },

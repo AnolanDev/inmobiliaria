@@ -22,8 +22,13 @@ use Inertia\Inertia;
 
 // CSRF token refresh endpoint
 Route::get('/refresh-csrf', function () {
+    // Touch the session to extend its lifetime
+    request()->session()->regenerate();
+
     return response()->json([
-        'token' => csrf_token()
+        'token' => csrf_token(),
+        'refreshed_at' => now()->toIso8601String(),
+        'session_lifetime' => config('session.lifetime')
     ]);
 });
 

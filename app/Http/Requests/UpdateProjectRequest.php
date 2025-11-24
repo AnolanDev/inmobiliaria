@@ -45,9 +45,9 @@ class UpdateProjectRequest extends FormRequest
             'videos' => 'nullable|array',
             'videos.*' => 'file|mimes:mp4,mov,avi,wmv,webm|max:102400',
             'remove_gallery' => 'nullable|array',
-            'remove_gallery.*' => 'string',
+            'remove_gallery.*' => 'integer|min:0',
             'remove_videos' => 'nullable|array',
-            'remove_videos.*' => 'string',
+            'remove_videos.*' => 'integer|min:0',
         ];
     }
 

@@ -382,7 +382,9 @@ const handleGalleryChange = (files) => {
 }
 
 const handleGalleryRemove = (paths) => {
+  console.log('Gallery remove called with paths:', paths)
   form.remove_gallery = [...form.remove_gallery, ...paths]
+  console.log('Updated remove_gallery array:', form.remove_gallery)
 }
 
 const handleVideosChange = (files) => {
@@ -392,7 +394,9 @@ const handleVideosChange = (files) => {
 }
 
 const handleVideosRemove = (paths) => {
+  console.log('Videos remove called with paths:', paths)
   form.remove_videos = [...form.remove_videos, ...paths]
+  console.log('Updated remove_videos array:', form.remove_videos)
 }
 
 const getSubmitButtonText = () => {
@@ -512,9 +516,18 @@ const submit = () => {
   } else {
     console.log('=== USING JSON SUBMISSION (NO FILES) ===')
 
+    // Get CSRF token
+    const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.content
+    console.log('CSRF token found:', csrfToken ? 'YES' : 'NO')
+    console.log('- remove_gallery:', form.remove_gallery)
+    console.log('- remove_videos:', form.remove_videos)
+
     if (isEdit.value) {
       form.patch(route('projects.update', props.project.id), {
         preserveScroll: true,
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
         onBefore: () => {
           console.log('onBefore called for JSON submission')
           return true
@@ -531,6 +544,9 @@ const submit = () => {
     } else {
       form.post(route('projects.store'), {
         preserveScroll: true,
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
         onBefore: () => {
           console.log('onBefore called for JSON submission')
           return true
