@@ -81,11 +81,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-profile', [UserController::class, 'profile'])->name('user.profile');
     Route::patch('/my-profile', [UserController::class, 'updateProfile'])->name('user.profile.update');
 
-    // Project management routes - FIXED ORDER: create routes before {project} routes
+    // Project management routes - FIXED ORDER: specific routes before {project} parameter routes
     Route::middleware('permission:projects:view')->group(function () {
         Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
         Route::get('/projects-select', [ProjectController::class, 'getForSelect'])->name('projects.select');
-        
+
         Route::middleware('permission:projects:create')->group(function () {
             Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
             Route::post('/projects/test', function(\Illuminate\Http\Request $request) {
@@ -95,17 +95,19 @@ Route::middleware('auth')->group(function () {
             Route::post('/projects', [ProjectController::class, 'store'])->middleware('debug.request')->name('projects.store');
             Route::post('/projects-quick', [ProjectController::class, 'quickStore'])->name('projects.quick');
         });
-        
-        Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
-        
+
         Route::middleware('permission:projects:edit')->group(function () {
+            // Specific routes must come BEFORE dynamic parameter routes
+            Route::post('/projects/update-order', [ProjectController::class, 'updateOrder'])->name('projects.updateOrder');
             Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
             Route::patch('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
             Route::post('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update.post');
-            Route::post('/projects/update-order', [ProjectController::class, 'updateOrder'])->name('projects.updateOrder');
             Route::patch('/projects/{project}/toggle-visibility', [ProjectController::class, 'toggleVisibility'])->name('projects.toggleVisibility');
         });
-        
+
+        // Dynamic parameter routes come AFTER specific routes
+        Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+
         Route::middleware('permission:projects:delete')->group(function () {
             Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
         });
