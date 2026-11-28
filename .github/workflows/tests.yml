@@ -37,8 +37,9 @@ jobs:
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
       DB_DATABASE: inmobiliaria_test
-      DB_USERNAME: root
-      DB_PASSWORD: ci-root-ephemeral
+      DB_USERNAME: inmobiliaria_app
+      DB_OWNER_USERNAME: inmobiliaria_owner
+      # DB_PASSWORD and DB_OWNER_PASSWORD are generated per run (see below).
 
     steps:
       - name: Checkout code
@@ -73,8 +74,25 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: Run migrations
-        run: php artisan migrate --force
+      # Root of the throwaway service container is used only here, to run
+      # users.sql with passwords generated in this same run.
+      - name: Create database users
+        env:
+          MYSQL_PWD: ci-root-ephemeral
+        run: |
+          OWNER_PW=$(openssl rand -hex 24)
+          APP_PW=$(openssl rand -hex 24)
+          echo "::add-mask::$OWNER_PW"
+          echo "::add-mask::$APP_PW"
+          { printf "SET @owner_password='%s', @app_password='%s', @user_host='%%';\n" "$OWNER_PW" "$APP_PW"; cat database/sql/users.sql; } \
+            | mysql --no-defaults -h 127.0.0.1 -P 3306 -u root
+          echo "DB_PASSWORD=$APP_PW" >> "$GITHUB_ENV"
+          echo "DB_OWNER_PASSWORD=$OWNER_PW" >> "$GITHUB_ENV"
 
-      - name: Run tests
+      - name: Run migrations (owner)
+        run: php artisan migrate --database=mysql_owner --force
+
+      - name: Run tests (app user)
+        env:
+          DB_OWNER_PASSWORD: ''
         run: php artisan test

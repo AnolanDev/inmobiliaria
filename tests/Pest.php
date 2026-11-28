@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /*
@@ -14,8 +13,10 @@ use Tests\TestCase;
 |
 */
 
+// Database state: Tests\TestCase wraps every test in a transaction
+// (DatabaseTransactions). The schema is migrated beforehand by the owner
+// connection; never use RefreshDatabase or DatabaseMigrations here.
 pest()->extend(TestCase::class)
-    ->use(RefreshDatabase::class)
     ->in('Feature');
 
 /*
