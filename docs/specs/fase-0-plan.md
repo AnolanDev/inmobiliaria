@@ -74,7 +74,7 @@ Corto, fuera del bloque de Boost: comandos, decisiones y trampas. Con `CLAUDE.md
 - Renombrar el job `tests` rompe la protección de `main`.
 - `php artisan db:show` lista las tablas de todas las bases a las que el usuario tiene acceso, no solo la de la conexión; para contar tablas de una base, consultar `information_schema` filtrando por `TABLE_SCHEMA`.
 - Las del sandbox de Claude Code descubiertas en E5 (archivos fantasma y `git add` con rutas explícitas, `cd` y la excepción de `php artisan test`, `composer check` desde Claude, lista explícita de `.env`, base del hook con `migrate`) y las de `.env` (comillas; `php artisan test` arranca con `.env`).
-- Repositorio público: nunca datos reales (clientes, cédulas, teléfonos, precios o lotes de proyectos reales) en seeders, fixtures ni pruebas; nunca dominio, proveedor de hosting ni prefijo real de cPanel en `docs/` (usar marcadores como `CUENTA_inmobiliaria_owner`).
+- Repositorio público: nunca datos reales (clientes, cédulas, teléfonos, precios o lotes de proyectos reales) en seeders, fixtures ni pruebas; nunca dominio, proveedor de hosting ni prefijo real de cPanel en ningún archivo del repositorio (código, configuración, `docs/`, `CLAUDE.md`) ni en mensajes de commit (usar marcadores como `CUENTA_inmobiliaria_owner`).
 
 ### E7 — Registro y autoeliminación
 - Sin `Features::registration()`, rutas, vistas, enlaces ni componente de eliminar cuenta; pruebas ajustadas.

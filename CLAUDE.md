@@ -19,6 +19,7 @@ Sistema para una inmobiliaria de venta de lotes. Laravel 13, PHP 8.3, Livewire 4
 - Pruebas siempre contra MySQL, nunca SQLite. Usan `DatabaseTransactions` sobre un esquema ya migrado por el dueño; prohibido `RefreshDatabase`, `DatabaseMigrations`, `DatabaseTruncation` (hay una prueba que lo verifica). `TestCase` aborta si la base no termina en `_test` o `_test_hook`.
 - Idioma: `es` como locale y fallback. Todo texto visible pasa por `__()` y se traduce en `lang/es.json` / `lang/es/*.php`. En pruebas, comparar contra `__('texto')` o el español literal, nunca contra el inglés.
 - Calidad: Larastan nivel 7 sin baseline sobre `app/`, `bootstrap/app.php`, `config/`, `database/` y `routes/`. El hook Stop (`.claude/hooks/quality-gate.sh`) no deja terminar el turno si fallan Pint, Larastan o las pruebas.
+- Revisión por bloque: agente `revisor-cumplimiento` (`.claude/agents/`, solo lectura con Read, Grep y Glob) contra `docs/specs/` y este archivo.
 - Git: Conventional Commits, un commit por entregable, PR hacia `main` sin squash. `git push`, `gh pr merge`, `gh api` y cambios al repositorio siempre con aprobación del usuario.
 - Secretos: nunca leer ni mostrar `.env`/`.env.testing`, ni pedir contraseñas. Prohibidos `migrate:fresh`, `migrate:refresh`, `migrate:reset` y `db:wipe`.
 - Sin registro abierto ni autoeliminación de cuentas: los usuarios los crea un administrador con `php artisan users:create` (interactivo, contraseña oculta; sin opción `--password` a propósito, para que no quede en el historial). Esos usuarios quedan con el correo verificado.
@@ -27,7 +28,7 @@ Sistema para una inmobiliaria de venta de lotes. Laravel 13, PHP 8.3, Livewire 4
 ## Repositorio público
 
 - Nunca datos reales (clientes, cédulas, teléfonos, precios o lotes de proyectos reales) en seeders, fixtures ni pruebas: solo datos inventados.
-- Nunca dominio, proveedor de hosting ni prefijo real de cPanel en `docs/`: usar marcadores como `CUENTA_inmobiliaria_owner`.
+- Nunca dominio, proveedor de hosting ni prefijo real de cPanel en ningún archivo del repositorio (código, configuración, `docs/`, `CLAUDE.md`) ni en mensajes de commit: usar marcadores como `CUENTA_inmobiliaria_owner`.
 
 ## Trampas conocidas
 
