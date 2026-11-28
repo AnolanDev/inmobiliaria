@@ -1,3 +1,62 @@
+# Inmobiliaria
+
+Sistema para una inmobiliaria de venta de lotes. Laravel 13, PHP 8.3, Livewire 4 (kit oficial con Fortify y Flux, solo componentes gratuitos), MySQL 8.0, Pest 4. Código en inglés; textos de la interfaz en español. Plan vigente: `docs/specs/`. Pendientes: `docs/pendientes.md`.
+
+## Comandos
+
+- `composer check`: Pint + Larastan nivel 7 + pruebas (la red de calidad completa). Desde Claude no sirve (ver trampas): correr por separado:
+  - `vendor/bin/pint --test` (formatear: `vendor/bin/pint`)
+  - `vendor/bin/phpstan analyse --memory-limit=1G`
+  - `php artisan test --compact`, **solo**, sin `cd` ni tuberías.
+- Migrar: `php artisan migrate --database=mysql_owner` (desarrollo) y `... --env=testing` (base de pruebas). Nunca con la conexión por defecto.
+- Frontend: `npm run build` (los assets se compilan en local; producción no tiene Node).
+- Usuarios de base de datos: `database/sql/users.sql`, ejecutado por el usuario según `docs/database-users.md`.
+
+## Decisiones del proyecto
+
+- Dos usuarios MySQL: la aplicación y las pruebas usan `inmobiliaria_app` (solo SELECT, INSERT, UPDATE, DELETE). `inmobiliaria_owner` (conexión `mysql_owner`) solo para migraciones.
+- Bases: `inmobiliaria` (desarrollo), `inmobiliaria_test` (pruebas), `inmobiliaria_test_hook` (hook Stop).
+- Pruebas siempre contra MySQL, nunca SQLite. Usan `DatabaseTransactions` sobre un esquema ya migrado por el dueño; prohibido `RefreshDatabase`, `DatabaseMigrations`, `DatabaseTruncation` (hay una prueba que lo verifica). `TestCase` aborta si la base no termina en `_test` o `_test_hook`.
+- Idioma: `es` como locale y fallback. Todo texto visible pasa por `__()` y se traduce en `lang/es.json` / `lang/es/*.php`. En pruebas, comparar contra `__('texto')` o el español literal, nunca contra el inglés.
+- Calidad: Larastan nivel 7 sin baseline sobre `app/`, `bootstrap/app.php`, `config/`, `database/` y `routes/`. El hook Stop (`.claude/hooks/quality-gate.sh`) no deja terminar el turno si fallan Pint, Larastan o las pruebas.
+- Git: Conventional Commits, un commit por entregable, PR hacia `main` sin squash. `git push`, `gh pr merge`, `gh api` y cambios al repositorio siempre con aprobación del usuario.
+- Secretos: nunca leer ni mostrar `.env`/`.env.testing`, ni pedir contraseñas. Prohibidos `migrate:fresh`, `migrate:refresh`, `migrate:reset` y `db:wipe`.
+- Producción: hosting compartido con cPanel, sin procesos permanentes, sin SSH garantizado, sin Node.
+
+## Repositorio público
+
+- Nunca datos reales (clientes, cédulas, teléfonos, precios o lotes de proyectos reales) en seeders, fixtures ni pruebas: solo datos inventados.
+- Nunca dominio, proveedor de hosting ni prefijo real de cPanel en `docs/`: usar marcadores como `CUENTA_inmobiliaria_owner`.
+
+## Trampas conocidas
+
+**MySQL**
+- Un `REVOKE` a nivel de tabla no resta un permiso dado a nivel de base. Si una tabla debe ser de solo inserción (por ejemplo, un historial), se protege con triggers que rechacen UPDATE y DELETE, no con permisos.
+- Con el registro binario activo (lo normal en MySQL 8.0), crear triggers exige `SUPER` o `log_bin_trust_function_creators=1`; sin eso ni el dueño puede (error 1419). En cPanel no se pueden cambiar variables globales: **antes de la Fase 1 el usuario debe probar crear un trigger en cPanel**; si no se puede, el historial de solo inserción se protege desde la aplicación, con pruebas.
+- El usuario de la aplicación no puede migrar: toda migración va por `--database=mysql_owner`.
+- `php artisan db:show` lista las tablas de todas las bases a las que el usuario tiene acceso, no solo la de la conexión. Para contar tablas de una base, consultar `information_schema` filtrando por `TABLE_SCHEMA`.
+
+**cPanel**
+- Nada de `queue:work` permanente: colas y tareas programadas por el cron de `schedule:run`.
+- Los assets se compilan localmente (`npm run build`) y se suben ya construidos.
+- Boost escribe en sus guías que Laravel se despliega en Laravel Cloud: no aplica, aquí se despliega en cPanel.
+
+**`.env`**
+- Valores con espacios van entre comillas. Contraseñas con `$` o `#`: comillas simples (`#` inicia comentario y `$` se interpola entre comillas dobles).
+- `php artisan test` arranca primero con `.env` (no con `.env.testing`): si `.env` es inválido, las pruebas no corren.
+
+**Claude Code y sandbox**
+- Dentro del sandbox aparecen archivos fantasma (`.bashrc`, `.gitconfig`, `.claude/agents`…) que no existen en disco. Nunca `git add -A` ni `git add .`: agregar rutas explícitas.
+- Un comando que empieza con `cd` queda siempre dentro del sandbox: `php artisan test` debe ir solo para usar su excepción.
+- Dentro del sandbox no hay conexión a MySQL ni lectura de `.env*`; por eso `composer check` falla desde Claude (en la terminal del usuario funciona).
+- La lista de `.env` prohibidos en `.claude/settings.json` es explícita: un `.env` con nombre nuevo debe agregarse ahí.
+- El hook actualiza `inmobiliaria_test_hook` con `migrate`, no con comandos destructivos: si se edita una migración ya aplicada, esa base queda desactualizada y el usuario debe reiniciarla a mano.
+
+**CI**
+- El job se llama `tests` y es un check obligatorio de `main`: renombrarlo rompe la protección de la rama.
+
+===
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
