@@ -3,6 +3,7 @@
 namespace Tests\Feature\Settings;
 
 use App\Models\User;
+use Livewire\Exceptions\ComponentNotFoundException;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -88,36 +89,22 @@ class ProfileUpdateTest extends TestCase
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
 
-    public function test_user_can_delete_their_account(): void
+    public function test_profile_page_does_not_offer_account_deletion(): void
     {
-        $user = User::factory()->create();
+        $this->actingAs(User::factory()->create());
 
-        $this->actingAs($user);
-
-        $response = Livewire::test('pages::settings.delete-user-modal')
-            ->set('password', 'password')
-            ->call('deleteUser');
-
-        $response
-            ->assertHasNoErrors()
-            ->assertRedirect('/');
-
-        $this->assertNull($user->fresh());
-        $this->assertFalse(auth()->check());
+        $this->get(route('profile.edit'))
+            ->assertOk()
+            ->assertDontSee(__('Delete account'))
+            ->assertDontSee(__('Delete your account and all of its resources'));
     }
 
-    public function test_correct_password_must_be_provided_to_delete_account(): void
+    public function test_account_deletion_components_no_longer_exist(): void
     {
-        $user = User::factory()->create();
+        $this->actingAs(User::factory()->create());
 
-        $this->actingAs($user);
+        $this->expectException(ComponentNotFoundException::class);
 
-        $response = Livewire::test('pages::settings.delete-user-modal')
-            ->set('password', 'wrong-password')
-            ->call('deleteUser');
-
-        $response->assertHasErrors(['password']);
-
-        $this->assertNotNull($user->fresh());
+        Livewire::test('pages::settings.delete-user-modal');
     }
 }

@@ -21,6 +21,7 @@ Sistema para una inmobiliaria de venta de lotes. Laravel 13, PHP 8.3, Livewire 4
 - Calidad: Larastan nivel 7 sin baseline sobre `app/`, `bootstrap/app.php`, `config/`, `database/` y `routes/`. El hook Stop (`.claude/hooks/quality-gate.sh`) no deja terminar el turno si fallan Pint, Larastan o las pruebas.
 - Git: Conventional Commits, un commit por entregable, PR hacia `main` sin squash. `git push`, `gh pr merge`, `gh api` y cambios al repositorio siempre con aprobación del usuario.
 - Secretos: nunca leer ni mostrar `.env`/`.env.testing`, ni pedir contraseñas. Prohibidos `migrate:fresh`, `migrate:refresh`, `migrate:reset` y `db:wipe`.
+- Sin registro abierto ni autoeliminación de cuentas: los usuarios los crea un administrador con `php artisan users:create` (interactivo, contraseña oculta; sin opción `--password` a propósito, para que no quede en el historial). Esos usuarios quedan con el correo verificado.
 - Producción: hosting compartido con cPanel, sin procesos permanentes, sin SSH garantizado, sin Node.
 
 ## Repositorio público

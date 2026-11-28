@@ -2,37 +2,44 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
 
+/**
+ * Public registration is disabled: users are created by an administrator
+ * (php artisan users:create).
+ */
 class RegistrationTest extends TestCase
 {
-    protected function setUp(): void
+    public function test_registration_feature_is_disabled(): void
     {
-        parent::setUp();
-
-        $this->skipUnlessFortifyHas(Features::registration());
+        $this->assertFalse(Features::enabled(Features::registration()));
     }
 
-    public function test_registration_screen_can_be_rendered(): void
+    public function test_registration_screen_is_not_available(): void
     {
-        $response = $this->get(route('register'));
-
-        $response->assertOk();
+        $this->get('/register')->assertNotFound();
     }
 
-    public function test_new_users_can_register(): void
+    public function test_registration_cannot_be_submitted(): void
     {
-        $response = $this->post(route('register.store'), [
+        $this->post('/register', [
             'name' => 'John Doe',
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
-        ]);
+        ])->assertNotFound();
 
-        $response->assertSessionHasNoErrors()
-            ->assertRedirect(route('dashboard', absolute: false));
+        $this->assertGuest();
+        $this->assertDatabaseMissing(User::class, ['email' => 'test@example.com']);
+    }
 
-        $this->assertAuthenticated();
+    public function test_login_screen_does_not_offer_sign_up(): void
+    {
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertDontSee(__('Sign up'))
+            ->assertDontSee('/register');
     }
 }

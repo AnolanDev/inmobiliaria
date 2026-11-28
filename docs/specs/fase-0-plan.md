@@ -78,7 +78,7 @@ Corto, fuera del bloque de Boost: comandos, decisiones y trampas. Con `CLAUDE.md
 
 ### E7 — Registro y autoeliminación
 - Sin `Features::registration()`, rutas, vistas, enlaces ni componente de eliminar cuenta; pruebas ajustadas.
-- `php artisan users:create` interactivo: contraseña oculta, nunca se muestra ni se registra.
+- `php artisan users:create` interactivo: contraseña oculta, nunca se muestra ni se registra; sin opción `--password` (quedaría en el historial); el usuario queda con el correo verificado; la entrada va marcada `#[\SensitiveParameter]` para que no aparezca en trazas de error.
 
 ### E8 — Agente revisor
 - `.claude/agents/revisor-cumplimiento.md`, solo lectura (Read, Grep, Glob), revisa cada bloque contra `docs/specs/` y reporta en español con archivo y línea.
