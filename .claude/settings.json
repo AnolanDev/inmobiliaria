@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.testing)",
+      "Read(**/.env.local)",
+      "Read(**/.env.*.local)",
+      "Read(**/.env.production)",
+      "Read(**/.env.prod)",
+      "Read(**/.env.staging)",
+      "Read(**/.env.dev)",
+      "Read(**/.env.development)",
+      "Read(**/.env.backup)",
+      "Read(**/.env.bak)",
+      "Read(**/.env.*.bak)",
+      "Read(**/.env.old)",
+      "Read(**/.env.save)",
+      "Bash(php artisan migrate:fresh)",
+      "Bash(php artisan migrate:fresh *)",
+      "Bash(./artisan migrate:fresh)",
+      "Bash(./artisan migrate:fresh *)",
+      "Bash(php ./artisan migrate:fresh)",
+      "Bash(php ./artisan migrate:fresh *)",
+      "Bash(php artisan migrate:refresh)",
+      "Bash(php artisan migrate:refresh *)",
+      "Bash(./artisan migrate:refresh)",
+      "Bash(./artisan migrate:refresh *)",
+      "Bash(php ./artisan migrate:refresh)",
+      "Bash(php ./artisan migrate:refresh *)",
+      "Bash(php artisan migrate:reset)",
+      "Bash(php artisan migrate:reset *)",
+      "Bash(./artisan migrate:reset)",
+      "Bash(./artisan migrate:reset *)",
+      "Bash(php ./artisan migrate:reset)",
+      "Bash(php ./artisan migrate:reset *)",
+      "Bash(php artisan db:wipe)",
+      "Bash(php artisan db:wipe *)",
+      "Bash(./artisan db:wipe)",
+      "Bash(./artisan db:wipe *)",
+      "Bash(php ./artisan db:wipe)",
+      "Bash(php ./artisan db:wipe *)"
+    ],
+    "ask": [
+      "Bash(git push)",
+      "Bash(git push *)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "excludedCommands": [
+      "php artisan test",
+      "php artisan test *"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/quality-gate.sh",
+            "timeout": 900,
+            "statusMessage": "Quality gate: Pint, Larastan y pruebas"
+          }
+        ]
+      }
+    ]
+  }
+}
