@@ -61,6 +61,8 @@ E1 y E2 se adelantaron respecto al orden original: las pruebas solo corren contr
 - `settings.json`: prohibido leer `.env`, `.env.testing` y demás `.env.*` conocidos (no los `.example`); prohibidos por completo `migrate:fresh`, `migrate:refresh`, `migrate:reset` y `db:wipe`; `git push` requiere aprobación; excepción del sandbox solo para `php artisan test`.
 - Sandbox activado en el proyecto; las reglas `Read(...)` de `deny` también bloquean a los comandos dentro del sandbox.
 - Hook Stop `quality-gate.sh`: Pint y Larastan siempre bloquean; las pruebas corren en `inmobiliaria_test_hook` con `flock`, y esa base se actualiza con `migrate` (nunca con comandos destructivos); si MySQL no responde se omiten con aviso (otros errores de conexión bloquean); si el árbol no cambió desde la última corrida en verde, no repite.
+- Siempre piden aprobación (`ask`): `git push` (también `git -C <ruta> push`), `gh pr merge`, `gh repo edit|delete|rename|archive`, `gh api`, `gh secret` y `gh workflow`, con y sin argumentos.
+- Freno de ciclos del hook: tras 3 bloqueos seguidos con la misma falla (`stop_hook_active`), el siguiente intento deja terminar el turno con un aviso visible de que hace falta intervenir (racha en `.git/quality-gate.streak`).
 - Sin hook de formateo después de cada edición.
 
 ### E6 — CLAUDE.md

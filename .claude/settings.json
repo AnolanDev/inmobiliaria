@@ -43,7 +43,25 @@
     ],
     "ask": [
       "Bash(git push)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git -C * push)",
+      "Bash(git -C * push *)",
+      "Bash(gh pr merge)",
+      "Bash(gh pr merge *)",
+      "Bash(gh repo edit)",
+      "Bash(gh repo edit *)",
+      "Bash(gh repo delete)",
+      "Bash(gh repo delete *)",
+      "Bash(gh repo rename)",
+      "Bash(gh repo rename *)",
+      "Bash(gh repo archive)",
+      "Bash(gh repo archive *)",
+      "Bash(gh api)",
+      "Bash(gh api *)",
+      "Bash(gh secret)",
+      "Bash(gh secret *)",
+      "Bash(gh workflow)",
+      "Bash(gh workflow *)"
     ]
   },
   "sandbox": {

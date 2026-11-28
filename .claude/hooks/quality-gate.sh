@@ -11,6 +11,10 @@
 #     warning (Pint and Larastan still block).
 #   - If the working tree has not changed since the last fully green run,
 #     nothing is re-run.
+#   - Loop guard: after blocking 3 times in a row with the same failure
+#     (consecutive stops with stop_hook_active=true), the next stop is let
+#     through with a visible warning asking the user to step in. The streak
+#     lives in .git/quality-gate.streak.
 #
 # Exit 0 = allow stop. Exit 2 = block (stderr is fed back to Claude).
 # Credentials are read by Laravel from .env.testing; this script never
@@ -25,31 +29,62 @@ MAX_OUTPUT_CHARS=6000
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 cd "$PROJECT_DIR" || exit 0
 
-# The hook payload (stdin) is not needed; drain it so the writer never blocks.
-cat >/dev/null 2>&1 || true
+# stop_hook_active is true when Claude is already continuing because this
+# hook blocked the previous stop attempt.
+PAYLOAD="$(cat 2>/dev/null || true)"
+STOP_HOOK_ACTIVE="$(jq -r '.stop_hook_active // false' <<<"$PAYLOAD" 2>/dev/null || echo false)"
 
 GIT_DIR="$(git rev-parse --absolute-git-dir 2>/dev/null)" || exit 0
 STATE_FILE="$GIT_DIR/quality-gate.green"
 LOCK_FILE="$GIT_DIR/quality-gate.lock"
+STREAK_FILE="$GIT_DIR/quality-gate.streak"
+MAX_SAME_FAILURE_BLOCKS=3
 
+# Allows the stop. Clears the failure streak: the loop is broken either way.
+allow() {
+    rm -f "$STREAK_FILE"
+    if [[ -n "${1:-}" ]]; then
+        jq -cn --arg msg "$1" '{systemMessage: $msg}'
+    fi
+    exit 0
+}
+
+# Blocks the stop, unless the same failure has already blocked
+# MAX_SAME_FAILURE_BLOCKS times in a row: then lets the turn end with a
+# visible warning, so an unfixable failure never loops forever.
 block() {
+    local details=""
+    if [[ -n "${2:-}" ]]; then
+        details="$(printf '%s\n' "$2" | sed -E 's/\x1b\[[0-9;]*m//g' | tail -c "$MAX_OUTPUT_CHARS")"
+    fi
+
+    # Same failure = same reason and output once timings are removed.
+    local signature count=1
+    signature="$(printf '%s\n%s' "$1" "$details" \
+        | sed -E 's/"duration_ms":[0-9]+//g; s/[0-9]+(\.[0-9]+)?m?s\b//g' \
+        | sha256sum | cut -d' ' -f1)"
+    if [[ "$STOP_HOOK_ACTIVE" == "true" && -f "$STREAK_FILE" ]]; then
+        read -r last_signature last_count <"$STREAK_FILE" || true
+        if [[ "${last_signature:-}" == "$signature" ]]; then
+            count=$(( ${last_count:-0} + 1 ))
+        fi
+    fi
+
+    if (( count > MAX_SAME_FAILURE_BLOCKS )); then
+        allow "Quality gate: la misma falla bloqueó ${MAX_SAME_FAILURE_BLOCKS} veces seguidas y se deja terminar el turno. NECESITAS INTERVENIR: $1"
+    fi
+    echo "$signature $count" >"$STREAK_FILE"
+
     {
-        echo "Quality gate: $1"
-        if [[ -n "${2:-}" ]]; then
+        echo "Quality gate (bloqueo ${count} de ${MAX_SAME_FAILURE_BLOCKS} por esta misma falla): $1"
+        if [[ -n "$details" ]]; then
             echo
-            printf '%s\n' "$2" | sed -E 's/\x1b\[[0-9;]*m//g' | tail -c "$MAX_OUTPUT_CHARS"
+            printf '%s\n' "$details"
         fi
         echo
         echo "Corrige el problema antes de terminar el turno."
     } >&2
     exit 2
-}
-
-allow() {
-    if [[ -n "${1:-}" ]]; then
-        jq -cn --arg msg "$1" '{systemMessage: $msg}'
-    fi
-    exit 0
 }
 
 # --- Skip when nothing changed since the last fully green run -----------------
