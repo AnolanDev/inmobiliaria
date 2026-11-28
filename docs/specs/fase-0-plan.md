@@ -44,14 +44,17 @@ E1 y E2 se adelantaron respecto al orden original: las pruebas solo corren contr
 - `.env.testing` fuera de git; `.env.testing.example` sin contraseñas.
 - Las pruebas usan `DatabaseTransactions`; el esquema lo migra antes el dueño (`php artisan migrate --database=mysql_owner --env=testing`). El proceso de pruebas solo usa el usuario de la aplicación.
 - Prueba de guarda: el usuario de la aplicación no puede crear tablas.
+- Adelantado desde E4 para que el CI siga en verde con las guardas: el CI ejecuta `users.sql` con contraseñas aleatorias de la misma corrida, migra con el dueño y corre las pruebas con el usuario de la aplicación.
 - `APP_LOCALE=es`, `APP_FALLBACK_LOCALE=es`; traducciones de `laravel-lang` (solo desarrollo) publicadas en `lang/es` y `lang/es.json`, incluyendo los textos visibles del kit. Prueba de un mensaje de validación en español.
 
 ### E3 — Calidad
-- Pint (preset `laravel`), Larastan nivel 7 sobre `app/` sin baseline, Pest.
+- Pint (preset `laravel`), Larastan nivel 7 sin baseline sobre `app/`, `bootstrap/app.php`, `config/`, `database/` y `routes/` (alcance del kit, aprobado), Pest.
 - `composer check` corre los tres (con la migración previa del dueño para las pruebas).
 
 ### E4 — CI completo
-- Contraseñas aleatorias en la misma corrida (`openssl rand -hex`, enmascaradas), `users.sql` por entrada estándar, migraciones con el dueño, Pint, Larastan, build y todas las pruebas con el usuario de la aplicación.
+- Pint y Larastan en el CI, antes del build y de las pruebas.
+- Ya desde E2: contraseñas aleatorias en la misma corrida (`openssl rand -hex`, enmascaradas), `users.sql` por entrada estándar, migraciones con el dueño y todas las pruebas con el usuario de la aplicación.
+- Imagen `mysql:8.0.46` fijada por etiqueta y digest; límite de tiempo y cancelación de corridas repetidas.
 - Ramas `main` y `fase-*`, en `push` y `pull_request`.
 
 ### E5 — Claude Code (`.claude/`)
@@ -66,6 +69,7 @@ Corto, fuera del bloque de Boost: comandos, decisiones y trampas:
 - El usuario de la aplicación no migra: toda migración va por `mysql_owner`.
 - Triggers en cPanel pueden exigir `log_bin_trust_function_creators`; antes de la Fase 1 hay que probar crear un trigger en cPanel y, si no se puede, el historial de solo inserción se protege desde la aplicación con pruebas.
 - Renombrar el job `tests` rompe la protección de `main`.
+- `php artisan db:show` lista las tablas de todas las bases a las que el usuario tiene acceso, no solo la de la conexión; para contar tablas de una base, consultar `information_schema` filtrando por `TABLE_SCHEMA`.
 - Repositorio público: nunca datos reales (clientes, cédulas, teléfonos, precios o lotes de proyectos reales) en seeders, fixtures ni pruebas; nunca dominio, proveedor de hosting ni prefijo real de cPanel en `docs/` (usar marcadores como `CUENTA_inmobiliaria_owner`).
 
 ### E7 — Registro y autoeliminación

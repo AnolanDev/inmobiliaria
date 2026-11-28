@@ -13,15 +13,23 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # The job id "tests" is a required status check on main: do not rename it.
   tests:
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     services:
       mysql:
-        image: mysql:8.0.46
+        # Same major/minor as production; pinned by tag and digest.
+        image: mysql:8.0.46@sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b
         env:
+          # Throwaway container, reachable only from this runner. Root is used
+          # once, to run users.sql; the app never connects as root.
           MYSQL_ROOT_PASSWORD: ci-root-ephemeral
           MYSQL_DATABASE: inmobiliaria_test
         ports:
@@ -50,6 +58,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
+          # Same version as production.
           php-version: '8.3'
           extensions: pdo_mysql
           tools: composer:v2
@@ -64,18 +73,22 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Build frontend
-        run: |
-          npm ci
-          npm run build
+      - name: Pint
+        run: vendor/bin/pint --test
 
       - name: Prepare environment
         run: |
           cp .env.example .env
           php artisan key:generate
 
-      # Root of the throwaway service container is used only here, to run
-      # users.sql with passwords generated in this same run.
+      - name: Larastan
+        run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress
+
+      - name: Build frontend
+        run: |
+          npm ci
+          npm run build
+
       - name: Create database users
         env:
           MYSQL_PWD: ci-root-ephemeral
